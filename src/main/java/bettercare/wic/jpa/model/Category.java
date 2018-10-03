@@ -1,4 +1,4 @@
-package bettercare.wic.jpa;
+package bettercare.wic.jpa.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name="category")
 @NamedQuery(name="Category.findAll", query="SELECT c FROM Category c")
-public class Category implements Serializable {
+public class  Category implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

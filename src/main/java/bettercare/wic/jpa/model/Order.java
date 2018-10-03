@@ -1,4 +1,4 @@
-package bettercare.wic.jpa;
+package bettercare.wic.jpa.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
