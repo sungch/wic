@@ -1,10 +1,13 @@
-package bettercare.wic.jpa;
+package bettercare.wic.jpa.service;
+
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+@Component
 public class WicService {
 
   @PersistenceContext(unitName = "wicpu")
@@ -14,11 +17,11 @@ public class WicService {
     em.persist(obj);
   }
 
-  public <T> T  find(Class<T> type, T obj) {
-    return em.find(type, obj);
+  public <T> T find(Class<T> type, Long id) {
+    return em.find(type, id);
   }
 
-  public <T> T  update(T obj) {
+  public <T> T merge(T obj) {
     return em.merge(obj);
   }
 
