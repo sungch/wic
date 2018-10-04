@@ -11,22 +11,22 @@ import javax.persistence.PreUpdate;
 public class WicService {
 
   @PersistenceContext(unitName = "wicpu")
-  private EntityManager em;
+  private EntityManager entityManager;
 
   public <T> void create(T obj) {
-    em.persist(obj);
+    entityManager.persist(obj);
   }
 
   public <T> T find(Class<T> type, Long id) {
-    return em.find(type, id);
+    return entityManager.find(type, id);
   }
 
   public <T> T merge(T obj) {
-    return em.merge(obj);
+    return entityManager.merge(obj);
   }
 
   public <T> void remove(T obj) {
-    em.remove(obj);
+    entityManager.remove(obj);
   }
 
   @PrePersist

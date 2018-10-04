@@ -1,0 +1,17 @@
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/jpa/model/Order.java
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/jpa/service/CustomerService.java
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/jpa/service/OrderService.java
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/jpa/model/Category.java
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/config/JpaConfig.java
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/WicApplication.java
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/jpa/service/ProductService.java
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/jpa/service/WicService.java
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/jpa/service/CategoryService.java
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/jpa/service/VoucherService.java
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/jpa/service/MissingProductService.java
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/jpa/model/MissingProduct.java
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/jpa/service/DeliveryService.java
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/jpa/model/Delivery.java
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/jpa/model/Customer.java
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/jpa/model/Voucher.java
+/Users/sungch/sandbox/wic/src/main/java/bettercare/wic/jpa/model/Product.java

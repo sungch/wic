@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="wicpu" transaction-type="JTA">
+		<class>bettercare.wic.jpa.model.Category</class>
+		<class>bettercare.wic.jpa.model.Customer</class>
+		<class>bettercare.wic.jpa.model.Delivery</class>
+		<class>bettercare.wic.jpa.model.MissingProduct</class>
+		<class>bettercare.wic.jpa.model.Order</class>
+		<class>bettercare.wic.jpa.model.Product</class>
+		<class>bettercare.wic.jpa.model.Voucher</class>
+
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/wic" />
+			<property name="javax.persistence.jdbc.user" value="app" />
+			<property name="javax.persistence.jdbc.password" value="app" />
+		</properties>
+	</persistence-unit>
+</persistence>
