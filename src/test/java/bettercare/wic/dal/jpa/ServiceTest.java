@@ -1,6 +1,6 @@
-package bettercare.wic.jpa.service;
+package bettercare.wic.dal.jpa;
 
-import bettercare.wic.jpa.model.Product;
+import bettercare.wic.dal.model.Product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +21,7 @@ public class ServiceTest {
 
   @Test
   public void testCategoryCreate() {
-    CategoryService service = new CategoryService();
+    CategoryJpaService service = new CategoryJpaService();
     service.create(createProducts(), "milk", "0");
   }
 

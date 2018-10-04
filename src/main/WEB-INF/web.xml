@@ -17,7 +17,7 @@
     <!-- Load Spring Java Config -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>bettercare.wic.config</param-value>
+        <param-value>bettercare.wic.dal.config</param-value>
     </context-param>
 
     <filter>

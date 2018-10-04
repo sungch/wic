@@ -1,6 +1,8 @@
-package bettercare.wic.config;
+package bettercare.wic.dal.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.MySQL5Dialect;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,15 +10,15 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import java.util.Properties;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.hibernate.cfg.AvailableSettings.SHOW_SQL;
 
@@ -40,10 +42,10 @@ public class JpaConfig {
     @Value("${db.pool.max.size:20}")
     private int dbPoolMaxSize;
 
-    @Value("${jpa.pu.name:wicpu}")
+    @Value("${dal.pu.name:wicpu}")
     private String jpaPuName;
 
-    @Value("${jpa.model.package}")
+    @Value("${dal.model.package}")
     private String jpaModelPackage;
 
     @Value("${jdbc.driver:com.mysql.jdbc.Driver}")
@@ -67,27 +69,25 @@ public class JpaConfig {
     }
 
     @Bean
-    public EntityManagerFactory entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(basicDataSource());
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter());
-        factoryBean.setJpaDialect(hibernateJpaDialect());
         factoryBean.setPersistenceUnitName(jpaPuName);
         factoryBean.setPackagesToScan(jpaModelPackage);
-        factoryBean.setJpaProperties(jpaProperties());
-        return factoryBean.getNativeEntityManagerFactory();
+        factoryBean.setJpaPropertyMap(jpaProperties());
+        ;
+        return factoryBean;
     }
 
     @Bean
-    public EntityManager entityManager() {
-        return entityManagerFactory().createEntityManager();
+    public JpaTransactionManager entityManager() {
+        return new JpaTransactionManager(entityManagerFactory().getObject());
     }
 
     @Bean
     public PlatformTransactionManager transactionManager() {
-        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager(entityManagerFactory());
-        jpaTransactionManager.setJpaDialect(hibernateJpaDialect());
-        return jpaTransactionManager;
+        return new JpaTransactionManager(entityManagerFactory().getObject());
     }
 
     @Bean
@@ -103,10 +103,11 @@ public class JpaConfig {
     private final static String NEW_GENERATOR_MAPPINGS = "hibernate.id.new_generator_mappings";
 
     @Bean
-    public Properties jpaProperties() {
-        Properties properties = new Properties();
-        properties.setProperty(NEW_GENERATOR_MAPPINGS, "true");
-        properties.setProperty(SHOW_SQL, "true");
+    public Map<String, Object> jpaProperties() {
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(AvailableSettings.DIALECT, MySQL5Dialect.class.getName());
+        properties.put(NEW_GENERATOR_MAPPINGS, "true");
+        properties.put(SHOW_SQL, "true");
         return properties;
     }
 
@@ -115,6 +116,7 @@ public class JpaConfig {
         HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
         hibernateJpaVendorAdapter.setGenerateDdl(true);
         hibernateJpaVendorAdapter.setShowSql(true);
+        hibernateJpaVendorAdapter.setDatabase(Database.MYSQL);
         return hibernateJpaVendorAdapter;
     }
 
