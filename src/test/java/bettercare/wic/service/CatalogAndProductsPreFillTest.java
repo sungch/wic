@@ -40,7 +40,10 @@ public class CatalogAndProductsPreFillTest {
     // Use @Transactional to roll back at the end of the test.
 
     @Resource
-    private WicDaoService wicDaoService;
+    private JpaTransactionManagerService wicDaoTransactionManagerService;
+
+    @Resource
+    private EntityManagerService wicDaoEntityManasgerService;
 
     @Test
     public void contextLoads() {
@@ -48,7 +51,7 @@ public class CatalogAndProductsPreFillTest {
 
     @Before
     public void setup() {
-        Assert.assertNotNull(wicDaoService);
+        Assert.assertNotNull(wicDaoTransactionManagerService);
     }
 
     /**
@@ -58,7 +61,7 @@ public class CatalogAndProductsPreFillTest {
     public void add2Categories() {
         for (int i = 0; i < 2; i++) {
             Category category = createCategory("categoryName_" + i);
-            wicDaoService.saveAndFlushCategory(category);
+            wicDaoTransactionManagerService.saveAndFlushCategory(category);
         }
     }
 
@@ -71,11 +74,11 @@ public class CatalogAndProductsPreFillTest {
         long[] categoryIds = {203, 204};
         List<Product> products = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            Category category = wicDaoService.findCategoryById(categoryIds[i % categoryIds.length]);
+            Category category = wicDaoTransactionManagerService.findCategoryById(categoryIds[i % categoryIds.length]);
             Product p = createProductWithNullImagePath(category, "barcode_" + i, "desc_" + i, "prodName_" + i);
             products.add(p);
         }
-        wicDaoService.saveAllProducts(products);
+        wicDaoTransactionManagerService.saveAllProducts(products);
     }
 
     /**
@@ -111,14 +114,12 @@ public class CatalogAndProductsPreFillTest {
         }
     }
 
-    // HELPER METHODS
-
     private boolean productHasImagePath(Product product) {
         return product.getImagePath() != null;
     }
 
     private void prepareUpdateProductImagePath(long categoryId, boolean isForce) {
-        List<Product> products = wicDaoService.findProductsByCategoryId(categoryId);
+        List<Product> products = wicDaoTransactionManagerService.findProductsByCategoryId(categoryId);
         if (products.isEmpty()) {
             System.out.println("No product by category id " + categoryId);
             return;
@@ -135,7 +136,7 @@ public class CatalogAndProductsPreFillTest {
             String imagePath = getImagePath(categoryId, product.getId(), imageFileName);
             updateProductImage(product, imagePath, isForce);
         }
-        wicDaoService.saveAllProducts(products);
+        wicDaoTransactionManagerService.saveAllProducts(products);
     }
 
     private void updateProductImage(Product product, String imagePath, boolean isForce) {
@@ -168,4 +169,14 @@ public class CatalogAndProductsPreFillTest {
         product.setName(prodName);
         return product;
     }
+
+    // -- EntityManager Operations
+
+    @Test
+    public void testEntityManager() {
+        Category category = wicDaoEntityManasgerService.find(Category.class, 203L);
+        System.out.println(category.getName() + " is found entityManager");
+    }
+
+
 }

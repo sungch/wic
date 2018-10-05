@@ -18,6 +18,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import javax.persistence.EntityManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -84,10 +85,11 @@ public class RepositoryConfiguration {
     }
 
     @Bean
-    public JpaTransactionManager entityManager() throws SQLException {
-        return new JpaTransactionManager(entityManagerFactory().getNativeEntityManagerFactory());
+    public EntityManager entityManager() {
+        return entityManagerFactory().getNativeEntityManagerFactory().createEntityManager();
     }
 
+    // This resource name is used by spring Jpa CRUD repository class.
     @Bean
     public PlatformTransactionManager transactionManager() {
         return new JpaTransactionManager(entityManagerFactory().getObject());
