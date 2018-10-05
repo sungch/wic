@@ -16,7 +16,7 @@ public class Delivery implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="DELIVERY_ID_GENERATOR" )
+	@SequenceGenerator(name="DELIVERY_ID_GENERATOR", initialValue = 1, allocationSize = 1 )
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="DELIVERY_ID_GENERATOR")
 	private long id;
 

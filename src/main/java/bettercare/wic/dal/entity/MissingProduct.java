@@ -15,7 +15,7 @@ public class MissingProduct implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="MISSING_PRODUCT_ID_GENERATOR" )
+	@SequenceGenerator(name="MISSING_PRODUCT_ID_GENERATOR", initialValue = 1, allocationSize = 1 )
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="MISSING_PRODUCT_ID_GENERATOR")
 	private long id;
 
