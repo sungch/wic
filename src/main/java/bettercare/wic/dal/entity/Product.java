@@ -24,8 +24,8 @@ public class Product implements Serializable {
 
 	private String description;
 
-	@Column(name="image_id")
-	private String imageId;
+	@Column(name="image_path")
+	private String imagePath;
 
 	private String name;
 
@@ -35,6 +35,7 @@ public class Product implements Serializable {
 
 	//bi-directional many-to-one association to Category
 	@ManyToOne
+	@JoinColumn(name = "category_id")
 	private Category category;
 
 	public Product() {
@@ -64,12 +65,12 @@ public class Product implements Serializable {
 		this.description = description;
 	}
 
-	public String getImageId() {
-		return this.imageId;
+	public String getImagePath() {
+		return this.imagePath;
 	}
 
-	public void setImageId(String imageId) {
-		this.imageId = imageId;
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 
 	public String getName() {

@@ -60,15 +60,24 @@
         <init-param>
             <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
             <param-value>com.sun.jersey.api.container.filter.GZIPContentEncodingFilter,
-                org.familysearch.idx.api.rest.filters.AcceptLanguageRequestFilter</param-value>
+                org.familysearch.idx.api.rest.filters.AcceptLanguageRequestFilter
+            </param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
             <param-value>com.sun.jersey.api.container.filter.GZIPContentEncodingFilter,
-                org.familysearch.idx.api.rest.filters.IERemoveVaryResponseFilter</param-value>
+                org.familysearch.idx.api.rest.filters.IERemoveVaryResponseFilter
+            </param-value>
         </init-param>
     </filter>
-
+    <filter>
+        <filter-name>OpenSessionInViewFilter</filter-name>
+        <filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>OpenSessionInViewFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>rootServletFilter</filter-name>
         <url-pattern>/*</url-pattern>

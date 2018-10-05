@@ -20,13 +20,14 @@ public class  Category implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CATEGORY_ID_GENERATOR")
 	private long id;
 
-	@Column(name="image_id")
-	private String imageId;
-
 	private String name;
 
-	//bi-directional many-to-one association to Product
-	@OneToMany(mappedBy="category")
+	/**
+	 * bi-directional many-to-one association to Product
+	 * fetch type is eager but in production, change this to lazy and
+	 * let OpenSessionInViewFilter in web.xml handle to maintain session.
+	 */
+	@OneToMany(mappedBy="category", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<bettercare.wic.dal.entity.Product> products;
 
 	public Category() {
@@ -38,14 +39,6 @@ public class  Category implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getImageId() {
-		return this.imageId;
-	}
-
-	public void setImageId(String imageId) {
-		this.imageId = imageId;
 	}
 
 	public String getName() {
