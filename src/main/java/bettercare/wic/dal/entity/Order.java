@@ -17,7 +17,7 @@ public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="ORDER_ID_GENERATOR", initialValue = 1, allocationSize = 1 )
+	@SequenceGenerator(name="ORDER_ID_GENERATOR", allocationSize = 1 )
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ORDER_ID_GENERATOR")
 	private long id;
 
@@ -33,13 +33,21 @@ public class Order implements Serializable {
 
 	private String status;
 
-	//bi-directional many-to-one association to MissingProduct
-	@OneToMany(mappedBy="order")
+	/**
+	 * Note. Unidirectional
+	 * mappedBy and @JoinColumn(name = "") are exclusive to each other.
+	 * If mappedBy is used, I had to annotate from many side as well.
+	 * Using @JoinColumn(name = "") I do not need to do anything on many side in 1:many relationship.
+	 * It tell JPA that this a foreign key name in many side
+	 * This also prevents cyclic data structure.
+	 */
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "order_id") // Tell JPA that this a foreign key name in many side
 	private List<MissingProduct> missingProducts;
 
-	//bi-directional many-to-one association to Voucher
-	@ManyToOne
-	private bettercare.wic.dal.entity.Voucher voucher;
+	@OneToOne
+	@JoinColumn(name = "voucher_id")
+	private Voucher voucher;
 
 	public Order() {
 	}
@@ -94,15 +102,13 @@ public class Order implements Serializable {
 
 	public MissingProduct addMissingProduct(MissingProduct missingProduct) {
 		getMissingProducts().add(missingProduct);
-		missingProduct.setOrder(this);
-
+		missingProduct.setOrderId(this.getId());
 		return missingProduct;
 	}
 
 	public MissingProduct removeMissingProduct(MissingProduct missingProduct) {
 		getMissingProducts().remove(missingProduct);
-		missingProduct.setOrder(null);
-
+		missingProduct.setOrderId(null);
 		return missingProduct;
 	}
 
@@ -110,7 +116,7 @@ public class Order implements Serializable {
 		return this.voucher;
 	}
 
-	public void setVoucher(Voucher voucher) {
+	public void setVoucherId(Voucher voucher) {
 		this.voucher = voucher;
 	}
 

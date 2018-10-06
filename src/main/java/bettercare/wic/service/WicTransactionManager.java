@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class JpaTransactionManagerService {
+public class WicTransactionManager {
 
     @Resource private CategoryDao categoryDao; // requires @EnableJpaRepositories("bettercare.wic.dal") in somewhere configuration
     @Resource private ProductDao productDao;

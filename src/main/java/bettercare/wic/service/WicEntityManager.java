@@ -10,7 +10,7 @@ import javax.persistence.PreUpdate;
 
 
 @Service
-public class EntityManagerService {
+public class WicEntityManager {
 
   @Resource private EntityManager entityManager;
 

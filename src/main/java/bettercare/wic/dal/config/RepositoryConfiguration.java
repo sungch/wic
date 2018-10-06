@@ -89,7 +89,9 @@ public class RepositoryConfiguration {
         return entityManagerFactory().getNativeEntityManagerFactory().createEntityManager();
     }
 
-    // This resource name is used by spring Jpa CRUD repository class.
+    /**
+     * spring uses this internally for Jpa CRUD repository class.
+     */
     @Bean
     public PlatformTransactionManager transactionManager() {
         return new JpaTransactionManager(entityManagerFactory().getObject());

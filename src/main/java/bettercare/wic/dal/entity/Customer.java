@@ -16,7 +16,7 @@ public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="CUSTOMER_ID_GENERATOR", initialValue = 1, allocationSize = 1 )
+	@SequenceGenerator(name="CUSTOMER_ID_GENERATOR", allocationSize = 1 )
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CUSTOMER_ID_GENERATOR")
 	private long id;
 
@@ -29,12 +29,20 @@ public class Customer implements Serializable {
 	@Column(name="wic_id")
 	private String wicId;
 
-	//bi-directional many-to-one association to Delivery
-	@OneToMany(mappedBy="customer")
+	/**
+	 * Note. Unidirectional
+	 * mappedBy and @JoinColumn(name = "") are exclusive to each other.
+	 * If mappedBy is used, I had to annotate from many side as well.
+	 * Using @JoinColumn(name = "") I do not need to do anything on many side in 1:many relationship.
+	 * It tell JPA that this a foreign key name in many side.
+	 * This also prevents cyclic data structure.
+	 */
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "customer_id")
 	private List<Delivery> deliveries;
 
-	//bi-directional many-to-one association to Voucher
-	@OneToMany(mappedBy="customer")
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "customer_id")
 	private List<Voucher> vouchers;
 
 	public Customer() {

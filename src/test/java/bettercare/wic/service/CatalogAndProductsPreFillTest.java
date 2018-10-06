@@ -37,146 +37,144 @@ import static java.lang.Math.abs;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = WicApplication.class)
 public class CatalogAndProductsPreFillTest {
 
-    // Use @Transactional to roll back at the end of the test.
+  // Use @Transactional to roll back at the end of the test.
 
-    @Resource
-    private JpaTransactionManagerService wicDaoTransactionManagerService;
+  @Resource
+  private WicTransactionManager wicTransactionManager;
 
-    @Resource
-    private EntityManagerService wicDaoEntityManasgerService;
+  @Resource
+  private WicEntityManager wicEntityManasger;
 
-    @Test
-    public void contextLoads() {
+  private long[] categoryIds = {1, 2};
+
+  @Test
+  public void contextLoads() {
+  }
+
+  @Before
+  public void setup() {
+    Assert.assertNotNull(wicTransactionManager);
+  }
+
+  /**
+   * 1. Add Categories
+   */
+  @Test
+  public void add2Categories() {
+    for (int i = 0; i < categoryIds.length; i++) {
+      Category category = createCategory("categoryName_" + i);
+      wicTransactionManager.saveAndFlushCategory(category);
     }
+  }
 
-    @Before
-    public void setup() {
-        Assert.assertNotNull(wicDaoTransactionManagerService);
+  /**
+   * 2. Add Products with Category id but blank image ids for the first entry.
+   */
+  @Test
+  @DependsOn("add2Categories")
+  public void add10Products2Categories() {
+    List<Product> products = new ArrayList<>();
+    for (int i = 0; i < 10; i++) {
+      Category category = wicTransactionManager.findCategoryById(categoryIds[i % categoryIds.length]);
+      Product p = createProductWithNullImagePath(category, "barcode_" + i, "desc_" + i, "prodName_" + i);
+      products.add(p);
     }
+    wicTransactionManager.saveAllProducts(products);
+  }
 
-    /**
-     * 1. Add Categories
-     */
-    @Test
-    public void add2Categories() {
-        for (int i = 0; i < 2; i++) {
-            Category category = createCategory("categoryName_" + i);
-            wicDaoTransactionManagerService.saveAndFlushCategory(category);
-        }
+  /**
+   * 3. Take pictures and save images. See Note E above.
+   */
+  @Test
+  public void addImages() {
+
+  }
+
+  /**
+   * 4. Update Product Image Names
+   * When all images are ready, Update product.
+   * Now categoryId, productId, imagePathName are all available.
+   */
+  @Test
+  @DependsOn({"add10Products2Categories"})
+  public void updateProductImageNamesForced() {
+    boolean isForce = true;
+    for (long categoryId : categoryIds) {
+      updateProductImagePath(categoryId, isForce);
     }
+  }
 
-    /**
-     * 2. Add Products with Category id but blank image ids for the first entry.
-     */
-    @Test
-    @DependsOn("add2Categories")
-    public void add10Products2Categories() {
-        long[] categoryIds = {203, 204};
-        List<Product> products = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Category category = wicDaoTransactionManagerService.findCategoryById(categoryIds[i % categoryIds.length]);
-            Product p = createProductWithNullImagePath(category, "barcode_" + i, "desc_" + i, "prodName_" + i);
-            products.add(p);
-        }
-        wicDaoTransactionManagerService.saveAllProducts(products);
+  @Test
+  @DependsOn({"add10Products2Categories"})
+  public void updateProductImageNamesNotForced() {
+    boolean isForce = false;
+    for (long categoryId : categoryIds) {
+      updateProductImagePath(categoryId, isForce);
     }
+  }
 
-    /**
-     * 3. Take pictures and save images. See Note E above.
-     */
-    @Test
-    public void addImages() {
+  private boolean productHasImagePath(Product product) {
+    return product.getImagePath() != null;
+  }
 
+  private void updateProductImagePath(long categoryId, boolean isForce) {
+    List<Product> products = wicTransactionManager.findProductsByCategoryId(categoryId);
+    if (products.isEmpty()) {
+      System.out.println("**** No product by category id " + categoryId);
+      return;
     }
-
-    /**
-     * 4. Update Product Image Names
-     * When all images are ready, Update product.
-     * Now categoryId, productId, imagePathName are all available.
-     */
-    @Test
-    @DependsOn({"add10Products2Categories"})
-    public void updateProductImageNamesForced() {
-        long[] categoryIds = {203, 204};
-        boolean isForce = true;
-        for (long categoryId : categoryIds) {
-            prepareUpdateProductImagePath(categoryId, isForce);
-        }
+    if (!isForce) {
+      products.removeIf(product -> productHasImagePath((Product) product));
     }
-
-    @Test
-    @DependsOn({"add10Products2Categories"})
-    public void updateProductImageNamesNotForced() {
-        long[] categoryIds = {203, 204};
-        boolean isForce = false;
-        for (long categoryId : categoryIds) {
-            prepareUpdateProductImagePath(categoryId, isForce);
-        }
+    if (products.isEmpty()) {
+      return;
     }
-
-    private boolean productHasImagePath(Product product) {
-        return product.getImagePath() != null;
+    Random random = new Random();
+    for (Product product : products) {
+      int imageFileName = abs(random.nextInt());
+      String imagePath = getImagePath(categoryId, product.getId(), imageFileName);
+      updateProductImage(product, imagePath, isForce);
     }
+    wicTransactionManager.saveAllProducts(products);
+  }
 
-    private void prepareUpdateProductImagePath(long categoryId, boolean isForce) {
-        List<Product> products = wicDaoTransactionManagerService.findProductsByCategoryId(categoryId);
-        if (products.isEmpty()) {
-            System.out.println("No product by category id " + categoryId);
-            return;
-        }
-        if(!isForce) {
-            products.removeIf(product -> productHasImagePath((Product) product));
-        }
-        if(products.isEmpty()) {
-            return;
-        }
-        Random random = new Random();
-        for (Product product : products) {
-            int imageFileName = abs(random.nextInt());
-            String imagePath = getImagePath(categoryId, product.getId(), imageFileName);
-            updateProductImage(product, imagePath, isForce);
-        }
-        wicDaoTransactionManagerService.saveAllProducts(products);
+  private void updateProductImage(Product product, String imagePath, boolean isForce) {
+    if (isForce) {
+      product.setImagePath(imagePath);
     }
-
-    private void updateProductImage(Product product, String imagePath, boolean isForce) {
-        if(isForce) {
-            product.setImagePath(imagePath);
-        }
-        else {
-            if(product.getImagePath() == null) {
-                product.setImagePath(imagePath);
-            }
-        }
+    else {
+      if (product.getImagePath() == null) {
+        product.setImagePath(imagePath);
+      }
     }
+  }
 
-    private String getImagePath(long categoryId, long productId, int imageFileName) {
-        return categoryId + "/" + productId + "/" + imageFileName;
-    }
+  private String getImagePath(long categoryId, long productId, int imageFileName) {
+    return categoryId + "/" + productId + "/" + imageFileName;
+  }
 
-    private Category createCategory(String categoryName) {
-        Category category = new Category();
-        category.setName(categoryName);
-        return category;
-    }
+  private Category createCategory(String categoryName) {
+    Category category = new Category();
+    category.setName(categoryName);
+    return category;
+  }
 
-    private Product createProductWithNullImagePath(Category category, String barcode, String desc, String prodName) {
-        Product product = new Product();
-        product.setCategory(category);
-        product.setBarcode(barcode);
-        product.setDescription(desc);
-        product.setImagePath(null);
-        product.setName(prodName);
-        return product;
-    }
+  private Product createProductWithNullImagePath(Category category, String barcode, String desc, String prodName) {
+    Product product = new Product();
+    product.setCategoryId(category.getId());
+    product.setBarcode(barcode);
+    product.setDescription(desc);
+    product.setImagePath(null);
+    product.setName(prodName);
+    return product;
+  }
 
-    // -- EntityManager Operations
+  // -- EntityManager Operations
 
-    @Test
-    public void testEntityManager() {
-        Category category = wicDaoEntityManasgerService.find(Category.class, 203L);
-        System.out.println(category.getName() + " is found entityManager");
-    }
-
+  @Test
+  public void testEntityManager() {
+    Category category = wicEntityManasger.find(Category.class, categoryIds[0]);
+    System.out.println(category.getName() + " is found entityManager");
+  }
 
 }

@@ -16,22 +16,20 @@ public class Delivery implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="DELIVERY_ID_GENERATOR", initialValue = 1, allocationSize = 1 )
+	@SequenceGenerator(name="DELIVERY_ID_GENERATOR", allocationSize = 1 )
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="DELIVERY_ID_GENERATOR")
 	private long id;
 
 	@Column(name="deliverer_name")
 	private String delivererName;
 
-	@Temporal(TemporalType.TIMESTAMP)
+//	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="delivery_completion_time")
 	private Date deliveryCompletionTime;
 
 	@Column(name="store_id")
 	private byte storeId;
 
-	//bi-directional many-to-one association to Customer
-	@ManyToOne
 	private Customer customer;
 
 	public Delivery() {
@@ -76,5 +74,7 @@ public class Delivery implements Serializable {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
+
+
 
 }

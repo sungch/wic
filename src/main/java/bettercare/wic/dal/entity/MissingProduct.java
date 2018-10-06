@@ -15,19 +15,17 @@ public class MissingProduct implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="MISSING_PRODUCT_ID_GENERATOR", initialValue = 1, allocationSize = 1 )
+	@SequenceGenerator(name="MISSING_PRODUCT_ID_GENERATOR", allocationSize = 1 )
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="MISSING_PRODUCT_ID_GENERATOR")
 	private long id;
 
 	private byte quantity;
 
-	//bi-directional many-to-one association to Order
-	@ManyToOne
-	private Order order;
+	@Column(name = "order_id")
+	private long orderId;
 
-	//bi-directional many-to-one association to Product
-	@ManyToOne
-	private Product product;
+	@Column(name = "product_id")
+	private long productId;
 
 	public MissingProduct() {
 	}
@@ -48,20 +46,20 @@ public class MissingProduct implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public Order getOrder() {
-		return this.order;
+	public long getOrderId() {
+		return this.orderId;
 	}
 
-	public void setOrder(Order order) {
-		this.order = order;
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
 	}
 
-	public Product getProduct() {
-		return this.product;
+	public long getProductId() {
+		return this.productId;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 
 }
