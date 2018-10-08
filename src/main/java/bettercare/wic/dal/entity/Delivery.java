@@ -23,7 +23,6 @@ public class Delivery implements Serializable {
 	@Column(name="deliverer_name")
 	private String delivererName;
 
-//	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="delivery_completion_time")
 	private Date deliveryCompletionTime;
 
@@ -74,7 +73,5 @@ public class Delivery implements Serializable {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-
-
 
 }

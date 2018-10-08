@@ -3,6 +3,8 @@ package bettercare.wic.service;
 import bettercare.wic.dal.dao.CategoryDao;
 import bettercare.wic.dal.dao.ProductDao;
 import bettercare.wic.dal.entity.*;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +19,7 @@ public class WicTransactionManager {
     @Resource private CategoryDao categoryDao; // requires @EnableJpaRepositories("bettercare.wic.dal") in somewhere configuration
     @Resource private ProductDao productDao;
 
-    public Category saveAndFlushCategory(Category category) {
+    public Category saveOrUpdateCategory(Category category) {
         return categoryDao.saveAndFlush(category);
     }
 
@@ -26,11 +28,11 @@ public class WicTransactionManager {
         return category.get();
     }
 
-    public Product saveOrUpdateAndFlushProduct(Product product) {
+    public Product saveOrUpdateProduct(Product product) {
         return productDao.saveAndFlush(product);
     }
 
-    public List<Product> saveAllProducts(List<Product> products) {
+    public List<Product> saveOrUpdateProducts(List<Product> products) {
         return productDao.saveAll(products);
     }
 

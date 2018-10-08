@@ -29,14 +29,6 @@ public class Customer implements Serializable {
 	@Column(name="wic_id")
 	private String wicId;
 
-	/**
-	 * Note. Unidirectional
-	 * mappedBy and @JoinColumn(name = "") are exclusive to each other.
-	 * If mappedBy is used, I had to annotate from many side as well.
-	 * Using @JoinColumn(name = "") I do not need to do anything on many side in 1:many relationship.
-	 * It tell JPA that this a foreign key name in many side.
-	 * This also prevents cyclic data structure.
-	 */
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")
 	private List<Delivery> deliveries;
@@ -132,4 +124,93 @@ public class Customer implements Serializable {
 		return voucher;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("customerId:%s address:%s name:%s phone:%s wicNumber:%s ",
+				this.getId(), this.getAddress(), this.getName(), this.getPhone(), this.getWicId());
+	}
+
+	/**
+	 * Compute int for fields that defines equals()
+	 */
+	@Override
+	public int hashCode() {
+		return Long.valueOf(this.getId()).hashCode()
+				+ Long.valueOf(this.getAddress()).hashCode()
+				+ getStringHash(this.getName())
+				+ getStringHash(this.getPhone())
+				+ getStringHash(this.getWicId())
+				+ getCollectionHash(this.getVouchers())
+				+ getStringHash(this.getWicId());
+	}
+
+	private int getCollectionHash(List<Voucher> vouchers) {
+		if(vouchers == null) {
+			return 0;
+		}
+		int hash = 0;
+		for(Voucher voucher : vouchers) {
+			if(voucher.getExpirationDate() != null) {
+				hash += voucher.getExpirationDate().hashCode();
+			}
+			hash += voucher.getId();
+			if(voucher.getStartDate() != null) {
+				hash += voucher.getStartDate().hashCode();
+			}
+			if(voucher.getVoucherId() != null) {
+				hash += getStringHash(voucher.getVoucherId());
+			}
+		}
+		return hash;
+	}
+
+	private int getStringHash(String val) {
+		return val == null ? 0 : val.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object thatObj) {
+		if(thatObj == null) {
+			return false;
+		}
+		if(!(thatObj instanceof Product)) {
+			return false;
+		}
+		Customer that = (Customer)thatObj;
+		if(isDifferent(that.getName(), this.getName())) {
+			return false;
+		}
+		if(isDifferent(that.getAddress(), this.getAddress())) {
+			return false;
+		}
+		if(isDifferent(that.getPhone(), this.getPhone())) {
+			return false;
+		}
+		if(isDifferent(that.getWicId(), this.getWicId())) {
+			return false;
+		}
+		if(isCollectionDifferent(that.getVouchers(), this.getVouchers())) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isCollectionDifferent(List<Voucher> that, List<Voucher> me) {
+		if(that == null) {
+			return me == null;
+		}
+		else if (me == null){
+			return false;
+		}
+		return that.size() == me.size();
+	}
+
+	private boolean isDifferent(String that, String me) {
+		if(that == null) {
+			return me == null;
+		}
+		else {
+			return that.equals(me);
+		}
+	}
 }

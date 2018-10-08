@@ -28,13 +28,6 @@ public class Product implements Serializable {
 
   private String name;
 
-  /**
-   * Note.
-   * mappedBy and @JoinColumn(name = "") are exclusive to each other.
-   * If mappedBy is used, I had to annotate from many side as well.
-   * Using @JoinColumn(name = "") I do not need to do anything on many side in 1:many relationship.
-   * It tell JPA that this a foreign key name in many side
-   */
   @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "product_id")
   private List<MissingProduct> missingProducts;
@@ -113,4 +106,60 @@ public class Product implements Serializable {
     this.categoryId = categoryId;
   }
 
+  @Override
+  public String toString() {
+    return String.format("productId:%s cateoryId:%s imageId:%s barcode:%s description:%s productName:%s ",
+        this.getId(), this.getCategoryId(), this.getImagePath(),
+        this.getBarcode(), this.getDescription(), this.getName() );
+  }
+
+  /**
+   * Compute int for fields that defines equals()
+   */
+  @Override
+  public int hashCode() {
+    return Long.valueOf(this.getId()).hashCode()
+        + Long.valueOf(this.getCategoryId()).hashCode()
+        + getStringHash(this.getImagePath())
+        + getStringHash(this.getBarcode())
+        + getStringHash(this.getDescription())
+        + getStringHash(this.getName());
+  }
+
+  private int getStringHash(String val) {
+    return val == null ? 0 : val.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object thatObj) {
+    if(thatObj == null) {
+      return false;
+    }
+    if(!(thatObj instanceof Product)) {
+      return false;
+    }
+    Product that = (Product)thatObj;
+    if(isDifferent(that.getName(), this.getName())) {
+      return false;
+    }
+    if(isDifferent(that.getBarcode(), this.getBarcode())) {
+      return false;
+    }
+    if(isDifferent(that.getImagePath(), this.getImagePath())) {
+      return false;
+    }
+    if(isDifferent(that.getDescription(), this.getDescription())) {
+      return false;
+    }
+    return true;
+  }
+
+  private boolean isDifferent(String that, String me) {
+    if(that == null) {
+      return me == null;
+    }
+    else {
+      return that.equals(me);
+    }
+  }
 }

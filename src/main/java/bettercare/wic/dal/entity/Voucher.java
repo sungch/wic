@@ -3,7 +3,6 @@ package bettercare.wic.dal.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -30,7 +29,7 @@ public class Voucher implements Serializable {
 	@Column(name="voucher_id")
 	private String voucherId;
 
-	private Order order;
+	private WicOrder wicOrder;
 
 	private Customer customer;
 
@@ -69,12 +68,12 @@ public class Voucher implements Serializable {
 		this.voucherId = voucherId;
 	}
 
-	public Order getOrder() {
-		return this.order;
+	public WicOrder getWicOrder() {
+		return this.wicOrder;
 	}
 
-	public void setOrder(Order order) {
-		this.order = order;
+	public void setWicOrder(WicOrder wicOrder) {
+		this.wicOrder = wicOrder;
 	}
 
 	public Customer getCustomer() {

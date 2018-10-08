@@ -13,9 +13,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static java.lang.Math.abs;
 
@@ -23,15 +21,17 @@ import static java.lang.Math.abs;
  * Note:
  * A. Category and Product tables are pre-filled by an administrator.
  * B. When a customer opnes a web page, the content is provided by Product and Category tables.
- * C. When an order is made, Order, Voucher, Customer, Delivery tables are being filled.
+ * C. When an order is made, WicOrder, Voucher, Customer, Delivery tables are being filled.
  * D. During the package, MissingProduct table is filled as needed.
  * E. Product Images are saved as ${categoryId}/${productId}/pictureNumber.jpg file name.
  * <p>
- * Work Order:
+ * Work WicOrder:
  * 1. Add Category
  * 2. Add Product
  * 3. Copy all pictures into the file system according to Note E above.
  * 4. Update Product Image Names in Product table.
+ * <p>
+ * Test Category and Product
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = WicApplication.class)
@@ -45,7 +45,8 @@ public class CatalogAndProductsPreFillTest {
   @Resource
   private WicEntityManager wicEntityManasger;
 
-  private long[] categoryIds = {1, 2};
+  private long categoryId = 2;
+  private String categoryName = "category_273";
 
   @Test
   public void contextLoads() {
@@ -54,32 +55,60 @@ public class CatalogAndProductsPreFillTest {
   @Before
   public void setup() {
     Assert.assertNotNull(wicTransactionManager);
+    Assert.assertNotNull(wicEntityManasger);
   }
 
   /**
    * 1. Add Categories
+   * In composing the map, key = column name, val = value of the column. Thee entries are constituting where clause.
    */
   @Test
-  public void add2Categories() {
-    for (int i = 0; i < categoryIds.length; i++) {
-      Category category = createCategory("categoryName_" + i);
-      wicTransactionManager.saveAndFlushCategory(category);
+  public void addNewCategory() {
+    Map<String, Object> where = new HashMap<>();
+    where.put("name", categoryName);
+    String query = composeQuery(Category.class, where, " limit 1 ");
+    if (isEmpty(query)) {
+      Category category = prepareCategory(categoryName);
+      category = wicTransactionManager.saveOrUpdateCategory(category);
+      log(String.format("Created a Category %s", category.toString()));
     }
+    else {
+      log("The same Category name already found in the system. No transactions:" + categoryName);
+    }
+  }
+
+  private boolean isEmpty(String query) {
+    List list = wicEntityManasger.findByNativeQuery(query);
+    return list.isEmpty();
   }
 
   /**
    * 2. Add Products with Category id but blank image ids for the first entry.
    */
   @Test
-  @DependsOn("add2Categories")
-  public void add10Products2Categories() {
-    List<Product> products = new ArrayList<>();
-    for (int i = 0; i < 10; i++) {
-      Category category = wicTransactionManager.findCategoryById(categoryIds[i % categoryIds.length]);
-      Product p = createProductWithNullImagePath(category, "barcode_" + i, "desc_" + i, "prodName_" + i);
-      products.add(p);
+  @DependsOn("addNewCategory")
+  public void addNewProduct() {
+    String imagePath = null;
+    String barcode = "barcode_0";
+    String desc = "desc_0";
+    String productName = "prodName_7";
+    Category category = wicEntityManasger.find(Category.class, categoryId);
+    if (category == null) {
+      log("ERROR Category ID not found:" + categoryId + " No transaction");
+      return;
     }
-    wicTransactionManager.saveAllProducts(products);
+    Map<String, Object> where = new HashMap<>();
+    where.put("category_id", categoryId);
+    where.put("name", productName);
+    String query = composeQuery(Product.class, where, " limit 1 ");
+    if (isEmpty(query)) {
+      Product product = prepareProduct(category, barcode, desc, productName, imagePath);
+      product = wicTransactionManager.saveOrUpdateProduct(product);
+      log(String.format("Created product %s", product.toString()));
+    }
+    else {
+      log("Product is already in the system by query:" + query);
+    }
   }
 
   /**
@@ -87,7 +116,7 @@ public class CatalogAndProductsPreFillTest {
    */
   @Test
   public void addImages() {
-
+    log("addd images under category_id/product_id/productImageNumber");
   }
 
   /**
@@ -96,85 +125,88 @@ public class CatalogAndProductsPreFillTest {
    * Now categoryId, productId, imagePathName are all available.
    */
   @Test
-  @DependsOn({"add10Products2Categories"})
-  public void updateProductImageNamesForced() {
-    boolean isForce = true;
-    for (long categoryId : categoryIds) {
-      updateProductImagePath(categoryId, isForce);
-    }
-  }
-
-  @Test
-  @DependsOn({"add10Products2Categories"})
-  public void updateProductImageNamesNotForced() {
-    boolean isForce = false;
-    for (long categoryId : categoryIds) {
-      updateProductImagePath(categoryId, isForce);
-    }
-  }
-
-  private boolean productHasImagePath(Product product) {
-    return product.getImagePath() != null;
-  }
-
-  private void updateProductImagePath(long categoryId, boolean isForce) {
+  @DependsOn({"addNewProduct"})
+  public void updateProduct() {
     List<Product> products = wicTransactionManager.findProductsByCategoryId(categoryId);
     if (products.isEmpty()) {
-      System.out.println("**** No product by category id " + categoryId);
+      log("No product found to update by category id " + categoryId);
       return;
     }
-    if (!isForce) {
-      products.removeIf(product -> productHasImagePath((Product) product));
-    }
-    if (products.isEmpty()) {
-      return;
-    }
-    Random random = new Random();
-    for (Product product : products) {
-      int imageFileName = abs(random.nextInt());
-      String imagePath = getImagePath(categoryId, product.getId(), imageFileName);
-      updateProductImage(product, imagePath, isForce);
-    }
-    wicTransactionManager.saveAllProducts(products);
-  }
+    int imgId = 3;
 
-  private void updateProductImage(Product product, String imagePath, boolean isForce) {
-    if (isForce) {
+    for (Iterator<Product> I = products.listIterator(); I.hasNext();) {
+      Product product = I.next();
+      String imagePath = product.getCategoryId() + "/" + product.getId() + "/imageFile_" + imgId++;
+      String old = product.getImagePath();
+      if(old != null && !old.isEmpty()) {
+        if(imagePath.equals(old)) {
+          log("New image path is same is current. No transaction. old:" + old + " new:" + imagePath);
+          I.remove();
+          continue;
+        }
+        else {
+          log("Replacing image file name from " + product.getImagePath() + " to " + imagePath);
+        }
+      }
       product.setImagePath(imagePath);
     }
-    else {
-      if (product.getImagePath() == null) {
-        product.setImagePath(imagePath);
+    if(!products.isEmpty()) {
+      products = wicTransactionManager.saveOrUpdateProducts(products);
+      for(Product product : products) {
+        log(String.format("Product updated successfully. %s", product.toString()));
       }
     }
   }
 
-  private String getImagePath(long categoryId, long productId, int imageFileName) {
-    return categoryId + "/" + productId + "/" + imageFileName;
-  }
-
-  private Category createCategory(String categoryName) {
+  private Category prepareCategory(String categoryName) {
     Category category = new Category();
     category.setName(categoryName);
     return category;
   }
 
-  private Product createProductWithNullImagePath(Category category, String barcode, String desc, String prodName) {
+  private Product prepareProduct(Category category, String barcode, String desc, String prodName, String imagePath) {
     Product product = new Product();
     product.setCategoryId(category.getId());
     product.setBarcode(barcode);
     product.setDescription(desc);
-    product.setImagePath(null);
+    product.setImagePath(imagePath);
     product.setName(prodName);
     return product;
+  }
+
+  private String composeQuery(Class claz, Map<String, Object> whereSource, String otherClause) {
+    String alias = "o";
+    String whereClause = composeWhereClause(whereSource, alias);
+    otherClause = otherClause == null ? "" : otherClause;
+    return String.format("select * from %s as %s where %s %s",
+        claz.getSimpleName().toLowerCase(), alias, whereClause, otherClause);
+  }
+
+  private String composeWhereClause(Map<String, Object> whereSource, String alias) {
+    StringBuilder whereClause = new StringBuilder();
+    whereSource.forEach((columnName, value) -> {
+      if (whereClause.length() > 0) {
+        whereClause.append(" and ");
+      }
+      whereClause.append(alias).append(".").append(columnName).append("='").append(value).append("'");
+    });
+    return whereClause.toString();
+  }
+
+  private void log(String mesg) {
+    System.out.println("***********************************");
+    System.out.print("*");
+    System.out.print(mesg);
+    System.out.println("*");
+    System.out.println("***********************************");
   }
 
   // -- EntityManager Operations
 
   @Test
   public void testEntityManager() {
-    Category category = wicEntityManasger.find(Category.class, categoryIds[0]);
-    System.out.println(category.getName() + " is found entityManager");
+    Category category = wicEntityManasger.find(Category.class, categoryId);
+    log(category.getName() + " is found entityManager");
   }
 
 }

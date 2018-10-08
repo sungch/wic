@@ -22,18 +22,6 @@ public class  Category implements Serializable {
 
 	private String name;
 
-	/**
-	 * Why FetchType.EAGER:
-	 * 1-to-many association fetch type is eager here but in production, change this to lazy and
-	 * let OpenSessionInViewFilter in web.xml handle to maintain session.
-	 *
-	 * Note. Unidirectional.
-	 * mappedBy and @JoinColumn(name = "") are exclusive to each other.
-	 * If mappedBy is used, I had to annotate from many side as well.
-	 * Using @JoinColumn(name = "") I do not need to do anything on many side in 1:many relationship.
-	 * It tell JPA that this a foreign key name in many side
-	 * This also prevents cyclic data structure.
-	 */
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "category_id")
 	private List<Product> products;
@@ -77,4 +65,44 @@ public class  Category implements Serializable {
 		return product;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("categoryId:%s cateoryName:%s ", this.getId(), this.getName());
+	}
+
+	/**
+	 * Compute int for fields that defines equals()
+	 */
+	@Override
+	public int hashCode() {
+		return Long.valueOf(this.getId()).hashCode() + getStringHash(this.getName());
+	}
+
+	private int getStringHash(String val) {
+		return val == null ? 0 : val.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object thatObj) {
+		if(thatObj == null) {
+			return false;
+		}
+		if(!(thatObj instanceof Product)) {
+			return false;
+		}
+		Category that = (Category) thatObj;
+		if(isDifferent(that.getName(), this.getName())) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isDifferent(String that, String me) {
+		if(that == null) {
+			return me == null;
+		}
+		else {
+			return that.equals(me);
+		}
+	}
 }

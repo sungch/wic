@@ -11,9 +11,9 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="order")
-@NamedQuery(name="Order.findAll", query="SELECT o FROM Order o")
-public class Order implements Serializable {
+@Table(name="wic_order")
+@NamedQuery(name="WicOrder.findAll", query="SELECT o FROM WicOrder o")
+public class WicOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -33,14 +33,6 @@ public class Order implements Serializable {
 
 	private String status;
 
-	/**
-	 * Note. Unidirectional
-	 * mappedBy and @JoinColumn(name = "") are exclusive to each other.
-	 * If mappedBy is used, I had to annotate from many side as well.
-	 * Using @JoinColumn(name = "") I do not need to do anything on many side in 1:many relationship.
-	 * It tell JPA that this a foreign key name in many side
-	 * This also prevents cyclic data structure.
-	 */
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "order_id") // Tell JPA that this a foreign key name in many side
 	private List<MissingProduct> missingProducts;
@@ -49,7 +41,7 @@ public class Order implements Serializable {
 	@JoinColumn(name = "voucher_id")
 	private Voucher voucher;
 
-	public Order() {
+	public WicOrder() {
 	}
 
 	public long getId() {
