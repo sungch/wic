@@ -42,3 +42,5 @@ mysqldump -d -u<u> -p<p> wic > sqlfile
 
 Renamed order table to avoid table name being SQL a key word.
 
+
+Sync database with Entity
