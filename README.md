@@ -43,4 +43,7 @@ mysqldump -d -u<u> -p<p> wic > sqlfile
 Renamed order table to avoid table name being SQL a key word.
 
 
+TODO:
 Sync database with Entity
+Find a way to remove tynyBlob in owner's database.
+
