@@ -29,9 +29,11 @@ public class Voucher implements Serializable {
 	@Column(name="voucher_id")
 	private String voucherId;
 
-	private WicOrder wicOrder;
-
-	private Customer customer;
+	public Voucher(String voucherId, Date startDate, Date expirationDate) {
+		this.startDate = startDate;
+		this.expirationDate = expirationDate;
+		this.voucherId = voucherId;
+	}
 
 	public Voucher() {
 	}
@@ -66,22 +68,6 @@ public class Voucher implements Serializable {
 
 	public void setVoucherId(String voucherId) {
 		this.voucherId = voucherId;
-	}
-
-	public WicOrder getWicOrder() {
-		return this.wicOrder;
-	}
-
-	public void setWicOrder(WicOrder wicOrder) {
-		this.wicOrder = wicOrder;
-	}
-
-	public Customer getCustomer() {
-		return this.customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
 	}
 
 }

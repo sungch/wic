@@ -1,3 +1,5 @@
+Use @Transactional in unit test to roll back at the end of the test.
+
 # wic
 entity id must be decalred to long not Long to avoid NullPointException.
 

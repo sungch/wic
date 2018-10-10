@@ -18,7 +18,10 @@ import java.util.*;
 import static java.lang.Math.abs;
 
 /**
- * Note:
+ *
+ * This is a simulation of manual feed screen to feed category and production database tables.
+ *
+ * Note
  * A. Category and Product tables are pre-filled by an administrator.
  * B. When a customer opnes a web page, the content is provided by Product and Category tables.
  * C. When an order is made, WicOrder, Voucher, Customer, Delivery tables are being filled.
@@ -35,7 +38,7 @@ import static java.lang.Math.abs;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = WicApplication.class)
-public class CatalogAndProductsPreFillTest {
+public class ManualFeedSimulator {
 
   // Use @Transactional to roll back at the end of the test.
 

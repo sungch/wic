@@ -22,9 +22,8 @@ public class WicOrder implements Serializable {
 	private long id;
 
 	@Column(name="is_emergency")
-	private String isEmergency;
+	private boolean isEmergency;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="ordered_time")
 	private Date orderedTime;
 
@@ -41,6 +40,16 @@ public class WicOrder implements Serializable {
 	@JoinColumn(name = "voucher_id")
 	private Voucher voucher;
 
+
+	public WicOrder(boolean isEmergency, Date orderedTime, String productAndQuantity, String status, Voucher voucher, List<MissingProduct> missingProducts) {
+		this.isEmergency = isEmergency;
+		this.orderedTime = orderedTime;
+		this.productAndQuantity = productAndQuantity;
+		this.status = status;
+		this.voucher = voucher;
+		this.missingProducts = missingProducts;
+	}
+
 	public WicOrder() {
 	}
 
@@ -52,11 +61,11 @@ public class WicOrder implements Serializable {
 		this.id = id;
 	}
 
-	public String getIsEmergency() {
+	public boolean getIsEmergency() {
 		return this.isEmergency;
 	}
 
-	public void setIsEmergency(String isEmergency) {
+	public void setIsEmergency(boolean isEmergency) {
 		this.isEmergency = isEmergency;
 	}
 

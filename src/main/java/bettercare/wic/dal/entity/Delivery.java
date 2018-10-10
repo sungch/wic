@@ -29,8 +29,6 @@ public class Delivery implements Serializable {
 	@Column(name="store_id")
 	private byte storeId;
 
-	private Customer customer;
-
 	public Delivery() {
 	}
 
@@ -65,13 +63,4 @@ public class Delivery implements Serializable {
 	public void setStoreId(byte storeId) {
 		this.storeId = storeId;
 	}
-
-	public Customer getCustomer() {
-		return this.customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-
 }

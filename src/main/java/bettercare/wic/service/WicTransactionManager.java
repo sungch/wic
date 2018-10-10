@@ -1,7 +1,6 @@
 package bettercare.wic.service;
 
-import bettercare.wic.dal.dao.CategoryDao;
-import bettercare.wic.dal.dao.ProductDao;
+import bettercare.wic.dal.dao.*;
 import bettercare.wic.dal.entity.*;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -18,6 +17,9 @@ public class WicTransactionManager {
 
     @Resource private CategoryDao categoryDao; // requires @EnableJpaRepositories("bettercare.wic.dal") in somewhere configuration
     @Resource private ProductDao productDao;
+    @Resource private CustomerDao customerDao;
+    @Resource private VoucherDao voucherDao;
+    @Resource private WicOrderDao wicOrderDao;
 
     public Category saveOrUpdateCategory(Category category) {
         return categoryDao.saveAndFlush(category);
@@ -43,5 +45,21 @@ public class WicTransactionManager {
             return category.getProducts();
         }
         return Collections.EMPTY_LIST;
+    }
+
+    public Product findProductById(long productId) {
+        return productDao.getOne(productId);
+    }
+
+    public Customer saveOrUpdateCustomer(Customer customer) {
+        return customerDao.saveAndFlush(customer);
+    }
+
+    public Voucher saveOrUpdateVoucher(Voucher voucher) {
+        return voucherDao.saveAndFlush(voucher);
+    }
+
+    public WicOrder saveOrUpdateWicOrder(WicOrder wicOrder) {
+        return wicOrderDao.saveAndFlush(wicOrder);
     }
 }
