@@ -32,7 +32,7 @@ public class InitSetup {
   protected long categoryId = 1; // Use this to create a product
 
   // this is image name for above product
-  protected String imageName = "img011";
+  protected String imageName = "img001";
 
 
   @Test

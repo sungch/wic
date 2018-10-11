@@ -10,13 +10,13 @@ import java.util.List;
  */
 @Entity
 @Table(name = "product")
-@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
+//@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
 public class Product implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @SequenceGenerator(name = "PRODUCT_ID_GENERATOR", allocationSize = 1)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRODUCT_ID_GENERATOR")
+  @GeneratedValue(strategy = GenerationType.AUTO, generator = "PRODUCT_ID_GENERATOR")
   private long id;
 
   private String barcode;
@@ -32,8 +32,8 @@ public class Product implements Serializable {
   @JoinColumn(name = "product_id")
   private List<MissingProduct> missingProducts;
 
-  @Column(name = "category_id")
-  private long categoryId;
+  @ManyToOne
+  private Category category;
 
   public Product() {
   }
@@ -98,18 +98,25 @@ public class Product implements Serializable {
     return missingProduct;
   }
 
-  public long getCategoryId() {
-    return this.categoryId;
+//  public long getCategoryId() {
+//    return this.categoryId;
+//  }
+//
+//  public void setCategoryId(Long categoryId) {
+//    this.categoryId = categoryId;
+//  }
+
+  public Category getCategory() {
+    return this.category;
   }
 
-  public void setCategoryId(Long categoryId) {
-    this.categoryId = categoryId;
+  public void setCategory(Category category) {
+    this.category = category;
   }
-
   @Override
   public String toString() {
     return String.format("productId:%s cateoryId:%s imageId:%s barcode:%s description:%s productName:%s ",
-        this.getId(), this.getCategoryId(), this.getImageName(),
+        this.getId(), this.getCategory().getId(), this.getImageName(),
         this.getBarcode(), this.getDescription(), this.getName() );
   }
 
@@ -119,7 +126,7 @@ public class Product implements Serializable {
   @Override
   public int hashCode() {
     return Long.valueOf(this.getId()).hashCode()
-        + Long.valueOf(this.getCategoryId()).hashCode()
+        + Long.valueOf(this.getCategory().getId()).hashCode()
         + getStringHash(this.getImageName())
         + getStringHash(this.getBarcode())
         + getStringHash(this.getDescription())

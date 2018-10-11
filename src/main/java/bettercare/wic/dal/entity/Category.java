@@ -17,13 +17,12 @@ public class  Category implements Serializable {
 
 	@Id
 	@SequenceGenerator(name="CATEGORY_ID_GENERATOR", allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CATEGORY_ID_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="CATEGORY_ID_GENERATOR")
 	private long id;
 
 	private String name;
 
-	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "category_id")
+	@OneToMany(mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Product> products;
 
 	public Category() {
@@ -55,13 +54,13 @@ public class  Category implements Serializable {
 
 	public Product addProduct(Product product) {
 		getProducts().add(product);
-		product.setCategoryId(this.getId());
+		product.setCategory(this);
 		return product;
 	}
 
 	public Product removeProduct(Product product) {
 		getProducts().remove(product);
-		product.setCategoryId(null);
+		product.setCategory(null);
 		return product;
 	}
 

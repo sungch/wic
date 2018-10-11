@@ -17,7 +17,7 @@ public class Delivery implements Serializable {
 
 	@Id
 	@SequenceGenerator(name="DELIVERY_ID_GENERATOR", allocationSize = 1 )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="DELIVERY_ID_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="DELIVERY_ID_GENERATOR")
 	private long id;
 
 	@Column(name="deliverer_name")
@@ -29,12 +29,12 @@ public class Delivery implements Serializable {
 	@Column(name="store_id")
 	private int storeId;
 
-	@Column(name="order_id")
-	private long orderId;
+	@OneToOne
+	private WicOrder wicOrder;
 
-	public Delivery(int storeId, long orderId) {
+	public Delivery(int storeId, WicOrder wicOrder) {
 		this.storeId = storeId;
-		this.orderId = orderId;
+		this.wicOrder = wicOrder;
 	}
 
 	public Delivery() {
@@ -72,11 +72,11 @@ public class Delivery implements Serializable {
 		this.storeId = storeId;
 	}
 
-	public long getOrderId() {
-		return orderId;
+	public WicOrder getWicOrder() {
+		return wicOrder;
 	}
 
-	public void setOrderId(byte orderId) {
-		this.orderId = orderId;
+	public void setWicOOrder(WicOrder wicOOrderId) {
+		this.wicOrder = wicOOrderId;
 	}
 }

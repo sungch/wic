@@ -16,13 +16,13 @@ public class MissingProduct implements Serializable {
 
 	@Id
 	@SequenceGenerator(name="MISSING_PRODUCT_ID_GENERATOR", allocationSize = 1 )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="MISSING_PRODUCT_ID_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="MISSING_PRODUCT_ID_GENERATOR")
 	private long id;
 
 	private int quantity;
 
-	@Column(name = "order_id")
-	private long orderId;
+	@ManyToOne
+	private WicOrder wicOrder;
 
 	@Column(name = "product_id")
 	private long productId;
@@ -30,8 +30,8 @@ public class MissingProduct implements Serializable {
 	public MissingProduct() {
 	}
 
-	public MissingProduct(long orderId, long productId, int quantity) {
-		this.orderId = orderId;
+	public MissingProduct(WicOrder wicOrder, long productId, int quantity) {
+		this.wicOrder = wicOrder;
 		this.productId = productId;
 		this.quantity = quantity;
 	}
@@ -52,12 +52,12 @@ public class MissingProduct implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public long getOrderId() {
-		return this.orderId;
+	public WicOrder getWicOrder() {
+		return this.wicOrder;
 	}
 
-	public void setOrderId(Long orderId) {
-		this.orderId = orderId;
+	public void setWicOrder(WicOrder wicOrder) {
+		this.wicOrder = wicOrder;
 	}
 
 	public long getProductId() {

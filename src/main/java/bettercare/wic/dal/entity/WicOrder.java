@@ -17,8 +17,8 @@ public class WicOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-//	@SequenceGenerator(name="ORDER_ID_GENERATOR", allocationSize = 1 )
-//	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ORDER_ID_GENERATOR")
+	@SequenceGenerator(name="ORDER_ID_GENERATOR", allocationSize = 1 )
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ORDER_ID_GENERATOR")
 	private long id;
 
 	@Column(name="is_emergency")
@@ -32,15 +32,13 @@ public class WicOrder implements Serializable {
 
 	private String status;
 
-	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "order_id")
+	@OneToMany(mappedBy = "wicOrder", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<MissingProduct> missingProducts;
 
 	@OneToOne
 	private Voucher voucher;
 
-	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "order_id")
+	@OneToOne(mappedBy = "wicOrder", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Delivery delivery;
 
 
@@ -106,13 +104,13 @@ public class WicOrder implements Serializable {
 
 	public MissingProduct addMissingProduct(MissingProduct missingProduct) {
 		getMissingProducts().add(missingProduct);
-		missingProduct.setOrderId(this.getId());
+		missingProduct.setWicOrder(this);
 		return missingProduct;
 	}
 
 	public MissingProduct removeMissingProduct(MissingProduct missingProduct) {
 		getMissingProducts().remove(missingProduct);
-		missingProduct.setOrderId(null);
+		missingProduct.setWicOrder(null);
 		return missingProduct;
 	}
 

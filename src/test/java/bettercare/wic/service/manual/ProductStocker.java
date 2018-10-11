@@ -28,7 +28,7 @@ public class ProductStocker extends InitSetup {
     where.put("name", productName);
     String query = composeQuery(Product.class, where, " limit 1 ");
     if (isEmpty(query)) {
-      Product product = prepareProduct(category.getId(), barcode, desc, productName, imageName);
+      Product product = prepareProduct(category, barcode, desc, productName, imageName);
       product = wicTransactionManager.saveOrUpdateProduct(product);
       wicLogger.log(String.format("Created product %s", product.toString()));
     }
@@ -38,13 +38,13 @@ public class ProductStocker extends InitSetup {
     List<Product> products = wicTransactionManager.findProductsByCategoryId(categoryId);
     for(Product product : products) {
       wicLogger.log(String.format("category:%s product:%s prodName:%s imagename:%s",
-          product.getCategoryId(), product.getId(), product.getName(), product.getImageName()));
+          product.getCategory().getId(), product.getId(), product.getName(), product.getImageName()));
     }
   }
 
-  private Product prepareProduct(long categoryId, String barcode, String desc, String prodName, String imageName) {
+  private Product prepareProduct(Category category, String barcode, String desc, String prodName, String imageName) {
     Product product = new Product();
-    product.setCategoryId(categoryId);
+    product.setCategory(category);
     product.setBarcode(barcode);
     product.setDescription(desc);
     product.setImageName(imageName);
