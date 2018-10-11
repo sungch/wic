@@ -8,31 +8,33 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import org.junit.Test;
 
 public class OrderSimulator extends InitSetup {
 
+  @Test
   public void processOrder() {
-    saveCustomerData("wic-id", "customer-name", "customer-phone", "customer-address");
-    Voucher voucher = saveVoucherData(new Date(), new Date(), "voucher-id");
+    Customer customer = saveCustomerData("wic-number", "customer-name", "customer-phone", "customer-address");
+    Voucher voucher = saveVoucherData(new Date(), new Date(), "voucher-number", customer.getId());
     WicOrder wicOrder = saveWicOrderData("2:3=50;2:4=20", false, new Date(), voucher);
     wicLogger.log("Your order number is " + wicOrder.getId());
   }
 
   private WicOrder saveWicOrderData(String categoryProductQuantity, boolean isEmergency, Date orderTime, Voucher voucher) {
     WicOrder wicOrder = new WicOrder(isEmergency, orderTime, categoryProductQuantity, OrderStatus.ORDER_RECEIVED.name(), voucher);
-    wicLogger.log("Saved a voucher info:" + wicOrder.toString());
+    wicLogger.log("Saving a voucher info:" + wicOrder.toString());
     return wicTransactionManager.saveOrUpdateWicOrder(wicOrder);
   }
 
-  private Voucher saveVoucherData(Date start, Date expire, String voucherId) {
-    Voucher voucher = new Voucher(voucherId, start, expire);
-    wicLogger.log("Saved a voucher info:" + voucher.toString());
+  private Voucher saveVoucherData(Date start, Date expire, String voucherNumber, long customerId) {
+    Voucher voucher = new Voucher(start, expire, voucherNumber, customerId);
+    wicLogger.log("Saving a voucher info:" + voucher.toString());
     return wicTransactionManager.saveOrUpdateVoucher(voucher);
   }
 
   private Customer saveCustomerData(String wicId, String name, String phone, String address) {
     Customer customer = new Customer(wicId, name, phone, address);
-    wicLogger.log("Saved a customer info:" + customer.toString());
+    wicLogger.log("Saving a customer info:" + customer.toString());
     return wicTransactionManager.saveOrUpdateCustomer(customer);
   }
 

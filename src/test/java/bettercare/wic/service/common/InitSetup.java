@@ -25,11 +25,11 @@ public class InitSetup {
   protected WicLogger wicLogger = new WicLogger();
 
   // I am stocking products under this category name and category id
-  protected String categoryName = "category_10";
-  protected long categoryId = 10;
+  protected String categoryName = "category_milk";
 
-  // This is a product id which belongs to above category
-  protected long productId = 11;
+  // Change this according to real IDs in respective table
+  protected long productId = 2; // Use this to update product of this Id
+  protected long categoryId = 1; // Use this to create a product
 
   // this is image name for above product
   protected String imageName = "img011";

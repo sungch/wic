@@ -34,12 +34,6 @@ CREATE TABLE `category` (
 -- Dumping data for table `category`
 --
 
-LOCK TABLES `category` WRITE;
-/*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'categoryName_271'),(2,'category_271'),(6,'category_272'),(7,'category_273');
-/*!40000 ALTER TABLE `category` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Table structure for table `customer`
 --
@@ -49,10 +43,10 @@ DROP TABLE IF EXISTS `customer`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `customer` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `wic_number` varchar(20) COLLATE utf8_bin NOT NULL,
-  `phone` varchar(20) COLLATE utf8_bin NOT NULL,
+  `wic_number` varchar(255) COLLATE utf8_bin NOT NULL,
+  `phone` varchar(255) COLLATE utf8_bin NOT NULL,
   `address` varchar(512) COLLATE utf8_bin NOT NULL,
-  `name` varchar(40) COLLATE utf8_bin NOT NULL,
+  `name` varchar(255) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_CUSTOMER_WIC_ID` (`wic_number`),
   KEY `IDX_CUSTOMER_PHONE` (`phone`),
@@ -79,7 +73,7 @@ DROP TABLE IF EXISTS `delivery`;
 CREATE TABLE `delivery` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `store_id` tinyint(2) NOT NULL,
-  `deliverer_name` varchar(20) COLLATE utf8_bin DEFAULT NULL,
+  `deliverer_name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `delivery_completion_time` datetime DEFAULT NULL,
   `order_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
@@ -117,7 +111,7 @@ CREATE TABLE `hibernate_sequence` (
 
 LOCK TABLES `hibernate_sequence` WRITE;
 /*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
-INSERT INTO `hibernate_sequence` VALUES (9);
+INSERT INTO `hibernate_sequence` VALUES (1);
 /*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,11 +154,10 @@ DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `category_id` bigint(20) DEFAULT NULL,
-  `name` varchar(25) COLLATE utf8_bin NOT NULL,
-  `description` varchar(1024) COLLATE utf8_bin NOT NULL,
-  `image_id` varchar(20) COLLATE utf8_bin DEFAULT NULL,
-  `barcode` varchar(20) COLLATE utf8_bin DEFAULT NULL,
-  `image_path` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8_bin NOT NULL,
+  `description` varchar(512) COLLATE utf8_bin NOT NULL,
+  `image_name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `barcode` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_PRODUCT_NAME` (`name`),
   KEY `IDX_PRODUCT_BARCODE` (`barcode`),
@@ -177,12 +170,6 @@ CREATE TABLE `product` (
 -- Dumping data for table `product`
 --
 
-LOCK TABLES `product` WRITE;
-/*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (3,2,'prodName_4','desc_0',NULL,'barcode_0','2/3/imageFile_3'),(4,2,'prodName_5','desc_0',NULL,'barcode_0','2/4/imageFile_4'),(5,2,'prodName_6','desc_0',NULL,'barcode_0','2/5/imageFile_5'),(8,2,'prodName_7','desc_0',NULL,'barcode_0','2/8/imageFile_6');
-/*!40000 ALTER TABLE `product` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Table structure for table `voucher`
 --
@@ -194,10 +181,10 @@ CREATE TABLE `voucher` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `start_date` date NOT NULL,
   `expiration_date` date NOT NULL,
-  `voucher_number` varchar(255) COLLATE utf8_bin NOT NULL,
+  `voucher_number` varchar(255) COLLATE utf8_bin,
   `customer_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `IDX_VOUCHER_VOUCHER_ID` (`voucher_number`),
+  KEY `IDX_VOUCHER_VOUCHER_NUMBER` (`voucher_number`),
   KEY `IDX_VOUCHER_START_DATE` (`start_date`),
   KEY `IDX_VOUCHER_EXPIRATION_DATE` (`expiration_date`),
   KEY `IDX_VOUCHER_CUSTOMER_ID` (`customer_id`),
@@ -226,7 +213,7 @@ CREATE TABLE `wic_order` (
   `product_and_quantity` varchar(1024) COLLATE utf8_bin NOT NULL,
   `ordered_time` datetime NOT NULL,
   `is_emergency` char(1) COLLATE utf8_bin NOT NULL DEFAULT 'N',
-  `status` varchar(20) COLLATE utf8_bin NOT NULL,
+  `status` varchar(255) COLLATE utf8_bin NOT NULL,
   `voucher_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_ORDER_STATUS` (`status`),

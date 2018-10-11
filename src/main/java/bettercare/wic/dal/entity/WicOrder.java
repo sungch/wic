@@ -12,13 +12,13 @@ import java.util.List;
  */
 @Entity
 @Table(name="wic_order")
-@NamedQuery(name="WicOrder.findAll", query="SELECT o FROM WicOrder o")
+//@NamedQuery(name="WicOrder.findAll", query="SELECT o FROM WicOrder o")
 public class WicOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="ORDER_ID_GENERATOR", allocationSize = 1 )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ORDER_ID_GENERATOR")
+//	@SequenceGenerator(name="ORDER_ID_GENERATOR", allocationSize = 1 )
+//	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ORDER_ID_GENERATOR")
 	private long id;
 
 	@Column(name="is_emergency")
@@ -36,21 +36,21 @@ public class WicOrder implements Serializable {
 	@JoinColumn(name = "order_id")
 	private List<MissingProduct> missingProducts;
 
-	@Column(name = "voucher_id") // FK to the primary key id of Voucher table
-	private long voucherId;
+	@OneToOne
+	private Voucher voucher;
 
 	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "order_id")
 	private Delivery delivery;
 
 
-	public WicOrder(boolean isEmergency, Date orderedTime, String productAndQuantity, String status, long voucherId) {
+	public WicOrder(boolean isEmergency, Date orderedTime, String productAndQuantity, String status, Voucher voucher) {
 		this.isEmergency = isEmergency;
 		this.orderedTime = orderedTime;
 		this.productAndQuantity = productAndQuantity;
 		this.status = status;
 		this.isEmergency = isEmergency;
-		this.voucherId = voucherId;
+		this.voucher = voucher;
 	}
 
 	public WicOrder() {
@@ -116,12 +116,12 @@ public class WicOrder implements Serializable {
 		return missingProduct;
 	}
 
-	public long getVoucherId() {
-		return voucherId;
+	public Voucher getVoucher() {
+		return voucher;
 	}
 
-	public void setVoucherId(long voucherId) {
-		this.voucherId = voucherId;
+	public void setVoucherId(Voucher voucher) {
+		this.voucher = voucher;
 	}
 
 	@Override

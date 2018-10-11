@@ -13,12 +13,11 @@ import java.util.Map;
 public class ProductStocker extends InitSetup {
 
   @Test
-  @DependsOn("addNewCategory")
   public void addNewProduct() {
-    String imagePath = null;
-    String barcode = "barcode_0";
-    String desc = "desc_0";
-    String productName = "prodName_7";
+    String imageName = null;
+    String barcode = "barcode_0w3422932989232";
+    String desc = "desc 10oz under age 6 month";
+    String productName = "prodName Baby Powerder Milk";
     Category category = wicEntityManasger.find(Category.class, categoryId);
     if (category == null) {
       wicLogger.log("ERROR Category ID not found:" + categoryId + " No transaction");
@@ -29,7 +28,7 @@ public class ProductStocker extends InitSetup {
     where.put("name", productName);
     String query = composeQuery(Product.class, where, " limit 1 ");
     if (isEmpty(query)) {
-      Product product = prepareProduct(category, barcode, desc, productName, imagePath);
+      Product product = prepareProduct(category.getId(), barcode, desc, productName, imageName);
       product = wicTransactionManager.saveOrUpdateProduct(product);
       wicLogger.log(String.format("Created product %s", product.toString()));
     }
@@ -43,12 +42,12 @@ public class ProductStocker extends InitSetup {
     }
   }
 
-  private Product prepareProduct(Category category, String barcode, String desc, String prodName, String imagePath) {
+  private Product prepareProduct(long categoryId, String barcode, String desc, String prodName, String imageName) {
     Product product = new Product();
-    product.setCategoryId(category.getId());
+    product.setCategoryId(categoryId);
     product.setBarcode(barcode);
     product.setDescription(desc);
-    product.setImageName(imagePath);
+    product.setImageName(imageName);
     product.setName(prodName);
     return product;
   }
