@@ -23,8 +23,8 @@ public class Product implements Serializable {
 
   private String description;
 
-  @Column(name = "image_path")
-  private String imagePath;
+  @Column(name = "image_name")
+  private String imageName;
 
   private String name;
 
@@ -62,12 +62,12 @@ public class Product implements Serializable {
     this.description = description;
   }
 
-  public String getImagePath() {
-    return this.imagePath;
+  public String getImageName() {
+    return this.imageName;
   }
 
-  public void setImagePath(String imagePath) {
-    this.imagePath = imagePath;
+  public void setImageName(String imageName) {
+    this.imageName = imageName;
   }
 
   public String getName() {
@@ -109,7 +109,7 @@ public class Product implements Serializable {
   @Override
   public String toString() {
     return String.format("productId:%s cateoryId:%s imageId:%s barcode:%s description:%s productName:%s ",
-        this.getId(), this.getCategoryId(), this.getImagePath(),
+        this.getId(), this.getCategoryId(), this.getImageName(),
         this.getBarcode(), this.getDescription(), this.getName() );
   }
 
@@ -120,7 +120,7 @@ public class Product implements Serializable {
   public int hashCode() {
     return Long.valueOf(this.getId()).hashCode()
         + Long.valueOf(this.getCategoryId()).hashCode()
-        + getStringHash(this.getImagePath())
+        + getStringHash(this.getImageName())
         + getStringHash(this.getBarcode())
         + getStringHash(this.getDescription())
         + getStringHash(this.getName());
@@ -139,19 +139,7 @@ public class Product implements Serializable {
       return false;
     }
     Product that = (Product)thatObj;
-    if(isDifferent(that.getName(), this.getName())) {
-      return false;
-    }
-    if(isDifferent(that.getBarcode(), this.getBarcode())) {
-      return false;
-    }
-    if(isDifferent(that.getImagePath(), this.getImagePath())) {
-      return false;
-    }
-    if(isDifferent(that.getDescription(), this.getDescription())) {
-      return false;
-    }
-    return true;
+    return !isDifferent(that.toString(), this.toString());
   }
 
   private boolean isDifferent(String that, String me) {

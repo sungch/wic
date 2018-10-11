@@ -19,7 +19,7 @@ public class MissingProduct implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="MISSING_PRODUCT_ID_GENERATOR")
 	private long id;
 
-	private byte quantity;
+	private int quantity;
 
 	@Column(name = "order_id")
 	private long orderId;
@@ -30,6 +30,12 @@ public class MissingProduct implements Serializable {
 	public MissingProduct() {
 	}
 
+	public MissingProduct(long orderId, long productId, int quantity) {
+		this.orderId = orderId;
+		this.productId = productId;
+		this.quantity = quantity;
+	}
+
 	public long getId() {
 		return this.id;
 	}
@@ -38,11 +44,11 @@ public class MissingProduct implements Serializable {
 		this.id = id;
 	}
 
-	public byte getQuantity() {
+	public int getQuantity() {
 		return this.quantity;
 	}
 
-	public void setQuantity(byte quantity) {
+	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 

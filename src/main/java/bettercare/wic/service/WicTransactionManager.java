@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +49,8 @@ public class WicTransactionManager {
     }
 
     public Product findProductById(long productId) {
-        return productDao.getOne(productId);
+        Optional<Product> productOptional = productDao.findById(productId);
+        return productOptional.orElse(null);
     }
 
     public Customer saveOrUpdateCustomer(Customer customer) {

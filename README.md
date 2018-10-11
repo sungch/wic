@@ -44,6 +44,11 @@ Renamed order table to avoid table name being SQL a key word.
 
 
 TODO:
-Sync database with Entity
-Find a way to remove tynyBlob in owner's database.
+Test tinyblob
 
+== BOOKS 
+
+Great at work
+Peak performance
+The talent code
+The culture code

@@ -87,14 +87,11 @@ public class  Category implements Serializable {
 		if(thatObj == null) {
 			return false;
 		}
-		if(!(thatObj instanceof Product)) {
+		if(!(thatObj instanceof Category)) {
 			return false;
 		}
 		Category that = (Category) thatObj;
-		if(isDifferent(that.getName(), this.getName())) {
-			return false;
-		}
-		return true;
+		return !isDifferent(that.toString(), this.toString());
 	}
 
 	private boolean isDifferent(String that, String me) {

@@ -27,8 +27,18 @@ CREATE TABLE `category` (
   `name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_CATEGORY_NAME` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=411 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `category`
+--
+
+LOCK TABLES `category` WRITE;
+/*!40000 ALTER TABLE `category` DISABLE KEYS */;
+INSERT INTO `category` VALUES (1,'categoryName_271'),(2,'category_271'),(6,'category_272'),(7,'category_273');
+/*!40000 ALTER TABLE `category` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `customer`
@@ -39,16 +49,25 @@ DROP TABLE IF EXISTS `customer`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `customer` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `wic_id` varchar(20) COLLATE utf8_bin NOT NULL,
+  `wic_number` varchar(20) COLLATE utf8_bin NOT NULL,
   `phone` varchar(20) COLLATE utf8_bin NOT NULL,
   `address` varchar(512) COLLATE utf8_bin NOT NULL,
   `name` varchar(40) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `IDX_CUSTOMER_WIC_ID` (`wic_id`),
+  KEY `IDX_CUSTOMER_WIC_ID` (`wic_number`),
   KEY `IDX_CUSTOMER_PHONE` (`phone`),
   KEY `IDX_CUSTOMER_NAME` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `customer`
+--
+
+LOCK TABLES `customer` WRITE;
+/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `delivery`
@@ -62,14 +81,23 @@ CREATE TABLE `delivery` (
   `store_id` tinyint(2) NOT NULL,
   `deliverer_name` varchar(20) COLLATE utf8_bin DEFAULT NULL,
   `delivery_completion_time` datetime DEFAULT NULL,
-  `customer_id` bigint(20) NOT NULL,
+  `order_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_DELIVERY_NAME` (`deliverer_name`),
   KEY `IDX_DELIVERY_TIME` (`delivery_completion_time`),
-  KEY `IDX_DELIVERY_CUSTOMER_ID` (`customer_id`),
-  CONSTRAINT `FK_DELIVERY_CUSTOMER_ID` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `IDX_DELIVERY_ORDER_ID` (`order_id`),
+  CONSTRAINT `FK_DELIVERY_ORDER_ID` FOREIGN KEY (`order_id`) REFERENCES `wic_order` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `delivery`
+--
+
+LOCK TABLES `delivery` WRITE;
+/*!40000 ALTER TABLE `delivery` DISABLE KEYS */;
+/*!40000 ALTER TABLE `delivery` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `hibernate_sequence`
@@ -82,6 +110,16 @@ CREATE TABLE `hibernate_sequence` (
   `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hibernate_sequence`
+--
+
+LOCK TABLES `hibernate_sequence` WRITE;
+/*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
+INSERT INTO `hibernate_sequence` VALUES (9);
+/*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `missing_product`
@@ -104,6 +142,15 @@ CREATE TABLE `missing_product` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `missing_product`
+--
+
+LOCK TABLES `missing_product` WRITE;
+/*!40000 ALTER TABLE `missing_product` DISABLE KEYS */;
+/*!40000 ALTER TABLE `missing_product` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `product`
 --
 
@@ -123,8 +170,18 @@ CREATE TABLE `product` (
   KEY `IDX_PRODUCT_BARCODE` (`barcode`),
   KEY `FK_PRODUCT_CATEGORY_ID` (`category_id`),
   CONSTRAINT `FK_PRODUCT_CATEGORY_ID` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=413 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product`
+--
+
+LOCK TABLES `product` WRITE;
+/*!40000 ALTER TABLE `product` DISABLE KEYS */;
+INSERT INTO `product` VALUES (3,2,'prodName_4','desc_0',NULL,'barcode_0','2/3/imageFile_3'),(4,2,'prodName_5','desc_0',NULL,'barcode_0','2/4/imageFile_4'),(5,2,'prodName_6','desc_0',NULL,'barcode_0','2/5/imageFile_5'),(8,2,'prodName_7','desc_0',NULL,'barcode_0','2/8/imageFile_6');
+/*!40000 ALTER TABLE `product` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `voucher`
@@ -137,16 +194,25 @@ CREATE TABLE `voucher` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `start_date` date NOT NULL,
   `expiration_date` date NOT NULL,
-  `voucher_id` varchar(20) COLLATE utf8_bin NOT NULL,
+  `voucher_number` varchar(255) COLLATE utf8_bin NOT NULL,
   `customer_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `IDX_VOUCHER_VOUCHER_ID` (`voucher_id`),
+  KEY `IDX_VOUCHER_VOUCHER_ID` (`voucher_number`),
   KEY `IDX_VOUCHER_START_DATE` (`start_date`),
   KEY `IDX_VOUCHER_EXPIRATION_DATE` (`expiration_date`),
   KEY `IDX_VOUCHER_CUSTOMER_ID` (`customer_id`),
   CONSTRAINT `FK_VOUCHER_CUSTOMER_ID` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `voucher`
+--
+
+LOCK TABLES `voucher` WRITE;
+/*!40000 ALTER TABLE `voucher` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voucher` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `wic_order`
@@ -168,6 +234,15 @@ CREATE TABLE `wic_order` (
   CONSTRAINT `FK_ORDER_VOUCHER_ID` FOREIGN KEY (`voucher_id`) REFERENCES `voucher` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `wic_order`
+--
+
+LOCK TABLES `wic_order` WRITE;
+/*!40000 ALTER TABLE `wic_order` DISABLE KEYS */;
+/*!40000 ALTER TABLE `wic_order` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -178,4 +253,4 @@ CREATE TABLE `wic_order` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-07 16:15:49
+-- Dump completed on 2018-10-10 10:20:21

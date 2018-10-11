@@ -26,14 +26,22 @@ public class Voucher implements Serializable {
 	@Column(name="start_date")
 	private Date startDate;
 
-	@Column(name="voucher_id")
-	private String voucherId;
+	@Column(name="voucher_number")
+	private String voucherNumber;
 
-	public Voucher(String voucherId, Date startDate, Date expirationDate) {
+	@Column(name="customer_id")
+	private long customerId;
+
+	public Voucher(String voucherNumber, Date startDate, Date expirationDate) {
+		this.voucherNumber = voucherNumber;
 		this.startDate = startDate;
 		this.expirationDate = expirationDate;
-		this.voucherId = voucherId;
 	}
+
+	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "voucher_id")
+	private WicOrder wicOrder;
+
 
 	public Voucher() {
 	}
@@ -62,12 +70,57 @@ public class Voucher implements Serializable {
 		this.startDate = startDate;
 	}
 
-	public String getVoucherId() {
-		return this.voucherId;
+	public String getVoucherNumber() {
+		return this.voucherNumber;
 	}
 
-	public void setVoucherId(String voucherId) {
-		this.voucherId = voucherId;
+	public void setVoucherNumber(String voucherNumber) {
+		this.voucherNumber = voucherNumber;
+	}
+
+	public long getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(long customerId) {
+		this.customerId = customerId;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("id:%s expire:%s start:%s voucherId:%s",
+				this.getId(), this.getStartDate(), this.getExpirationDate(), this.getVoucherNumber());
+	}
+
+	@Override
+	public int hashCode() {
+		return Long.valueOf(this.getId()).hashCode() + this.getStartDate().hashCode() +
+				this.getExpirationDate().hashCode() + getStringHash(this.getVoucherNumber());
+	}
+
+	private int getStringHash(String val) {
+		return val == null ? 0 : val.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object thatObj) {
+		if(thatObj == null) {
+			return false;
+		}
+		if(!(thatObj instanceof Voucher)) {
+			return false;
+		}
+		Voucher that = (Voucher) thatObj;
+		return !isDifferent(that.toString(), this.toString());
+	}
+
+	private boolean isDifferent(String that, String me) {
+		if(that == null) {
+			return me == null;
+		}
+		else {
+			return that.equals(me);
+		}
 	}
 
 }

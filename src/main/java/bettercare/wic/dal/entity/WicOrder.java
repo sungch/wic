@@ -33,21 +33,24 @@ public class WicOrder implements Serializable {
 	private String status;
 
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "order_id") // Tell JPA that this a foreign key name in many side
+	@JoinColumn(name = "order_id")
 	private List<MissingProduct> missingProducts;
 
-	@OneToOne
-	@JoinColumn(name = "voucher_id")
-	private Voucher voucher;
+	@Column(name = "voucher_id") // FK to the primary key id of Voucher table
+	private long voucherId;
+
+	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "order_id")
+	private Delivery delivery;
 
 
-	public WicOrder(boolean isEmergency, Date orderedTime, String productAndQuantity, String status, Voucher voucher, List<MissingProduct> missingProducts) {
+	public WicOrder(boolean isEmergency, Date orderedTime, String productAndQuantity, String status, long voucherId) {
 		this.isEmergency = isEmergency;
 		this.orderedTime = orderedTime;
 		this.productAndQuantity = productAndQuantity;
 		this.status = status;
-		this.voucher = voucher;
-		this.missingProducts = missingProducts;
+		this.isEmergency = isEmergency;
+		this.voucherId = voucherId;
 	}
 
 	public WicOrder() {
@@ -113,12 +116,54 @@ public class WicOrder implements Serializable {
 		return missingProduct;
 	}
 
-	public Voucher getVoucher() {
-		return this.voucher;
+	public long getVoucherId() {
+		return voucherId;
 	}
 
-	public void setVoucherId(Voucher voucher) {
-		this.voucher = voucher;
+	public void setVoucherId(long voucherId) {
+		this.voucherId = voucherId;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("id:%s missing:%s isEmergency:%s orderTime:%s orderContents:%s status:%s",
+				this.getId(), this.getMissingProducts(), this.getIsEmergency(),
+				this.getOrderedTime(), this.getProductAndQuantity(), this.getStatus());
+	}
+
+	@Override
+	public int hashCode() {
+		return Long.valueOf(this.getId()).hashCode() +
+				(this.getMissingProducts().isEmpty() ? 0 : 1) +
+				(this.getIsEmergency() ? 1 : 0) +
+				this.getOrderedTime().hashCode() +
+				getStringHash(getProductAndQuantity()) +
+				getStringHash(this.getStatus());
+	}
+
+	private int getStringHash(String val) {
+		return val == null ? 0 : val.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object thatObj) {
+		if(thatObj == null) {
+			return false;
+		}
+		if(!(thatObj instanceof WicOrder)) {
+			return false;
+		}
+		WicOrder that = (WicOrder) thatObj;
+		return !isDifferent(that.toString(), this.toString());
+	}
+
+	private boolean isDifferent(String that, String me) {
+		if(that == null) {
+			return me == null;
+		}
+		else {
+			return that.equals(me);
+		}
 	}
 
 }

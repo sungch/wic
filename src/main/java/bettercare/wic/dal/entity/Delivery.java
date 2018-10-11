@@ -27,7 +27,15 @@ public class Delivery implements Serializable {
 	private Date deliveryCompletionTime;
 
 	@Column(name="store_id")
-	private byte storeId;
+	private int storeId;
+
+	@Column(name="order_id")
+	private long orderId;
+
+	public Delivery(int storeId, long orderId) {
+		this.storeId = storeId;
+		this.orderId = orderId;
+	}
 
 	public Delivery() {
 	}
@@ -56,11 +64,19 @@ public class Delivery implements Serializable {
 		this.deliveryCompletionTime = deliveryCompletionTime;
 	}
 
-	public byte getStoreId() {
+	public int getStoreId() {
 		return this.storeId;
 	}
 
 	public void setStoreId(byte storeId) {
 		this.storeId = storeId;
+	}
+
+	public long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(byte orderId) {
+		this.orderId = orderId;
 	}
 }

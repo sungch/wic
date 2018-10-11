@@ -1,4 +1,4 @@
-package bettercare.wic.service.utils;
+package bettercare.wic.service.common;
 
 public enum OrderStatus {
 

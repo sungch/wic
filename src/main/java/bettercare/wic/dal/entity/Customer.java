@@ -1,6 +1,7 @@
 package bettercare.wic.dal.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 
 /**
@@ -24,11 +25,16 @@ public class Customer implements Serializable {
 
 	private String phone;
 
-	@Column(name="wic_id")
-	private String wicId;
+	@Column(name="wic_number")
+	private String wicNumber;
 
-	public Customer(String wicId, String name, String phone, String address) {
-		this.wicId = wicId;
+  @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(name = "customer_id")
+  private List<Voucher> vouchers;
+
+
+  public Customer(String wicNumber, String name, String phone, String address) {
+		this.wicNumber = wicNumber;
 		this.name = name;
 		this.phone = phone;
 		this.address = address;
@@ -69,18 +75,39 @@ public class Customer implements Serializable {
 		this.phone = phone;
 	}
 
-	public String getWicId() {
-		return this.wicId;
+	public String getWicNumber() {
+		return this.wicNumber;
 	}
 
-	public void setWicId(String wicId) {
-		this.wicId = wicId;
+	public void setWicNumber(String wicNumber) {
+		this.wicNumber = wicNumber;
 	}
 
-	@Override
+  public List<Voucher> getVouchers() {
+    return this.vouchers;
+  }
+
+  public void setVouchers(List<Voucher> vouchers) {
+    this.vouchers = vouchers;
+  }
+
+  public Voucher addVoucher(Voucher voucher) {
+    getVouchers().add(voucher);
+    voucher.setCustomerId(this.getId());
+    return voucher;
+  }
+
+  public Voucher removeVoucher(Voucher voucher) {
+    getVouchers().remove(voucher);
+    voucher.setVoucherNumber(null);
+    return voucher;
+  }
+
+
+  @Override
 	public String toString() {
 		return String.format("customerId:%s address:%s name:%s phone:%s wicNumber:%s ",
-				this.getId(), this.getAddress(), this.getName(), this.getPhone(), this.getWicId());
+				this.getId(), this.getAddress(), this.getName(), this.getPhone(), this.getWicNumber());
 	}
 
 	/**
@@ -92,8 +119,8 @@ public class Customer implements Serializable {
 				+ Long.valueOf(this.getAddress()).hashCode()
 				+ getStringHash(this.getName())
 				+ getStringHash(this.getPhone())
-				+ getStringHash(this.getWicId())
-				+ getStringHash(this.getWicId());
+				+ getStringHash(this.getWicNumber())
+				+ getStringHash(this.getWicNumber());
 	}
 
 	private int getStringHash(String val) {
@@ -105,23 +132,11 @@ public class Customer implements Serializable {
 		if(thatObj == null) {
 			return false;
 		}
-		if(!(thatObj instanceof Product)) {
+		if(!(thatObj instanceof Customer)) {
 			return false;
 		}
 		Customer that = (Customer)thatObj;
-		if(isDifferent(that.getName(), this.getName())) {
-			return false;
-		}
-		if(isDifferent(that.getAddress(), this.getAddress())) {
-			return false;
-		}
-		if(isDifferent(that.getPhone(), this.getPhone())) {
-			return false;
-		}
-		if(isDifferent(that.getWicId(), this.getWicId())) {
-			return false;
-		}
-		return true;
+		return !isDifferent(that.toString(), this.toString());
 	}
 
 	private boolean isDifferent(String that, String me) {
