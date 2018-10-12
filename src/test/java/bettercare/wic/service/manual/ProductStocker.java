@@ -4,7 +4,6 @@ import bettercare.wic.dal.entity.Category;
 import bettercare.wic.dal.entity.Product;
 import bettercare.wic.service.common.InitSetup;
 import org.junit.Test;
-import org.springframework.context.annotation.DependsOn;
 
 import java.util.HashMap;
 import java.util.List;

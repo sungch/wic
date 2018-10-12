@@ -26,16 +26,30 @@ public class OrderSimulator extends InitSetup {
     return wicTransactionManager.saveOrUpdateWicOrder(wicOrder);
   }
 
+  // TODO need to test query about date trpe
   private Voucher saveVoucherData(Date start, Date expire, String voucherNumber, long customerId) {
     Voucher voucher = new Voucher(start, expire, voucherNumber, customerId);
-    wicLogger.log("Saving a voucher info:" + voucher.toString());
-    return wicTransactionManager.saveOrUpdateVoucher(voucher);
+    List vouchers = wicEntityManasger.findByNativeQuery(
+        String.format("select * from voucher where start_date=%s expiation_date=%s voucher_number=%s, customer_id=%d",
+            start, expire, voucherNumber, customerId)
+    );
+    if(vouchers.isEmpty()) {
+      wicLogger.log("Saving a voucher info:" + voucher.toString());
+      return wicTransactionManager.saveOrUpdateVoucher(voucher);
+    }
+    return voucher;
   }
 
-  private Customer saveCustomerData(String wicId, String name, String phone, String address) {
-    Customer customer = new Customer(wicId, name, phone, address);
-    wicLogger.log("Saving a customer info:" + customer.toString());
-    return wicTransactionManager.saveOrUpdateCustomer(customer);
+  private Customer saveCustomerData(String wicNumber, String name, String phone, String address) {
+    Customer customer = new Customer(wicNumber, name, phone, address);
+    List customers = wicEntityManasger.findByNativeQuery(
+        String.format("select * from customer where wic_number=%s name=%s phone=%s address=%s",
+            wicNumber, name, phone, address));
+    if(customers.isEmpty()) {
+      wicLogger.log("Saving a customer info:" + customer.toString());
+      return wicTransactionManager.saveOrUpdateCustomer(customer);
+    }
+    return customer;
   }
 
   private HashMap<Long, String> parseOrder(String catProdQtyList) {

@@ -106,8 +106,8 @@ public class Customer implements Serializable {
 
   @Override
 	public String toString() {
-		return String.format("customerId:%s address:%s name:%s phone:%s wicNumber:%s ",
-				this.getId(), this.getAddress(), this.getName(), this.getPhone(), this.getWicNumber());
+		return String.format("address:%s name:%s phone:%s wicNumber:%s ",
+				this.getAddress(), this.getName(), this.getPhone(), this.getWicNumber());
 	}
 
 	/**
