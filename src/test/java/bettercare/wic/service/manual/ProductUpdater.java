@@ -7,7 +7,15 @@ import org.junit.Test;
 public class ProductUpdater extends InitSetup {
 
   @Test
-  public void updateProduct() {
+  public void updateProducts() {
+
+    for(int i = 0; i < productIds.length; i++) {
+      updateProduct(productIds[i]);
+    }
+
+  }
+
+  private void updateProduct(long productId) {
     Product product = wicTransactionManager.findProductById(productId);
     if (product == null) {
       wicLogger.log("No product found by product id " + product);

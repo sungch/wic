@@ -4,20 +4,48 @@ import bettercare.wic.dal.entity.*;
 import bettercare.wic.service.common.InitSetup;
 import bettercare.wic.service.common.OrderStatus;
 import bettercare.wic.service.common.PackageingModel;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectReader;
 import org.junit.Test;
 
 public class OrderSimulator extends InitSetup {
 
   @Test
   public void processOrder() {
-    String jsonDataFromBrowserRresponse = createOrderSimulationDataFromBrowser();
-    parseOrder(jsonDataFromBrowserRresponse);
-    WicOrder wicOrder = saveWicOrderData(null, false, null, null);
+    String orderResponse = createOrderString();
+    JsonNode tree = getRootNode(orderResponse);
+    Customer customer = null;
+    Voucher voucher = null;
+    String orderContent = null;
+    try {
+      customer = (Customer)objectMapper.readerFor(Customer.class).readValue(tree);
+      voucher = (Voucher)objectMapper.readerFor(Voucher.class).readValue(tree);
+      orderContent = (String) objectMapper.readerFor(String.class).readValue(tree);
+    }
+    catch (IOException e) {
+      e.printStackTrace();
+    }
+    wicTransactionManager.saveOrUpdateCustomer(customer);
+    WicOrder wicOrder = saveWicOrderData(orderContent, false, new Date(), voucher);
     wicLogger.log("Your order number is " + wicOrder.getId());
+  }
+
+  private <T> Object getObject(JsonNode root, Class<T> claz) {
+    JsonNode node = getBranchNode(root, claz.getSimpleName().toLowerCase());
+    try {
+      return objectMapper.readerFor(claz).readValue(node);
+    }
+    catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
   private WicOrder saveWicOrderData(String categoryProductQuantity, boolean isEmergency, Date orderTime, Voucher voucher) {

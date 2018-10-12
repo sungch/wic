@@ -6,8 +6,10 @@ import bettercare.wic.dal.entity.Voucher;
 import bettercare.wic.service.WicEntityManager;
 import bettercare.wic.service.WicTransactionManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.Date;
 
 // Use @Transactional to roll back at the end of the test.
@@ -36,11 +39,12 @@ public class InitSetup {
   protected String categoryName = "category_milk";
 
   // Change this according to real IDs in respective table
-  protected long productId = 1; // Use this to update product of this Id
+  protected long[] productIds = {10,11,12,13,14,15}; // Use this to update product of this Id
+  protected int[] quantitys = {1, 2, 3, 4, 5, 6}; // quantity of productId 10 is 1, 11 is 2, ...
   protected long categoryId = 1; // Use this to create a product
   protected String imageName = "img001"; // this is image name for above product
 
-  private ObjectMapper objectMapper;
+  protected ObjectMapper objectMapper;
 
   @Test
   public void contextLoads() {
@@ -54,7 +58,7 @@ public class InitSetup {
     objectMapper = new ObjectMapper();
   }
 
-  protected String createOrderSimulationDataFromBrowser() {
+  protected String createOrderString() {
     // customer info from incoming order
     ObjectNode customerNode = objectMapper.createObjectNode();
     customerNode.put("wicNumber", "12hwewekh2323");
@@ -62,32 +66,55 @@ public class InitSetup {
     customerNode.put("address", "5122 woodsmere lane, herriman, UT 84096");
     customerNode.put("phone", "801-809-0915");
 
+    // voucher info from the incoming order
+    ObjectNode voucherObject = objectMapper.createObjectNode();
+    voucherObject.put("startDate", new Date().toString());
+    voucherObject.put("expirationDate", new Date().toString());
+    voucherObject.put("voucherNumber", "hifh23heiuh23hredfi");
+
     // product and quantity info from the incoming order
     // ':' separates product-id,quantity.
     // '&' separates one product-order from another
     // This is done by front-end
-    ObjectNode categoryProductQuantityNode = objectMapper.createObjectNode();
-    categoryProductQuantityNode.put("categoryProductQuantity", "2:100&1:50&3:20&4:1&5:10");
+    ObjectNode pqNode = objectMapper.createObjectNode();
+    pqNode.put("pqs", createSimulatedProductOrders());
 
-    // voucher info from the incoming order
-    ObjectNode voucherObject = objectMapper.createObjectNode();
-    voucherObject.put("startDate", new Date().toString());
-    voucherObject.put("exoirationDate", new Date().toString());
-    voucherObject.put("voucherNumber", "hifh23heiuh23hredfi");
-
-    ObjectNode rootNode = objectMapper.createObjectNode();
+    ObjectNode rootNode = this.objectMapper.createObjectNode();
 
     rootNode.set(getFieldName(Customer.class), customerNode);
     rootNode.set(getFieldName(Voucher.class), voucherObject);
-    rootNode.set("categoryProductQuantity", categoryProductQuantityNode);
+    rootNode.set("categoryProductQuantity", pqNode);
 
     try {
-      return objectMapper.writeValueAsString(rootNode);
+      return this.objectMapper.writeValueAsString(rootNode);
     }
     catch (JsonProcessingException e) {
       e.printStackTrace();
     }
     return null;
+  }
+
+  protected JsonNode getRootNode(String orderJsonString) {
+    try {
+      return this.objectMapper.readTree(orderJsonString);
+    }
+    catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  protected JsonNode getBranchNode(JsonNode tree, String key) {
+    return tree.get(key);
+  }
+
+  private String createSimulatedProductOrders() {
+    StringBuilder products = new StringBuilder();
+    for(int i = 0; i < productIds.length; i++) {
+      products.append(productIds[i]).append(PROD_QUANTITY_DELIMITER).append(quantitys[i]).append(ITEM_DELIMITER);
+    }
+    products.deleteCharAt(products.lastIndexOf(ITEM_DELIMITER));
+    return products.toString();
   }
 
   private String getFieldName(Class clz) {
