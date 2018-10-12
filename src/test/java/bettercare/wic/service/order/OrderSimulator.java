@@ -14,9 +14,9 @@ public class OrderSimulator extends InitSetup {
 
   @Test
   public void processOrder() {
-    Customer customer = saveCustomerData("wic-number", "customer-name", "customer-phone", "customer-address");
-    Voucher voucher = saveVoucherData(new Date(), new Date(), "voucher-number", customer.getId());
-    WicOrder wicOrder = saveWicOrderData("2:3=50;2:4=20", false, new Date(), voucher);
+    String jsonDataFromBrowserRresponse = createOrderSimulationDataFromBrowser();
+    parseOrder(jsonDataFromBrowserRresponse);
+    WicOrder wicOrder = saveWicOrderData(null, false, null, null);
     wicLogger.log("Your order number is " + wicOrder.getId());
   }
 
@@ -26,7 +26,6 @@ public class OrderSimulator extends InitSetup {
     return wicTransactionManager.saveOrUpdateWicOrder(wicOrder);
   }
 
-  // TODO need to test query about date trpe
   private Voucher saveVoucherData(Date start, Date expire, String voucherNumber, long customerId) {
     Voucher voucher = new Voucher(start, expire, voucherNumber, customerId);
     List vouchers = wicEntityManasger.findByNativeQuery(
@@ -52,8 +51,8 @@ public class OrderSimulator extends InitSetup {
     return customer;
   }
 
-  private HashMap<Long, String> parseOrder(String catProdQtyList) {
-    String[] shoppingItems = catProdQtyList.split(CATEGORY_PROD_DELIMITER);
+  private HashMap<Long, String> parseOrder(String order) {
+    String[] shoppingItems = order.split(ITEM_DELIMITER); // &
     List<PackageingModel> idModels = createPackaingModel(shoppingItems);
     List<PackageingModel> packageingList = getPackagingList(idModels);
     return null;
