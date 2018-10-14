@@ -41,7 +41,7 @@ public class ProductStocker extends InitSetup {
     where.put("name", productName);
     String query = composeQuery(Product.class, where, " limit 1 ");
 
-    if (isEmpty(query)) {
+    if (isEmpty(query, Product.class)) {
       Product product = prepareProduct(category, barcode, desc, productName, imageName);
       product = wicTransactionManager.saveOrUpdateProduct(product);
       wicLogger.log(String.format("Created product %s", product.toString()));
@@ -80,9 +80,9 @@ public class ProductStocker extends InitSetup {
     return whereClause.toString();
   }
 
-  private boolean isEmpty(String query) {
-    List list = wicEntityManasger.findByNativeQuery(query);
-    return list.isEmpty();
+  private boolean isEmpty(String query, Class clz) {
+    Object obj = wicEntityManasger.findByNativeQuery(query, clz);
+    return obj != null;
   }
 
 }

@@ -9,7 +9,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 // Use @Transactional to roll back at the end of the test.
@@ -67,23 +67,19 @@ public class InitSetup {
     customerNode.put("phone", "801-809-0915");
 
     // voucher info from the incoming order
-    ObjectNode voucherObject = objectMapper.createObjectNode();
-    voucherObject.put("startDate", new Date().toString());
-    voucherObject.put("expirationDate", new Date().toString());
-    voucherObject.put("voucherNumber", "hifh23heiuh23hredfi");
+    ObjectNode voucherNode = objectMapper.createObjectNode();
+    long aDay = (24 * 60 * 60 * 1000);
+    voucherNode.put("startDate", setToZeroHourMinSec(new Date().getTime() - aDay));
+    voucherNode.put("expirationDate", setToZeroHourMinSec(new Date().getTime() + (aDay * 2))); // 2 days ahead
+    voucherNode.put("voucherNumber", "hifh23heiuh23hredfi");
 
-    // product and quantity info from the incoming order
-    // ':' separates product-id,quantity.
-    // '&' separates one product-order from another
-    // This is done by front-end
-    ObjectNode pqNode = objectMapper.createObjectNode();
-    pqNode.put("pqs", createSimulatedProductOrders());
+    // return string from object node
 
     ObjectNode rootNode = this.objectMapper.createObjectNode();
 
     rootNode.set(getFieldName(Customer.class), customerNode);
-    rootNode.set(getFieldName(Voucher.class), voucherObject);
-    rootNode.set("categoryProductQuantity", pqNode);
+    rootNode.set(getFieldName(Voucher.class), voucherNode);
+    rootNode.put("products", createSimulatedProductOrders());
 
     try {
       return this.objectMapper.writeValueAsString(rootNode);
@@ -92,6 +88,17 @@ public class InitSetup {
       e.printStackTrace();
     }
     return null;
+  }
+
+  private long setToZeroHourMinSec(long datelong) {
+    Date date = new Date(datelong);
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(date);
+    calendar.set(Calendar.MILLISECOND, 0);
+    calendar.set(Calendar.SECOND, 0);
+    calendar.set(Calendar.MINUTE, 0);
+    calendar.set(Calendar.HOUR, 0);
+    return calendar.getTimeInMillis();
   }
 
   protected JsonNode getRootNode(String orderJsonString) {

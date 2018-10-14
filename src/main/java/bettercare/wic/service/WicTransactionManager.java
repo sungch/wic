@@ -64,4 +64,5 @@ public class WicTransactionManager {
     public WicOrder saveOrUpdateWicOrder(WicOrder wicOrder) {
         return wicOrderDao.saveAndFlush(wicOrder);
     }
+
 }

@@ -24,7 +24,7 @@ public class Delivery implements Serializable {
 	private String delivererName;
 
 	@Column(name="delivery_completion_time")
-	private Date deliveryCompletionTime;
+	private long deliveryCompletionTime;
 
 	@Column(name="store_id")
 	private int storeId;
@@ -56,11 +56,11 @@ public class Delivery implements Serializable {
 		this.delivererName = delivererName;
 	}
 
-	public Date getDeliveryCompletionTime() {
+	public long getDeliveryCompletionTime() {
 		return this.deliveryCompletionTime;
 	}
 
-	public void setDeliveryCompletionTime(Date deliveryCompletionTime) {
+	public void setDeliveryCompletionTime(long deliveryCompletionTime) {
 		this.deliveryCompletionTime = deliveryCompletionTime;
 	}
 

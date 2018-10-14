@@ -14,7 +14,7 @@ public class CategoryCreater extends InitSetup {
     Map<String, Object> where = new HashMap<>();
     where.put("name", categoryName);
     String query = composeQuery(Category.class, where, " limit 1 ");
-    if (isEmpty(query)) {
+    if (isEmpty(query, Category.class)) {
       Category category = prepareCategory(categoryName);
       category = wicTransactionManager.saveOrUpdateCategory(category);
       wicLogger.log(String.format("Created a Category %s", category.toString()));
@@ -24,9 +24,9 @@ public class CategoryCreater extends InitSetup {
     }
   }
 
-  private boolean isEmpty(String query) {
-    List list = wicEntityManasger.findByNativeQuery(query);
-    return list.isEmpty();
+  private boolean isEmpty(String query, Class clz) {
+    Object obj = wicEntityManasger.findByNativeQuery(query, clz);
+    return obj != null;
   }
 
   private Category prepareCategory(String categoryName) {

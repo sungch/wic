@@ -25,10 +25,10 @@ public class WicOrder implements Serializable {
 	private boolean isEmergency;
 
 	@Column(name="ordered_time")
-	private Date orderedTime;
+	private long orderedTime;
 
 	@Column(name="product_and_quantity")
-	private String productAndQuantity;
+	private String products;
 
 	private String status;
 
@@ -42,10 +42,10 @@ public class WicOrder implements Serializable {
 	private Delivery delivery;
 
 
-	public WicOrder(boolean isEmergency, Date orderedTime, String productAndQuantity, String status, Voucher voucher) {
+	public WicOrder(boolean isEmergency, long orderedTime, String products, String status, Voucher voucher) {
 		this.isEmergency = isEmergency;
 		this.orderedTime = orderedTime;
-		this.productAndQuantity = productAndQuantity;
+		this.products = products;
 		this.status = status;
 		this.isEmergency = isEmergency;
 		this.voucher = voucher;
@@ -70,20 +70,20 @@ public class WicOrder implements Serializable {
 		this.isEmergency = isEmergency;
 	}
 
-	public Date getOrderedTime() {
+	public long getOrderedTime() {
 		return this.orderedTime;
 	}
 
-	public void setOrderedTime(Date orderedTime) {
+	public void setOrderedTime(long orderedTime) {
 		this.orderedTime = orderedTime;
 	}
 
-	public String getProductAndQuantity() {
-		return this.productAndQuantity;
+	public String getProducts() {
+		return this.products;
 	}
 
-	public void setProductAndQuantity(String productAndQuantity) {
-		this.productAndQuantity = productAndQuantity;
+	public void setProducts(String products) {
+		this.products = products;
 	}
 
 	public String getStatus() {
@@ -126,17 +126,17 @@ public class WicOrder implements Serializable {
 	public String toString() {
 		return String.format("id:%s missing:%s isEmergency:%s orderTime:%s orderContents:%s status:%s",
 				this.getId(), this.getMissingProducts(), this.getIsEmergency(),
-				this.getOrderedTime(), this.getProductAndQuantity(), this.getStatus());
+				this.getOrderedTime(), this.getProducts(), this.getStatus());
 	}
 
 	@Override
 	public int hashCode() {
-		return Long.valueOf(this.getId()).hashCode() +
-				(this.getMissingProducts().isEmpty() ? 0 : 1) +
-				(this.getIsEmergency() ? 1 : 0) +
-				this.getOrderedTime().hashCode() +
-				getStringHash(getProductAndQuantity()) +
-				getStringHash(this.getStatus());
+		return (int) (Long.valueOf(this.getId()).hashCode() +
+						(this.getMissingProducts().isEmpty() ? 0 : 1) +
+						(this.getIsEmergency() ? 1 : 0) +
+						this.getOrderedTime() +
+						getStringHash(getProducts()) +
+						getStringHash(this.getStatus()));
 	}
 
 	private int getStringHash(String val) {

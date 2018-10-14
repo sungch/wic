@@ -10,7 +10,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "voucher")
-//@NamedQuery(name="Voucher.findAll", query="SELECT v FROM Voucher v")
+@NamedQuery(name="Voucher.findAll", query="SELECT v FROM Voucher v")
 public class Voucher implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -20,10 +20,10 @@ public class Voucher implements Serializable {
     private long id;
 
     @Column(name = "expiration_date")
-    private Date expirationDate;
+    private long expirationDate;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private long startDate;
 
     @Column(name = "voucher_number")
     private String voucherNumber;
@@ -31,7 +31,7 @@ public class Voucher implements Serializable {
     @Column(name = "customer_id")
     private long customerId;
 
-    public Voucher(Date startDate, Date expirationDate, String voucherNumber, long customerId) {
+    public Voucher(long startDate, long expirationDate, String voucherNumber, long customerId) {
         this.voucherNumber = voucherNumber;
         this.startDate = startDate;
         this.expirationDate = expirationDate;
@@ -53,19 +53,19 @@ public class Voucher implements Serializable {
         this.id = id;
     }
 
-    public Date getExpirationDate() {
+    public long getExpirationDate() {
         return this.expirationDate;
     }
 
-    public void setExpirationDate(Date expirationDate) {
+    public void setExpirationDate(long expirationDate) {
         this.expirationDate = expirationDate;
     }
 
-    public Date getStartDate() {
+    public long getStartDate() {
         return this.startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(long startDate) {
         this.startDate = startDate;
     }
 
@@ -100,7 +100,7 @@ public class Voucher implements Serializable {
 
     @Override
     public int hashCode() {
-        return Long.valueOf(this.getId()).hashCode() + this.getStartDate().hashCode() + this.getExpirationDate().hashCode() + getStringHash(this.getVoucherNumber());
+        return (int) (Long.valueOf(this.getId()).hashCode() + this.getStartDate() + this.getExpirationDate()+ getStringHash(this.getVoucherNumber()));
     }
 
     private int getStringHash(String val) {

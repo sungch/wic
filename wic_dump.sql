@@ -74,7 +74,7 @@ CREATE TABLE `delivery` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `store_id` tinyint(2) NOT NULL,
   `deliverer_name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `delivery_completion_time` datetime DEFAULT NULL,
+  `delivery_completion_time` bigint(20) DEFAULT NULL,
   `order_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_DELIVERY_NAME` (`deliverer_name`),
@@ -179,8 +179,8 @@ DROP TABLE IF EXISTS `voucher`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `voucher` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `start_date` date NOT NULL,
-  `expiration_date` date NOT NULL,
+  `start_date` bigint(20) NOT NULL,
+  `expiration_date` bigint(20) NOT NULL,
   `voucher_number` varchar(255) COLLATE utf8_bin,
   `customer_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
@@ -211,7 +211,7 @@ DROP TABLE IF EXISTS `wic_order`;
 CREATE TABLE `wic_order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `product_and_quantity` varchar(1024) COLLATE utf8_bin NOT NULL,
-  `ordered_time` datetime NOT NULL,
+  `ordered_time` bigint(20) NOT NULL,
   `is_emergency` char(1) COLLATE utf8_bin NOT NULL DEFAULT 'N',
   `status` varchar(255) COLLATE utf8_bin NOT NULL,
   `voucher_id` bigint(20) NOT NULL,
