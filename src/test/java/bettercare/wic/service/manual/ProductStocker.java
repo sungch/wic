@@ -14,9 +14,6 @@ public class ProductStocker extends InitSetup {
 
   @Test
   public void addNewProducts() {
-    String imageName = null;
-    String barcode = "barcode_0w3422932989232";
-    String desc = "desc 10oz under age 6 month";
 
     Category category = wicEntityManasger.find(Category.class, categoryId);
     if (category == null) {
@@ -28,7 +25,7 @@ public class ProductStocker extends InitSetup {
     where.put("category_id", categoryId);
 
     for(int i = 0; i < 5; i++) {
-      addNewProduct(imageName, barcode, desc, category, where, i);
+      addNewProduct(category, where, i);
     }
 
     List<Product> products = wicTransactionManager.findProductsByCategoryId(categoryId);
@@ -36,15 +33,18 @@ public class ProductStocker extends InitSetup {
     Assert.assertTrue(products.size() >= 5);
   }
 
-  private void addNewProduct(String imageName, String barcode, String desc, Category category, Map<String, Object> where, int i) {
+  private void addNewProduct(Category category, Map<String, Object> where, int i) {
+    String imageName = null;
+    String barcode = "barcode_0w3422932989232" + i;
+    String desc = "desc 10oz under age 6 month" + i;
     String productName = "prodName Baby Powerder Milk" + i;
     where.put("name", productName);
     String query = composeQuery(Product.class, where, " limit 1 ");
 
     if (isEmpty(query, Product.class)) {
       Product product = prepareProduct(category, barcode, desc, productName, imageName);
-      product = wicTransactionManager.saveOrUpdateProduct(product);
-      wicLogger.log(String.format("Created product %s", product.toString()));
+      Product newProduct = wicTransactionManager.saveOrUpdateProduct(product);
+      wicLogger.log(String.format("Created product %s", newProduct.toString()));
     }
     else {
       wicLogger.log("Product is already in the system:" + query);
@@ -81,8 +81,7 @@ public class ProductStocker extends InitSetup {
   }
 
   private boolean isEmpty(String query, Class clz) {
-    Object obj = wicEntityManasger.findByNativeQuery(query, clz);
-    return obj != null;
+    return wicEntityManasger.findListByNativeQuery(query, clz).isEmpty();
   }
 
 }

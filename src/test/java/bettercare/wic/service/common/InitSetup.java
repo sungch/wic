@@ -6,7 +6,6 @@ import bettercare.wic.dal.entity.Voucher;
 import bettercare.wic.dal.WicEntityManager;
 import bettercare.wic.dal.WicTransactionManager;
 import bettercare.wic.service.SaveWicOrderService;
-import bettercare.wic.service.config.TimeTrimmer;
 import bettercare.wic.service.config.WicLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -38,10 +37,10 @@ public class InitSetup {
 
 
   protected String categoryName = "category_milk";
-  protected long[] productIds = {10,11,12,13,14,15}; // Use this to update product of this Id
+  protected long[] productIds = {7,8,9,10,11}; // Use this to update product of this Id
   private int[] quantitys = {1, 2, 3, 4, 5, 6}; // quantity of productId 10 is 1, 11 is 2, ...
-  protected long categoryId = 1; // Use this to create a product
-  protected String imageName = "img001"; // this is image name for above product
+  protected long categoryId = 1; // to create a product
+  protected String imageName = "img001"; // to update product image name
 
   @Test
   public void contextLoads() {

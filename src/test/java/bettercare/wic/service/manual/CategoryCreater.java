@@ -25,8 +25,7 @@ public class CategoryCreater extends InitSetup {
   }
 
   private boolean isEmpty(String query, Class clz) {
-    Object obj = wicEntityManasger.findByNativeQuery(query, clz);
-    return obj != null;
+    return wicEntityManasger.findListByNativeQuery(query, clz).isEmpty();
   }
 
   private Category prepareCategory(String categoryName) {
