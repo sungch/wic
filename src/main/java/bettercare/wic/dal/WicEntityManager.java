@@ -1,10 +1,9 @@
-package bettercare.wic.service;
+package bettercare.wic.dal;
 
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.persistence.*;
-import java.util.List;
 
 
 @Service

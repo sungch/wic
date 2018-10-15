@@ -3,8 +3,11 @@ package bettercare.wic.service.common;
 import bettercare.wic.app.WicApplication;
 import bettercare.wic.dal.entity.Customer;
 import bettercare.wic.dal.entity.Voucher;
-import bettercare.wic.service.WicEntityManager;
-import bettercare.wic.service.WicTransactionManager;
+import bettercare.wic.dal.WicEntityManager;
+import bettercare.wic.dal.WicTransactionManager;
+import bettercare.wic.service.SaveWicOrderService;
+import bettercare.wic.service.config.TimeTrimmer;
+import bettercare.wic.service.config.WicLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,7 +22,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Date;
 
 // Use @Transactional to roll back at the end of the test.
@@ -28,34 +30,27 @@ import java.util.Date;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = WicApplication.class)
 public class InitSetup {
 
-  @Resource
-  protected WicTransactionManager wicTransactionManager;
+  @Resource protected WicTransactionManager wicTransactionManager;
   @Resource protected WicEntityManager wicEntityManasger;
-  protected String PROD_QUANTITY_DELIMITER = ":";
-  protected String ITEM_DELIMITER = "&";
-  protected WicLogger wicLogger = new WicLogger();
+  @Resource protected WicLogger wicLogger;
+  @Resource protected ObjectMapper objectMapper;
+  @Resource protected SaveWicOrderService saveWicOrderService;
 
-  // I am stocking products under this category name and category id
+
   protected String categoryName = "category_milk";
-
-  // Change this according to real IDs in respective table
   protected long[] productIds = {10,11,12,13,14,15}; // Use this to update product of this Id
-  protected int[] quantitys = {1, 2, 3, 4, 5, 6}; // quantity of productId 10 is 1, 11 is 2, ...
+  private int[] quantitys = {1, 2, 3, 4, 5, 6}; // quantity of productId 10 is 1, 11 is 2, ...
   protected long categoryId = 1; // Use this to create a product
   protected String imageName = "img001"; // this is image name for above product
-
-  protected ObjectMapper objectMapper;
 
   @Test
   public void contextLoads() {
   }
 
-
   @Before
   public void setup() {
     Assert.assertNotNull(wicTransactionManager);
     Assert.assertNotNull(wicEntityManasger);
-    objectMapper = new ObjectMapper();
   }
 
   protected String createOrderString() {
@@ -69,8 +64,9 @@ public class InitSetup {
     // voucher info from the incoming order
     ObjectNode voucherNode = objectMapper.createObjectNode();
     long aDay = (24 * 60 * 60 * 1000);
-    voucherNode.put("startDate", setToZeroHourMinSec(new Date().getTime() - aDay));
-    voucherNode.put("expirationDate", setToZeroHourMinSec(new Date().getTime() + (aDay * 2))); // 2 days ahead
+    long now = new Date().getTime();
+    voucherNode.put("startDate", now - aDay);
+    voucherNode.put("expirationDate", now + aDay); // 1 day ahead
     voucherNode.put("voucherNumber", "hifh23heiuh23hredfi");
 
     // return string from object node
@@ -90,17 +86,6 @@ public class InitSetup {
     return null;
   }
 
-  private long setToZeroHourMinSec(long datelong) {
-    Date date = new Date(datelong);
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(date);
-    calendar.set(Calendar.MILLISECOND, 0);
-    calendar.set(Calendar.SECOND, 0);
-    calendar.set(Calendar.MINUTE, 0);
-    calendar.set(Calendar.HOUR, 0);
-    return calendar.getTimeInMillis();
-  }
-
   protected JsonNode getRootNode(String orderJsonString) {
     try {
       return this.objectMapper.readTree(orderJsonString);
@@ -111,13 +96,11 @@ public class InitSetup {
     return null;
   }
 
-  protected JsonNode getBranchNode(JsonNode tree, String key) {
-    return tree.get(key);
-  }
-
   private String createSimulatedProductOrders() {
     StringBuilder products = new StringBuilder();
+    String ITEM_DELIMITER = "&";
     for(int i = 0; i < productIds.length; i++) {
+      String PROD_QUANTITY_DELIMITER = ":";
       products.append(productIds[i]).append(PROD_QUANTITY_DELIMITER).append(quantitys[i]).append(ITEM_DELIMITER);
     }
     products.deleteCharAt(products.lastIndexOf(ITEM_DELIMITER));
@@ -127,6 +110,5 @@ public class InitSetup {
   private String getFieldName(Class clz) {
     return clz.getSimpleName().toLowerCase();
   }
-
 
 }

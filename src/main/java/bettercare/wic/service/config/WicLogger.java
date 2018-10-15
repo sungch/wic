@@ -1,5 +1,8 @@
-package bettercare.wic.service.common;
+package bettercare.wic.service.config;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class WicLogger {
 
   public void log(String mesg) {

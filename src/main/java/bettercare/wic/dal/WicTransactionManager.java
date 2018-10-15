@@ -1,14 +1,10 @@
-package bettercare.wic.service;
+package bettercare.wic.dal;
 
 import bettercare.wic.dal.dao.*;
 import bettercare.wic.dal.entity.*;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +12,8 @@ import java.util.Optional;
 @Service
 public class WicTransactionManager {
 
-    @Resource private CategoryDao categoryDao; // requires @EnableJpaRepositories("bettercare.wic.dal") in somewhere configuration
+    // requires @EnableJpaRepositories("bettercare.wic.dal") in somewhere configuration
+    @Resource private CategoryDao categoryDao;
     @Resource private ProductDao productDao;
     @Resource private CustomerDao customerDao;
     @Resource private VoucherDao voucherDao;
@@ -26,17 +23,8 @@ public class WicTransactionManager {
         return categoryDao.saveAndFlush(category);
     }
 
-    public Category findCategoryById(long id) {
-        Optional<Category> category = categoryDao.findById(id);
-        return category.get();
-    }
-
     public Product saveOrUpdateProduct(Product product) {
         return productDao.saveAndFlush(product);
-    }
-
-    public List<Product> saveOrUpdateProducts(List<Product> products) {
-        return productDao.saveAll(products);
     }
 
     public List<Product> findProductsByCategoryId(long categoryId) {

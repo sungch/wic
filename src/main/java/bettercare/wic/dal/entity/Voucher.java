@@ -38,7 +38,7 @@ public class Voucher implements Serializable {
         this.customerId = customerId;
     }
 
-    @OneToOne(mappedBy = "voucher")
+    @OneToOne(mappedBy = "voucher", cascade = CascadeType.ALL, orphanRemoval = true)
     private WicOrder wicOrder;
 
 
