@@ -16,8 +16,8 @@ public class  Category implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="CATEGORY_ID_GENERATOR", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CATEGORY_ID_GENERATOR")
+	@SequenceGenerator(name="CATEGORY_ID_GENERATOR", allocationSize = 1, sequenceName="CATEGORY_ID_GENERATOR")
 	private long id;
 
 	private String name;

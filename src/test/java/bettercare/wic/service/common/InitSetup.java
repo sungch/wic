@@ -36,9 +36,9 @@ public class InitSetup {
   @Resource protected SaveWicOrderServiceJson saveWicOrderServiceJson;
 
 
-  protected String categoryName = "category_milk";
-  protected long[] productIds = {2,3,4,5,6}; // Use this to update product of this Id
-  private int[] quantitys = {20, 30, 40, 50, 60}; // quantity of products
+  protected String categoryName = "category_milk_3";
+  protected long[] productIds = {1,2,3,4,5}; // Use this to update product of this Id
+  private int[] quantitys = {10, 20, 30, 40, 50}; // quantity of products
   protected long categoryId = 1; // to create a product
   protected String imageName = "img001"; // to update product image name
 

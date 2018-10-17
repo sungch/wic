@@ -17,8 +17,8 @@ public class WicOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="ORDER_ID_GENERATOR", allocationSize = 1 )
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ORDER_ID_GENERATOR")
+	@SequenceGenerator(name="ORDER_ID_GENERATOR", allocationSize=1, sequenceName="ORDER_ID_GENERATOR")
 	private long id;
 
 	@Column(name="is_emergency")
