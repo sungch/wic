@@ -156,7 +156,7 @@ CREATE TABLE `product` (
   `category_id` bigint(20) DEFAULT NULL,
   `name` varchar(255) COLLATE utf8_bin NOT NULL,
   `description` varchar(512) COLLATE utf8_bin NOT NULL,
-  `image_name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `image_url` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `barcode` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_PRODUCT_NAME` (`name`),
