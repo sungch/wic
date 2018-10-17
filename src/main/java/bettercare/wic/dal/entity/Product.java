@@ -10,7 +10,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "product")
-//@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
+@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
 public class Product implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -23,8 +23,8 @@ public class Product implements Serializable {
 
   private String description;
 
-  @Column(name = "image_name")
-  private String imageName;
+  @Column(name = "image_url")
+  private String imageUrl;
 
   private String name;
 
@@ -62,12 +62,12 @@ public class Product implements Serializable {
     this.description = description;
   }
 
-  public String getImageName() {
-    return this.imageName;
+  public String getImageUrl() {
+    return this.imageUrl;
   }
 
-  public void setImageName(String imageName) {
-    this.imageName = imageName;
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
   }
 
   public String getName() {
@@ -116,7 +116,7 @@ public class Product implements Serializable {
   @Override
   public String toString() {
     return String.format("productId:%s cateoryId:%s imageId:%s barcode:%s description:%s productName:%s ",
-        this.getId(), this.getCategory().getId(), this.getImageName(),
+        this.getId(), this.getCategory().getId(), this.getImageUrl(),
         this.getBarcode(), this.getDescription(), this.getName() );
   }
 
@@ -127,7 +127,7 @@ public class Product implements Serializable {
   public int hashCode() {
     return Long.valueOf(this.getId()).hashCode()
         + Long.valueOf(this.getCategory().getId()).hashCode()
-        + getStringHash(this.getImageName())
+        + getStringHash(this.getImageUrl())
         + getStringHash(this.getBarcode())
         + getStringHash(this.getDescription())
         + getStringHash(this.getName());

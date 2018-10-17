@@ -21,18 +21,18 @@ public class ProductUpdater extends InitSetup {
       wicLogger.log("No product found by product id " + product);
       return;
     }
-    String newImgName = imageName + productId;
-    String old = product.getImageName();
+    String newImgUrl = imageName + productId;
+    String old = product.getImageUrl();
     if (old != null && !old.isEmpty()) {
-      if (newImgName.equals(old)) {
-        wicLogger.log("New image path is same is current. No transaction. old:" + old + " new:" + newImgName);
+      if (newImgUrl.equals(old)) {
+        wicLogger.log("New image path is same is current. No transaction. old:" + old + " new:" + newImgUrl);
         return;
       }
       else {
-        wicLogger.log("Replacing image file name from " + product.getImageName() + " to " + newImgName);
+        wicLogger.log("Replacing image file name from " + product.getImageUrl() + " to " + newImgUrl);
       }
     }
-    product.setImageName(newImgName);
+    product.setImageUrl(newImgUrl);
     wicTransactionManager.saveOrUpdateProduct(product);
     wicLogger.log(String.format("Product updated successfully. %s", product.toString()));
   }
