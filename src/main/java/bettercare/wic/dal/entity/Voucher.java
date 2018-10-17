@@ -95,7 +95,7 @@ public class Voucher implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("id:%s expire:%s start:%s voucherId:%s", this.getId(), this.getStartDate(), this.getExpirationDate(), this.getVoucherNumber());
+        return String.format("id:%s start:%s expire:%s voucherId:%s", this.getId(), this.getStartDate(), this.getExpirationDate(), this.getVoucherNumber());
     }
 
     @Override

@@ -1,9 +1,11 @@
 package bettercare.wic.dal;
 
+import bettercare.wic.service.config.WicLogger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.persistence.*;
+import java.util.List;
 
 
 @Service
@@ -11,6 +13,8 @@ public class WicEntityManager {
 
   @Resource
   private EntityManager entityManager;
+  @Resource
+  private WicLogger wicLogger;
 
   public <T> T create(T obj) {
     entityManager.persist(obj);
@@ -30,7 +34,21 @@ public class WicEntityManager {
 
   public <T> T findByNativeQuery(String qry, Class<T> clz) {
     Query nativeQuery = entityManager.createNativeQuery(qry, clz);
+    try {
     return (T)nativeQuery.getSingleResult();
+    }
+    catch(NoResultException nre) {
+      return null;
+    }
+    catch (Exception ex) {
+      wicLogger.log("Error:" + ex.getMessage());
+      throw new RuntimeException(ex);
+    }
+  }
+
+  public <T> List findListByNativeQuery(String qry, Class<T> clz) {
+    Query nativeQuery = entityManager.createNativeQuery(qry, clz);
+    return nativeQuery.getResultList();
   }
 
   public <T> void remove(T obj) {
