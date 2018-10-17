@@ -22,6 +22,9 @@ public class  Category implements Serializable {
 
 	private String name;
 
+	@Column(name = "image_url")
+	private String imageUrl;
+
 	@OneToMany(mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Product> products;
 
@@ -38,6 +41,14 @@ public class  Category implements Serializable {
 
 	public String getName() {
 		return this.name;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public void setName(String name) {
