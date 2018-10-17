@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="wic_order")
-//@NamedQuery(name="WicOrder.findAll", query="SELECT o FROM WicOrder o")
+@NamedQuery(name="WicOrder.findAll", query="SELECT o FROM WicOrder o")
 public class WicOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 

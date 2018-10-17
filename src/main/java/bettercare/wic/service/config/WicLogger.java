@@ -17,29 +17,28 @@ public class WicLogger {
     System.out.println("***********************************");
   }
 
-
-  public void logInfo(String mesg, Class clz) {
+  public void info(String mesg, Class problemArea) {
     if(LOGGER.isInfoEnabled()) {
-      LOGGER.info(mesg + clz.getSimpleName());
+      LOGGER.info(problemArea.getSimpleName() + mesg);
     }
   }
 
-  public void logDebug(String mesg, Class clz) {
+  public void debug(String mesg, Class problemArea) {
     if(LOGGER.isDebugEnabled()) {
-      LOGGER.debug(mesg + clz.getSimpleName());
+      LOGGER.debug(problemArea.getSimpleName() + mesg);
     }
   }
 
-  public void logWarn(String mesg, Class clz) {
-    LOGGER.warn(mesg + clz.getSimpleName());
+  public void warn(String mesg, Class probklemArea) {
+    LOGGER.warn(probklemArea.getSimpleName() + mesg);
   }
 
-  public void logError(String mesg, Class clz) {
-    LOGGER.error(mesg + clz.getSimpleName());
+  public void error(String mesg, Class problemArea) {
+    LOGGER.error(problemArea.getSimpleName() + mesg);
   }
 
-  public void logError(String mesg, Class clz, Throwable ex) {
-    LOGGER.error(mesg + clz.getSimpleName(), ex);
+  public void error(String mesg, Class problemArea, Throwable ex) {
+    LOGGER.error(problemArea.getSimpleName() + mesg, ex);
   }
 
 }

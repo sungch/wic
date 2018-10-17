@@ -2,6 +2,7 @@ package bettercare.wic.dal;
 
 import bettercare.wic.dal.dao.*;
 import bettercare.wic.dal.entity.*;
+import bettercare.wic.service.config.WicLogger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,6 +19,7 @@ public class WicTransactionManager {
     @Resource private CustomerDao customerDao;
     @Resource private VoucherDao voucherDao;
     @Resource private WicOrderDao wicOrderDao;
+    @Resource private WicLogger wicLogger;
 
     public Category saveOrUpdateCategory(Category category) {
         return categoryDao.saveAndFlush(category);
@@ -42,14 +44,17 @@ public class WicTransactionManager {
     }
 
     public Customer saveOrUpdateCustomer(Customer customer) {
+        wicLogger.debug("Saving customer: " + customer.toString(), Customer.class);
         return customerDao.saveAndFlush(customer);
     }
 
     public Voucher saveOrUpdateVoucher(Voucher voucher) {
+        wicLogger.debug("Saving voucher: " + voucher.toString(), Voucher.class);
         return voucherDao.saveAndFlush(voucher);
     }
 
     public WicOrder saveOrUpdateWicOrder(WicOrder wicOrder) {
+        wicLogger.debug("Saving wic order: " + wicOrder.toString(), WicOrder.class);
         return wicOrderDao.saveAndFlush(wicOrder);
     }
 

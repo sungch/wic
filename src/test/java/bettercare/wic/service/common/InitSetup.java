@@ -5,7 +5,7 @@ import bettercare.wic.dal.entity.Customer;
 import bettercare.wic.dal.entity.Voucher;
 import bettercare.wic.dal.WicEntityManager;
 import bettercare.wic.dal.WicTransactionManager;
-import bettercare.wic.service.SaveWicOrderService;
+import bettercare.wic.service.SaveWicOrderServiceJson;
 import bettercare.wic.service.config.WicLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -33,7 +33,7 @@ public class InitSetup {
   @Resource protected WicEntityManager wicEntityManasger;
   @Resource protected WicLogger wicLogger;
   @Resource protected ObjectMapper objectMapper;
-  @Resource protected SaveWicOrderService saveWicOrderService;
+  @Resource protected SaveWicOrderServiceJson saveWicOrderService;
 
 
   protected String categoryName = "category_milk";

@@ -6,7 +6,6 @@ import bettercare.wic.dal.entity.Customer;
 import bettercare.wic.dal.entity.Product;
 import bettercare.wic.dal.entity.Voucher;
 import bettercare.wic.dal.entity.WicOrder;
-import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.config.TimeTrimmer;
 import bettercare.wic.service.config.WicLogger;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -18,7 +17,7 @@ import java.io.IOException;
 import java.util.Date;
 
 @Service
-public class SaveWicOrderService {
+public class SaveWicOrderServiceJson {
 
     @Resource
     private WicTransactionManager wicTransactionManager;
@@ -31,51 +30,52 @@ public class SaveWicOrderService {
     @Resource
     private TimeTrimmer timeTrimmer;
 
-    public WicOrder saveWicOrder(WicOrderRepresentation root) {
+    public WicOrder saveWicOrder(JsonNode tree) {
 
-        String products = root.getProducts();
-        if (isBlank(products)) {
+        String products = tree.get("products").asText();
+        if (products == null) {
             wicLogger.error("product content is empty.", Product.class);
             return null;
         }
 
-        if(isBlank(root.getWicNumber(), root.getName(), root.getPhone(), root.getAddress())) {
+        Customer customer = readObject(Customer.class, tree);
+        if (customer == null) {
             wicLogger.error("Customer not read.", Customer.class);
             return null;
         }
-        Customer customer = persistCustomerIfNew(new Customer(root.getWicNumber(), root.getName(), root.getPhone(), root.getAddress()));
+        Customer persistedCustomer = persistCustomerIfNew(customer);
 
-        if(isBlank(root.getVoucherNumber()) || !isVoucherDateValid(root.getStartDate(), root.getExpirationDate())) {
+        Voucher voucher = getVoucher(tree, persistedCustomer.getId());
+        if (voucher == null) {
             wicLogger.error("Voucher is invalid.", Voucher.class);
             return null;
         }
+        Voucher persistedVoucher = wicTransactionManager.saveOrUpdateVoucher(voucher);
 
-        Voucher voucher_ = new Voucher(root.getStartDate(), root.getExpirationDate(), root.getVoucherNumber(), customer.getId());
-        if(isNewVoucher(voucher_, customer.getId())) {
-            normalizeVoucherEffectiveDates(voucher_);
-            if(isVoucherDateValid(voucher_.getStartDate(), voucher_.getExpirationDate())) {
-                Voucher voucher = wicTransactionManager.saveOrUpdateVoucher(voucher_);
-                WicOrder wicOrder = saveWicOrderData(products, false, new Date().getTime(), voucher);
-                wicLogger.info("Your order number is " + wicOrder.getId(), Customer.class);
-                return wicOrder;
-            }
-            else {
-                wicLogger.error("Voucher date is invalid. ", Voucher.class);
-            }
-        }
-        else {
-            wicLogger.info("The same voucher cannot be sued again.", Voucher.class);
-        }
-        return null;
+        WicOrder wicOrder = saveWicOrderData(products, false, new Date().getTime(), persistedVoucher);
+        wicLogger.info("Your order number is " + wicOrder.getId(), Customer.class);
+
+        return wicOrder;
     }
 
-    private boolean isBlank(String... data) {
-        for(String d : data) {
-            if(d == null || d.isEmpty()) {
-                return true;
+    private Voucher getVoucher(JsonNode tree, long customerId) {
+        Voucher voucher = readObject(Voucher.class, tree);
+        if (voucher != null) {
+            normalizeVoucherEffectiveDates(voucher);
+            if (isVoucherDateValid(voucher.getStartDate(), voucher.getExpirationDate())) {
+                if (isNewVoucher(voucher, customerId)) {
+                    wicLogger.info("This is a new voucher: " + voucher.toString(), Voucher.class);
+                    return voucher;
+                }
+                else {
+                    wicLogger.error("Cannot use the same voucher more than once: " + voucher.toString(), Voucher.class);
+                }
+            }
+            else {
+                wicLogger.error("Voucher date is valid between %s and %s. Today is %s", Voucher.class);
             }
         }
-        return false;
+        return null;
     }
 
     private void normalizeVoucherEffectiveDates(Voucher voucher) {
