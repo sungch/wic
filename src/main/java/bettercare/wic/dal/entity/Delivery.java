@@ -17,7 +17,7 @@ public class Delivery implements Serializable {
 
 	@Id
 	@SequenceGenerator(name="DELIVERY_ID_GENERATOR", allocationSize = 1 )
-	@GeneratedValue(strategy=GenerationType.AUTO, generator="DELIVERY_ID_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="DELIVERY_ID_GENERATOR")
 	private long id;
 
 	@Column(name="deliverer_name")

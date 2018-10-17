@@ -16,7 +16,7 @@ public class MissingProduct implements Serializable {
 
 	@Id
 	@SequenceGenerator(name="MISSING_PRODUCT_ID_GENERATOR", allocationSize = 1 )
-	@GeneratedValue(strategy=GenerationType.AUTO, generator="MISSING_PRODUCT_ID_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="MISSING_PRODUCT_ID_GENERATOR")
 	private long id;
 
 	private int quantity;

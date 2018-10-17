@@ -102,6 +102,7 @@ DROP TABLE IF EXISTS `hibernate_sequence`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `hibernate_sequence` (
+  `sequence_name` varchar(255) NOT NULL,
   `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -109,12 +110,20 @@ CREATE TABLE `hibernate_sequence` (
 --
 -- Dumping data for table `hibernate_sequence`
 --
-
 LOCK TABLES `hibernate_sequence` WRITE;
 /*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
-INSERT INTO `hibernate_sequence` VALUES (1);
-/*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
+INSERT INTO hibernate_sequence (sequence_name,next_val)
+VALUES ('CATEGORY_ID_GENERATOR',1),
+('PRODUCT_ID_GENERATOR',1),
+('CUSTOMER_ID_GENERATOR',1),
+('MISSING_PRODUCT_ID_GENERATOR',1),
+('ORDER_ID_GENERATOR',1),
+('DELIVERY_ID_GENERATOR',1),
+('VOUCHER_ID_GENERATOR',1);
 UNLOCK TABLES;
+--
+-- Dumping data for table `hibernate_sequence`
+--
 
 --
 -- Table structure for table `missing_product`

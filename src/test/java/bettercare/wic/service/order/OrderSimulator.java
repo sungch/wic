@@ -14,7 +14,7 @@ public class OrderSimulator extends InitSetup {
   public void saveWicOrder() {
     String orderResponse = createOrderString(); // front end compose this way
     JsonNode tree = getRootNode(orderResponse); // compose json from the response data
-    WicOrder wicOrder = saveWicOrderService.saveWicOrder(tree);
+    WicOrder wicOrder = saveWicOrderServiceJson.saveWicOrderJson(tree);
     Assert.assertTrue(wicOrder != null);
     Assert.assertTrue(wicOrder.getStatus().equals(OrderStatus.ORDER_RECEIVED.name()));
   }

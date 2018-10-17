@@ -33,12 +33,12 @@ public class InitSetup {
   @Resource protected WicEntityManager wicEntityManasger;
   @Resource protected WicLogger wicLogger;
   @Resource protected ObjectMapper objectMapper;
-  @Resource protected SaveWicOrderServiceJson saveWicOrderService;
+  @Resource protected SaveWicOrderServiceJson saveWicOrderServiceJson;
 
 
   protected String categoryName = "category_milk";
-  protected long[] productIds = {7,8,9,10,11}; // Use this to update product of this Id
-  private int[] quantitys = {1, 2, 3, 4, 5, 6}; // quantity of productId 10 is 1, 11 is 2, ...
+  protected long[] productIds = {2,3,4,5,6}; // Use this to update product of this Id
+  private int[] quantitys = {20, 30, 40, 50, 60}; // quantity of products
   protected long categoryId = 1; // to create a product
   protected String imageName = "img001"; // to update product image name
 

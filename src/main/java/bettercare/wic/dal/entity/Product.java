@@ -15,8 +15,8 @@ public class Product implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
-  @SequenceGenerator(name = "PRODUCT_ID_GENERATOR", allocationSize = 1)
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "PRODUCT_ID_GENERATOR")
+  @SequenceGenerator(name="PRODUCT_ID_GENERATOR", allocationSize = 1)
+  @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PRODUCT_ID_GENERATOR")
   private long id;
 
   private String barcode;

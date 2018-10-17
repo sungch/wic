@@ -30,7 +30,7 @@ public class SaveWicOrderServiceJson {
     @Resource
     private TimeTrimmer timeTrimmer;
 
-    public WicOrder saveWicOrder(JsonNode tree) {
+    public WicOrder saveWicOrderJson(JsonNode tree) {
 
         String products = tree.get("products").asText();
         if (products == null) {
