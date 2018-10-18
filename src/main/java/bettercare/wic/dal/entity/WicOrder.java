@@ -2,7 +2,6 @@ package bettercare.wic.dal.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 
@@ -17,8 +16,7 @@ public class WicOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ORDER_ID_GENERATOR")
-	@SequenceGenerator(name="ORDER_ID_GENERATOR", allocationSize=1, sequenceName="ORDER_ID_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 
 	@Column(name="is_emergency")

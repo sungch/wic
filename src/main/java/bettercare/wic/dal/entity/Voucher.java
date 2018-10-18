@@ -15,8 +15,7 @@ public class Voucher implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="VOUCHER_ID_GENERATOR")
-    @SequenceGenerator(name="VOUCHER_ID_GENERATOR", allocationSize=1, sequenceName="VOUCHER_ID_GENERATOR")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "expiration_date")

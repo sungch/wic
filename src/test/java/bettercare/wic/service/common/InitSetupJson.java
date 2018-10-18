@@ -5,6 +5,7 @@ import bettercare.wic.dal.WicEntityManager;
 import bettercare.wic.dal.WicTransactionManager;
 import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.SaveWicOrderService;
+import bettercare.wic.service.SaveWicOrderServiceJson;
 import bettercare.wic.service.config.WicLogger;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,20 +14,31 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
 import javax.annotation.Resource;
 import java.util.Date;
+
+import bettercare.wic.dal.entity.Customer;
+import bettercare.wic.dal.entity.Voucher;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
 
 // Use @Transactional to roll back at the end of the test.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = WicApplication.class)
-public class InitSetup {
+public class InitSetupJson {
 
   @Resource protected WicTransactionManager wicTransactionManager;
   @Resource protected WicEntityManager wicEntityManasger;
   @Resource protected WicLogger wicLogger;
+  @Resource protected ObjectMapper objectMapper;
+  @Resource protected SaveWicOrderServiceJson saveWicOrderServiceJson;
+
   @Resource protected SaveWicOrderService saveWicOrderService;
+
 
   protected String categoryName = "category_milk";
   protected long[] productIds = {1,2,3,4,5}; // Use this to update product of this Id
@@ -55,26 +67,6 @@ public class InitSetup {
   private long expirationDate = now + aDay;
   private String voucherNumber = "hifh23heiuh23hredfi";
 
-  protected WicOrderRepresentation getModel() {
-    WicOrderRepresentation model = new WicOrderRepresentation();
-
-    // Customer
-    model.setWicNumber(wicNumber);
-    model.setName(customerName);
-    model.setAddress(address);
-    model.setPhone(phone);
-
-    // Voucher
-    model.setStartDate(startDate);
-    model.setExpirationDate(expirationDate);
-    model.setVoucherNumber(voucherNumber);
-
-    // Product
-    model.setProducts(createSimulatedProductOrders());
-
-    return model;
-  }
-
   private String createSimulatedProductOrders() {
     StringBuilder products = new StringBuilder();
     String ITEM_DELIMITER = "&";
@@ -84,6 +76,49 @@ public class InitSetup {
     }
     products.deleteCharAt(products.lastIndexOf(ITEM_DELIMITER));
     return products.toString();
+  }
+
+  protected String createOrderString() {
+    // customer
+    ObjectNode customerNode = objectMapper.createObjectNode();
+    customerNode.put("wicNumber", wicNumber);
+    customerNode.put("name", customerName);
+    customerNode.put("address", address);
+    customerNode.put("phone", phone);
+
+    // voucher
+    ObjectNode voucherNode = objectMapper.createObjectNode();
+    voucherNode.put("startDate", startDate);
+    voucherNode.put("expirationDate", expirationDate); // 1 day ahead
+    voucherNode.put("voucherNumber", voucherNumber);
+
+    ObjectNode rootNode = this.objectMapper.createObjectNode();
+
+    rootNode.set(getFieldName(Customer.class), customerNode);
+    rootNode.set(getFieldName(Voucher.class), voucherNode);
+    rootNode.put("products", createSimulatedProductOrders());
+
+    try {
+      return this.objectMapper.writeValueAsString(rootNode);
+    }
+    catch (JsonProcessingException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  protected JsonNode getRootNode(String orderJsonString) {
+    try {
+      return this.objectMapper.readTree(orderJsonString);
+    }
+    catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  private String getFieldName(Class clz) {
+    return clz.getSimpleName().toLowerCase();
   }
 
 }

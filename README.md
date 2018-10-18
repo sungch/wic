@@ -1,5 +1,15 @@
 Use @Transactional in unit test to roll back at the end of the test.
 
+Use @GeneratedValue(strategy=GenerationType.IDENTITY.
+    AUTO lets hibernate choose strategy based on hibernate dialect.
+    Desirable if to support multiple DBs
+    Earlier version, it chose IDENTITY.
+    In version 5, it chooses TABLE.
+    But use @GenericGenerator to still choose IDENTITY.
+    SEQUENCE stretagy requires database sequence but mysql does not support so cannot be used with mysql.
+    TABLE has performance and scalability issue.
+    See https://docs.jboss.org/hibernate/orm/3.6/reference/en-US/html/mapping.html for all other details.
+
 # wic
 entity id must be decalred to long not Long to avoid NullPointException.
 
