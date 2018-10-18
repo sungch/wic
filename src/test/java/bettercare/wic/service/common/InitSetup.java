@@ -3,6 +3,8 @@ package bettercare.wic.service.common;
 import bettercare.wic.app.WicApplication;
 import bettercare.wic.dal.WicEntityManager;
 import bettercare.wic.dal.WicTransactionManager;
+import bettercare.wic.dal.entity.Category;
+import bettercare.wic.dal.entity.Product;
 import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.SaveWicOrderService;
 import bettercare.wic.service.config.WicLogger;
@@ -16,8 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.util.Date;
-
-// Use @Transactional to roll back at the end of the test.
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = WicApplication.class)
@@ -28,11 +29,31 @@ public class InitSetup {
   @Resource protected WicLogger wicLogger;
   @Resource protected SaveWicOrderService saveWicOrderService;
 
-  protected String categoryName = "category_milk";
-  protected long[] productIds = {1,2,3,4,5}; // Use this to update product of this Id
-  private int[] quantitys = {10, 20, 30, 40, 50}; // quantity of products
-  protected long categoryId = 1; // to create a product
-  protected String imageName = "img001"; // to update product image name
+  // Use this property ONLY to create categories.
+  protected static final String[] categoryNames = {"Infant Cereal", "Baby Food", "Baby Food Meat", "Infant Formula",
+          "Milk", "Cheese", "Yogurt", "Eggs", "Juice", "Vegetables & Fruits", "Beans & Lentils", "Peanut Butter",
+          "Canned Fish", "Cereal", "Hot Cereal", "Whole Wheat Bread", "Brown Rice", "Whole Wheat Pasta", "Tortillas"};
+
+  // Use this for all other purposes.
+  protected List<Category> categories;
+
+  private String wicNumber = "12hwewekh2323";
+  private String customerName = "customer_1";
+  private String address = "5122 woodsmere lane, herriman, UT 84096";
+  private String phone = "801-809-0915";
+  private long aDay = (24 * 60 * 60 * 1000);
+  private long now = new Date().getTime();
+  private long startDate = now - aDay;
+  private long expirationDate = now + aDay;
+  private String voucherNumber = "hifh23heiuh23hredfi";
+
+  protected String productImageName = "img001"; // to update product image name
+  protected String categoryImageName = "img000"; // to update product image name
+
+  protected long startProductId = 9; // Use this to create order and product
+  protected int numOfProductsToCreatePerCategory = 5;
+  protected long quantity = 30;
+
 
   @Test
   public void contextLoads() {
@@ -42,18 +63,8 @@ public class InitSetup {
   public void setup() {
     Assert.assertNotNull(wicTransactionManager);
     Assert.assertNotNull(wicEntityManasger);
+    categories = wicTransactionManager.findAllCategories();
   }
-
-  private String wicNumber = "12hwewekh2323";
-  private String customerName = "customer_1";
-  private String address = "5122 woodsmere lane, herriman, UT 84096";
-  private String phone = "801-809-0915";
-  private long aDay = (24 * 60 * 60 * 1000);
-  private long now = new Date().getTime();
-
-  private long startDate = now - aDay;
-  private long expirationDate = now + aDay;
-  private String voucherNumber = "hifh23heiuh23hredfi";
 
   protected WicOrderRepresentation getModel() {
     WicOrderRepresentation model = new WicOrderRepresentation();
@@ -78,9 +89,13 @@ public class InitSetup {
   private String createSimulatedProductOrders() {
     StringBuilder products = new StringBuilder();
     String ITEM_DELIMITER = "&";
-    for(int i = 0; i < productIds.length; i++) {
-      String PROD_QUANTITY_DELIMITER = ":";
-      products.append(productIds[i]).append(PROD_QUANTITY_DELIMITER).append(quantitys[i]).append(ITEM_DELIMITER);
+    String PROD_QUANTITY_DELIMITER = ":";
+
+    List<Product> productList = wicTransactionManager.findAllProducts();
+
+    for(Product product : productList) {
+      String orderQuantity = String.valueOf((int)(quantity + product.getId()));
+      products.append(product.getId()).append(PROD_QUANTITY_DELIMITER).append(orderQuantity).append(ITEM_DELIMITER);
     }
     products.deleteCharAt(products.lastIndexOf(ITEM_DELIMITER));
     return products.toString();

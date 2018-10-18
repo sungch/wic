@@ -122,9 +122,10 @@ public class WicOrder implements Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("id:%s missing:%s isEmergency:%s orderTime:%s orderContents:%s status:%s",
-				this.getId(), this.getMissingProducts(), this.getIsEmergency(),
-				this.getOrderedTime(), this.getProducts(), this.getStatus());
+		return String.format("id:%s missing:%s isEmergency:%s orderTime:%s orderContents:%s status:%s customerId:%s voucherId:%s",
+							 this.getId(), this.getMissingProducts(), this.getIsEmergency(),
+							 this.getOrderedTime(), this.getProducts(), this.getStatus(),
+							 this.getVoucher().getCustomerId(), this.getVoucher().toString());
 	}
 
 	@Override

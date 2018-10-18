@@ -14,30 +14,27 @@ public class ProductStocker extends InitSetup {
 
   @Test
   public void addNewProducts() {
-
-    Category category = wicEntityManasger.find(Category.class, categoryId);
-    if (category == null) {
-      wicLogger.log("ERROR Category ID not found:" + categoryId + " No transaction");
-      Assert.fail();
+    assert categories != null;
+    for(Category category : categories) {
+      long categoryId = category.getId();
+      Map<String, Object> where = new HashMap<>();
+      where.put("category_id", categoryId);
+      int start = (int)startProductId;
+      int end = (int)startProductId + numOfProductsToCreatePerCategory;
+      for (int i = start; i < end; i++) {
+        addProducsOnEachCategoryIfNew(category, where, i);
+      }
+      List<Product> products = wicTransactionManager.findProductsByCategoryId(categoryId);
+      wicLogger.log("Created products:" + products.size());
+      Assert.assertFalse(products.isEmpty());
     }
-
-    Map<String, Object> where = new HashMap<>();
-    where.put("category_id", categoryId);
-
-    for(int i = 0; i < 5; i++) {
-      addNewProduct(category, where, i);
-    }
-
-    List<Product> products = wicTransactionManager.findProductsByCategoryId(categoryId);
-    Assert.assertFalse(products.isEmpty());
-    Assert.assertTrue(products.size() >= 5);
   }
 
-  private void addNewProduct(Category category, Map<String, Object> where, int i) {
+  private void addProducsOnEachCategoryIfNew(Category category, Map<String, Object> where, int i) {
     String imageName = null;
-    String barcode = "barcode_0w3422932989232" + i;
-    String desc = "desc 10oz under age 6 month" + i;
-    String productName = "prodName Baby Powerder Milk" + i;
+    String barcode = "barcode_0w3422932989232_" + i;
+    String desc = "desc _" + i;
+    String productName = "prodName_" + i;
     where.put("name", productName);
     String query = composeQuery(Product.class, where, " limit 1 ");
 

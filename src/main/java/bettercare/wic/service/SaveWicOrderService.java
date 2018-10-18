@@ -31,26 +31,26 @@ public class SaveWicOrderService {
     @Resource
     private TimeTrimmer timeTrimmer;
 
-    public WicOrder saveWicOrder(WicOrderRepresentation root) {
+    public WicOrder saveWicOrder(WicOrderRepresentation model) {
 
-        String products = root.getProducts();
+        String products = model.getProducts();
         if (isBlank(products)) {
             wicLogger.error("product content is empty.", Product.class);
             return null;
         }
 
-        if(isBlank(root.getWicNumber(), root.getName(), root.getPhone(), root.getAddress())) {
+        if(isBlank(model.getWicNumber(), model.getName(), model.getPhone(), model.getAddress())) {
             wicLogger.error("Customer not read.", Customer.class);
             return null;
         }
-        Customer customer = persistCustomerIfNew(new Customer(root.getWicNumber(), root.getName(), root.getPhone(), root.getAddress()));
+        Customer customer = persistCustomerIfNew(new Customer(model.getWicNumber(), model.getName(), model.getPhone(), model.getAddress()));
 
-        if(isBlank(root.getVoucherNumber()) || !isVoucherDateValid(root.getStartDate(), root.getExpirationDate())) {
+        if(isBlank(model.getVoucherNumber()) || !isVoucherDateValid(model.getStartDate(), model.getExpirationDate())) {
             wicLogger.error("Voucher is invalid.", Voucher.class);
             return null;
         }
 
-        Voucher voucher_ = new Voucher(root.getStartDate(), root.getExpirationDate(), root.getVoucherNumber(), customer.getId());
+        Voucher voucher_ = new Voucher(model.getStartDate(), model.getExpirationDate(), model.getVoucherNumber(), customer.getId());
         if(isNewVoucher(voucher_, customer.getId())) {
             normalizeVoucherEffectiveDates(voucher_);
             if(isVoucherDateValid(voucher_.getStartDate(), voucher_.getExpirationDate())) {
@@ -85,6 +85,9 @@ public class SaveWicOrderService {
 
     // if this customer is valid, save vouch entity
     private boolean isNewVoucher(Voucher voucher, long customerId) {
+        if(voucher.getId() == 0) {
+           return true;
+        }
         voucher.setCustomerId(customerId);
         String voucherQuery = String.format("select * from voucher where voucher_number = '%s' and customer_id = '%s' limit 1", voucher.getVoucherNumber(), voucher.getCustomerId());
         return wicEntityManasger.findByNativeQuery(voucherQuery, Voucher.class) == null;

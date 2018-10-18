@@ -10,16 +10,18 @@ public class CategoryCreater extends InitSetup {
 
   @Test
   public void addNewCategory() {
-    Map<String, Object> where = new HashMap<>();
-    where.put("name", categoryName);
-    String query = composeQuery(Category.class, where, " limit 1 ");
-    if (isEmpty(query, Category.class)) {
-      Category category = prepareCategory(categoryName);
-      category = wicTransactionManager.saveOrUpdateCategory(category);
-      wicLogger.log(String.format("Created a Category %s", category.toString()));
-    }
-    else {
-      wicLogger.log("The same Category name already found in the system. No transactions:" + categoryName);
+    for(String categoryName : categoryNames) {
+      Map<String, Object> where = new HashMap<>();
+      where.put("name", categoryName);
+      String query = composeQuery(Category.class, where, " limit 1 ");
+      if (isEmpty(query, Category.class)) {
+        Category category = prepareCategory(categoryName);
+        category = wicTransactionManager.saveOrUpdateCategory(category);
+        wicLogger.log(String.format("Created a Category %s", category.toString()));
+      }
+      else {
+        wicLogger.log("The same Category name already found in the system. No transactions:" + categoryName);
+      }
     }
   }
 

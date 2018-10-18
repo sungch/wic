@@ -21,6 +21,11 @@ public class WicTransactionManager {
     @Resource private WicOrderDao wicOrderDao;
     @Resource private WicLogger wicLogger;
 
+
+    public List<Category> findAllCategories() {
+        return categoryDao.findAll();
+    }
+
     public Category saveOrUpdateCategory(Category category) {
         return categoryDao.saveAndFlush(category);
     }
@@ -36,6 +41,10 @@ public class WicTransactionManager {
             return category.getProducts();
         }
         return Collections.EMPTY_LIST;
+    }
+
+    public List<Product> findAllProducts() {
+        return productDao.findAll();
     }
 
     public Product findProductById(long productId) {
