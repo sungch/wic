@@ -16,85 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `category`
---
-
-DROP TABLE IF EXISTS `category`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `category` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `image_url` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_CATEGORY_NAME` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `category`
---
-
---
--- Table structure for table `customer`
---
-
-DROP TABLE IF EXISTS `customer`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `customer` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `wic_number` varchar(255) COLLATE utf8_bin NOT NULL,
-  `phone` varchar(255) COLLATE utf8_bin NOT NULL,
-  `address` varchar(512) COLLATE utf8_bin NOT NULL,
-  `name` varchar(255) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_CUSTOMER_WIC_ID` (`wic_number`),
-  KEY `IDX_CUSTOMER_PHONE` (`phone`),
-  KEY `IDX_CUSTOMER_NAME` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `customer`
---
-
-LOCK TABLES `customer` WRITE;
-/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `delivery`
---
-
-DROP TABLE IF EXISTS `delivery`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `delivery` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `store_id` tinyint(2) NOT NULL,
-  `deliverer_name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `delivery_completion_time` bigint(20) DEFAULT NULL,
-  `order_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_DELIVERY_NAME` (`deliverer_name`),
-  KEY `IDX_DELIVERY_TIME` (`delivery_completion_time`),
-  KEY `IDX_DELIVERY_ORDER_ID` (`order_id`),
-  CONSTRAINT `FK_DELIVERY_ORDER_ID` FOREIGN KEY (`order_id`) REFERENCES `wic_order` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `delivery`
---
-
-LOCK TABLES `delivery` WRITE;
-/*!40000 ALTER TABLE `delivery` DISABLE KEYS */;
-/*!40000 ALTER TABLE `delivery` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `hibernate_sequence`
 --
 
@@ -121,9 +42,63 @@ VALUES ('CATEGORY_ID_GENERATOR',1),
 ('DELIVERY_ID_GENERATOR',1),
 ('VOUCHER_ID_GENERATOR',1);
 UNLOCK TABLES;
+
 --
--- Dumping data for table `hibernate_sequence`
+-- Table structure for table `category`
 --
+
+DROP TABLE IF EXISTS `category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `category` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `image_url` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_CATEGORY_NAME` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `customer`
+--
+
+DROP TABLE IF EXISTS `customer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `customer` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `wic_number` varchar(255) COLLATE utf8_bin NOT NULL,
+  `phone` varchar(255) COLLATE utf8_bin NOT NULL,
+  `address` varchar(512) COLLATE utf8_bin NOT NULL,
+  `name` varchar(255) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_CUSTOMER_WIC_ID` (`wic_number`),
+  KEY `IDX_CUSTOMER_PHONE` (`phone`),
+  KEY `IDX_CUSTOMER_NAME` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `delivery`
+--
+
+DROP TABLE IF EXISTS `delivery`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `delivery` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `store_id` tinyint(2) NOT NULL,
+  `deliverer_name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `delivery_completion_time` bigint(20) DEFAULT NULL,
+  `order_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_DELIVERY_NAME` (`deliverer_name`),
+  KEY `IDX_DELIVERY_TIME` (`delivery_completion_time`),
+  KEY `IDX_DELIVERY_ORDER_ID` (`order_id`),
+  CONSTRAINT `FK_DELIVERY_ORDER_ID` FOREIGN KEY (`order_id`) REFERENCES `wic_order` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `missing_product`
@@ -144,15 +119,6 @@ CREATE TABLE `missing_product` (
   CONSTRAINT `FK_MISSING_PROD_PRODUCT_ID` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `missing_product`
---
-
-LOCK TABLES `missing_product` WRITE;
-/*!40000 ALTER TABLE `missing_product` DISABLE KEYS */;
-/*!40000 ALTER TABLE `missing_product` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `product`
@@ -177,10 +143,6 @@ CREATE TABLE `product` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `product`
---
-
---
 -- Table structure for table `voucher`
 --
 
@@ -201,15 +163,6 @@ CREATE TABLE `voucher` (
   CONSTRAINT `FK_VOUCHER_CUSTOMER_ID` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `voucher`
---
-
-LOCK TABLES `voucher` WRITE;
-/*!40000 ALTER TABLE `voucher` DISABLE KEYS */;
-/*!40000 ALTER TABLE `voucher` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `wic_order`
@@ -236,10 +189,6 @@ CREATE TABLE `wic_order` (
 -- Dumping data for table `wic_order`
 --
 
-LOCK TABLES `wic_order` WRITE;
-/*!40000 ALTER TABLE `wic_order` DISABLE KEYS */;
-/*!40000 ALTER TABLE `wic_order` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
