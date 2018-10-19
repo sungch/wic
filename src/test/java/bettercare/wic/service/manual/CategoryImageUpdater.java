@@ -11,12 +11,11 @@ public class CategoryImageUpdater extends InitSetup {
     @Test
     public void updateCategoryImages() {
         for (Category category : categories) {
-            String newImageName = category.getName().replaceAll("[\\s]", "").trim().toLowerCase() + categoryImageName + "_" + category.getId() + ".png";
-            String newCategoryImageUrl = category.getId() + "/" + newImageName;
-            if(category.getImageUrl() != null && !category.getImageUrl().isEmpty() && category.getImageUrl().equals(newCategoryImageUrl)) {
+            String url = "category/" + category.getName().replaceAll("[\\s]", "").replaceAll("&", "_").toLowerCase() + ".jpg";
+            if(category.getImageUrl() != null && !category.getImageUrl().isEmpty() && category.getImageUrl().equals(url)) {
                 continue;
             }
-            category.setImageUrl(newCategoryImageUrl);
+            category.setImageUrl(url);
             category = wicTransactionManager.saveOrUpdateCategory(category);
             wicLogger.log(String.format("Created a Category %s", category.toString()));
         }

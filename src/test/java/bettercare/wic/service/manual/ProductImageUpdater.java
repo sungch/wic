@@ -25,8 +25,7 @@ public class ProductImageUpdater extends InitSetup {
       wicLogger.log("No product found by product id " + product);
       return;
     }
-    String productImagename = product.getName() + productImageName + product.getId() + ".png";
-    String imageUrl = product.getCategory().getId() + "/" + product.getId() + "/" + productImagename;
+    String imageUrl = "product/" + product.getCategory().getId() + "/" + product.getName() + ".jpg";
     String old = product.getImageUrl();
     if (old != null && !old.isEmpty() && imageUrl.equals(old)) {
       wicLogger.log("New image path is same is current. No transaction. old:" + old + " new:" + imageUrl);
