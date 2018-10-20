@@ -4,7 +4,7 @@ import bettercare.wic.dal.entity.WicOrder;
 import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.OrderStatus;
 import bettercare.wic.service.common.InitSetup;
-import bettercare.wic.service.WicLogger;
+import bettercare.wic.dal.WicLogger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.stereotype.Component;

@@ -1,5 +1,6 @@
 package bettercare.wic.service;
 
+import bettercare.wic.dal.WicLogger;
 import com.sun.jersey.api.ConflictException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.OptimisticLockingFailureException;

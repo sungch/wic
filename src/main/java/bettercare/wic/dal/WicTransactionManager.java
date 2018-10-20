@@ -2,7 +2,6 @@ package bettercare.wic.dal;
 
 import bettercare.wic.dal.dao.*;
 import bettercare.wic.dal.entity.*;
-import bettercare.wic.service.WicLogger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

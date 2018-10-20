@@ -1,4 +1,4 @@
-package bettercare.wic.service;
+package bettercare.wic.dal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

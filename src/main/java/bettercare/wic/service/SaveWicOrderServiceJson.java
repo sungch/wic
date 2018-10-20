@@ -1,6 +1,7 @@
 package bettercare.wic.service;
 
 import bettercare.wic.dal.WicEntityManager;
+import bettercare.wic.dal.WicLogger;
 import bettercare.wic.dal.WicTransactionManager;
 import bettercare.wic.dal.entity.Customer;
 import bettercare.wic.dal.entity.Product;

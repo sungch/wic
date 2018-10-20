@@ -5,7 +5,7 @@ import bettercare.wic.dal.WicEntityManager;
 import bettercare.wic.dal.WicTransactionManager;
 import bettercare.wic.service.SaveWicOrderService;
 import bettercare.wic.service.SaveWicOrderServiceJson;
-import bettercare.wic.service.WicLogger;
+import bettercare.wic.dal.WicLogger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

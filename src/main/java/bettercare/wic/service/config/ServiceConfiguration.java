@@ -5,11 +5,10 @@ import bettercare.wic.dal.WicTransactionManager;
 import bettercare.wic.service.ObjectMapperFactory;
 import bettercare.wic.service.SaveWicOrderService;
 import bettercare.wic.service.TimeTrimmer;
-import bettercare.wic.service.WicLogger;
+import bettercare.wic.dal.WicLogger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 
 
 @Configuration
