@@ -7,14 +7,10 @@ import bettercare.wic.dal.entity.Product;
 import bettercare.wic.dal.entity.Voucher;
 import bettercare.wic.dal.entity.WicOrder;
 import bettercare.wic.model.WicOrderRepresentation;
-import bettercare.wic.service.config.TimeTrimmer;
-import bettercare.wic.service.config.WicLogger;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.Date;
 
 @Service
@@ -109,17 +105,6 @@ public class SaveWicOrderService {
     private boolean isVoucherDateValid(long startDate, long expirationDate) {
         long today = new Date().getTime();
         return today >= startDate && today <= expirationDate;
-    }
-
-    private <T> T readObject(Class<T> claz, JsonNode tree) {
-        JsonNode node = tree.get(claz.getSimpleName().toLowerCase());
-        try {
-            return objectMapper.readerFor(claz).readValue(node);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     private WicOrder saveWicOrderData(String products, boolean isEmergency, long orderTime, Voucher voucher) {

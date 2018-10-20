@@ -7,7 +7,7 @@ import bettercare.wic.dal.entity.Category;
 import bettercare.wic.dal.entity.Product;
 import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.SaveWicOrderService;
-import bettercare.wic.service.config.WicLogger;
+import bettercare.wic.service.WicLogger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

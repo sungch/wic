@@ -6,8 +6,6 @@ import bettercare.wic.dal.entity.Customer;
 import bettercare.wic.dal.entity.Product;
 import bettercare.wic.dal.entity.Voucher;
 import bettercare.wic.dal.entity.WicOrder;
-import bettercare.wic.service.config.TimeTrimmer;
-import bettercare.wic.service.config.WicLogger;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;

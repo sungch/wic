@@ -4,7 +4,7 @@ import bettercare.wic.dal.entity.WicOrder;
 import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.OrderStatus;
 import bettercare.wic.service.common.InitSetup;
-import bettercare.wic.service.config.WicLogger;
+import bettercare.wic.service.WicLogger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.stereotype.Component;
@@ -25,5 +25,6 @@ public class OrderSimulator extends InitSetup {
         wicLogger.log(wicOrder.toString());
         Assert.assertTrue(wicOrder != null);
         Assert.assertTrue(wicOrder.getStatus().equals(OrderStatus.ORDER_RECEIVED.name()));
+        wicLogger.log(" Order:" + wicOrder.toString());
     }
 }
