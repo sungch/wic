@@ -1,13 +1,11 @@
 package bettercare.wic.dal.config;
 
-import bettercare.wic.dal.WicEntityManager;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.MySQL5Dialect;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -21,7 +19,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManager;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 

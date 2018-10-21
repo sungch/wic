@@ -1,14 +1,14 @@
 package bettercare.wic.service;
 
-import bettercare.wic.dal.WicEntityManager;
 import bettercare.wic.dal.WicLogger;
-import bettercare.wic.dal.WicTransactionManager;
 import bettercare.wic.dal.entity.Customer;
 import bettercare.wic.dal.entity.Product;
 import bettercare.wic.dal.entity.Voucher;
 import bettercare.wic.dal.entity.WicOrder;
 import bettercare.wic.model.WicOrderRepresentation;
-import org.codehaus.jackson.map.ObjectMapper;
+import bettercare.wic.service.supports.FetchService;
+import bettercare.wic.service.supports.OrderStatus;
+import bettercare.wic.service.supports.TimeTrimmer;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,13 +18,9 @@ import java.util.Date;
 public class SaveWicOrderService {
 
     @Resource
-    private WicTransactionManager wicTransactionManager;
-    @Resource
-    private WicEntityManager wicEntityManasger;
+    private FetchService fetchService;
     @Resource
     private WicLogger wicLogger;
-    @Resource
-    private ObjectMapper objectMapper;
     @Resource
     private TimeTrimmer timeTrimmer;
 
@@ -51,7 +47,7 @@ public class SaveWicOrderService {
         if(isNewVoucher(voucher_, customer.getId())) {
             normalizeVoucherEffectiveDates(voucher_);
             if(isVoucherDateValid(voucher_.getStartDate(), voucher_.getExpirationDate())) {
-                Voucher voucher = wicTransactionManager.saveOrUpdateVoucher(voucher_);
+                Voucher voucher = fetchService.saveOrUpdateVoucher(voucher_);
                 WicOrder wicOrder = saveWicOrderData(products, false, new Date().getTime(), voucher);
                 wicLogger.info("Your order number is " + wicOrder.getId(), Customer.class);
                 return wicOrder;
@@ -80,22 +76,20 @@ public class SaveWicOrderService {
         voucher.setExpirationDate(timeTrimmer.adjustExpiringTime(voucher.getExpirationDate()));
     }
 
-    // if this customer is valid, save vouch entity
     private boolean isNewVoucher(Voucher voucher, long customerId) {
         if(voucher.getId() == 0) {
            return true;
         }
         voucher.setCustomerId(customerId);
         String voucherQuery = String.format("select * from voucher where voucher_number = '%s' and customer_id = '%s' limit 1", voucher.getVoucherNumber(), voucher.getCustomerId());
-        return wicEntityManasger.findByNativeQuery(voucherQuery, Voucher.class) == null;
+        return fetchService.findByNativeQuery(voucherQuery, Voucher.class) == null;
     }
 
-    // save customer if new
     private Customer persistCustomerIfNew(Customer customer) {
         String customerQuery = String.format("select * from customer where wic_number = '%s' and phone = '%s' and  address = '%s' and name = '%s' limit 1", customer.getWicNumber(), customer.getPhone(), customer.getAddress(), customer.getName());
-        Customer persistedCustomer = wicEntityManasger.findByNativeQuery(customerQuery, Customer.class);
+        Customer persistedCustomer = fetchService.findByNativeQuery(customerQuery, Customer.class);
         if (persistedCustomer == null) {
-            persistedCustomer = wicTransactionManager.saveOrUpdateCustomer(customer);
+            persistedCustomer = fetchService.saveOrUpdateCustomer(customer);
         }
         else {
             wicLogger.log("Same customer already exist. Using existing customer: " + persistedCustomer.toString());
@@ -111,7 +105,7 @@ public class SaveWicOrderService {
     private WicOrder saveWicOrderData(String products, boolean isEmergency, long orderTime, Voucher voucher) {
         WicOrder wicOrder = new WicOrder(isEmergency, orderTime, products, OrderStatus.ORDER_RECEIVED.name(), voucher);
         wicLogger.info("Saving a voucher info:" + wicOrder.toString(), WicOrder.class);
-        return wicTransactionManager.saveOrUpdateWicOrder(wicOrder);
+        return fetchService.saveOrUpdateWicOrder(wicOrder);
     }
 
 }

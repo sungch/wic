@@ -1,4 +1,4 @@
-package bettercare.wic.service;
+package bettercare.wic.service.marshaller;
 
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;

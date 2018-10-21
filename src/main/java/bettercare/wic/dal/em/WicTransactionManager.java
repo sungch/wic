@@ -1,5 +1,6 @@
-package bettercare.wic.dal;
+package bettercare.wic.dal.em;
 
+import bettercare.wic.dal.WicLogger;
 import bettercare.wic.dal.dao.*;
 import bettercare.wic.dal.entity.*;
 import org.springframework.stereotype.Service;
@@ -25,30 +26,22 @@ public class WicTransactionManager {
         return categoryDao.findAll();
     }
 
+    public List<Product> findAllProducts() {
+        return productDao.findAll();
+    }
+
+    public List<Customer> findAllCustomers() {
+        return customerDao.findAll();
+    }
+
+// --
+
     public Category saveOrUpdateCategory(Category category) {
         return categoryDao.saveAndFlush(category);
     }
 
     public Product saveOrUpdateProduct(Product product) {
         return productDao.saveAndFlush(product);
-    }
-
-    public List<Product> findProductsByCategoryId(long categoryId) {
-        Optional<Category> categoryOptional = categoryDao.findById(categoryId);
-        if(categoryOptional.isPresent()) {
-            Category category = categoryOptional.get();
-            return category.getProducts();
-        }
-        return Collections.EMPTY_LIST;
-    }
-
-    public List<Product> findAllProducts() {
-        return productDao.findAll();
-    }
-
-    public Product findProductById(long productId) {
-        Optional<Product> productOptional = productDao.findById(productId);
-        return productOptional.orElse(null);
     }
 
     public Customer saveOrUpdateCustomer(Customer customer) {
@@ -64,6 +57,22 @@ public class WicTransactionManager {
     public WicOrder saveOrUpdateWicOrder(WicOrder wicOrder) {
         wicLogger.debug("Saving wic order: " + wicOrder.toString(), WicOrder.class);
         return wicOrderDao.saveAndFlush(wicOrder);
+    }
+
+// --
+
+    public List<Product> findProductsByCategoryId(long categoryId) {
+        Optional<Category> categoryOptional = categoryDao.findById(categoryId);
+        if(categoryOptional.isPresent()) {
+            Category category = categoryOptional.get();
+            return category.getProducts();
+        }
+        return Collections.EMPTY_LIST;
+    }
+
+    public Product findProductById(long productId) {
+        Optional<Product> productOptional = productDao.findById(productId);
+        return productOptional.orElse(null);
     }
 
 }

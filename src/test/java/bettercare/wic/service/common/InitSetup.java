@@ -1,8 +1,8 @@
 package bettercare.wic.service.common;
 
 import bettercare.wic.app.WicApplication;
-import bettercare.wic.dal.WicEntityManager;
-import bettercare.wic.dal.WicTransactionManager;
+import bettercare.wic.dal.em.WicEntityManager;
+import bettercare.wic.dal.em.WicTransactionManager;
 import bettercare.wic.dal.entity.Category;
 import bettercare.wic.dal.entity.Product;
 import bettercare.wic.model.WicOrderRepresentation;

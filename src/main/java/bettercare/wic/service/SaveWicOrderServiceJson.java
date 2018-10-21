@@ -1,12 +1,14 @@
 package bettercare.wic.service;
 
-import bettercare.wic.dal.WicEntityManager;
+import bettercare.wic.dal.em.WicEntityManager;
 import bettercare.wic.dal.WicLogger;
-import bettercare.wic.dal.WicTransactionManager;
+import bettercare.wic.dal.em.WicTransactionManager;
 import bettercare.wic.dal.entity.Customer;
 import bettercare.wic.dal.entity.Product;
 import bettercare.wic.dal.entity.Voucher;
 import bettercare.wic.dal.entity.WicOrder;
+import bettercare.wic.service.supports.OrderStatus;
+import bettercare.wic.service.supports.TimeTrimmer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;

@@ -1,10 +1,11 @@
 package bettercare.wic.service.config;
 
-import bettercare.wic.dal.WicEntityManager;
-import bettercare.wic.dal.WicTransactionManager;
-import bettercare.wic.service.ObjectMapperFactory;
+import bettercare.wic.dal.em.WicEntityManager;
+import bettercare.wic.dal.em.WicTransactionManager;
+import bettercare.wic.service.supports.FetchService;
+import bettercare.wic.service.marshaller.ObjectMapperFactory;
 import bettercare.wic.service.SaveWicOrderService;
-import bettercare.wic.service.TimeTrimmer;
+import bettercare.wic.service.supports.TimeTrimmer;
 import bettercare.wic.dal.WicLogger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.annotation.Bean;
@@ -44,4 +45,8 @@ public class ServiceConfiguration {
     return new SaveWicOrderService();
   }
 
+  @Bean
+  public FetchService fetchService() {
+    return new FetchService();
+  }
 }
