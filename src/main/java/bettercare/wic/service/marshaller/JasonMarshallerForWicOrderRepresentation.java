@@ -6,7 +6,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-@Produces({"application/wicOrderRepresentation+json"})
+@Produces({ WicMediaType.APPLICATION_WIC_ORDER_JSON })
 public class JasonMarshallerForWicOrderRepresentation extends JsonMarshaller<WicOrderRepresentation> {
 
 }

@@ -1,6 +1,7 @@
 package bettercare.wic.endpoint;
 
 import bettercare.wic.model.WicOrderRepresentation;
+import bettercare.wic.service.marshaller.WicMediaType;
 import org.springframework.validation.annotation.Validated;
 
 import javax.ws.rs.*;
@@ -15,14 +16,14 @@ public interface api {
 
     @GET
     @Path("/")
-    @Produces({APPLICATION_JSON})
-    @Consumes({APPLICATION_JSON})
+    @Produces({WicMediaType.APPLICATION_WIC_ORDER_JSON})
+    @Consumes({WicMediaType.APPLICATION_WIC_ORDER_JSON})
     Response list(@Context Request request);
 
     @POST
-    @Path("/")
-    @Produces(APPLICATION_JSON)
-    @Consumes(APPLICATION_JSON)
-    Response placeOrder(@Context Request request, WicOrderRepresentation wicOrderRepresentation);
+    @Path("/order")
+    @Produces(WicMediaType.APPLICATION_WIC_ORDER_JSON)
+    @Consumes(WicMediaType.APPLICATION_WIC_ORDER_JSON)
+    Response order(@Context Request request, WicOrderRepresentation wicOrderRepresentation);
 
 }
