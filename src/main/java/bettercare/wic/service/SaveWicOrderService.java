@@ -38,8 +38,8 @@ public class SaveWicOrderService {
         }
         Customer customer = persistCustomerIfNew(new Customer(model.getWicNumber(), model.getName(), model.getPhone(), model.getAddress()));
 
-        if(isBlank(model.getVoucherNumber()) || !isVoucherDateValid(model.getStartDate(), model.getExpirationDate())) {
-            wicLogger.error("Voucher is invalid.", Voucher.class);
+        if(isBlank(model.getVoucherNumber())) {
+            wicLogger.error("Voucher number is blank.", Voucher.class);
             return null;
         }
 
@@ -57,7 +57,7 @@ public class SaveWicOrderService {
             }
         }
         else {
-            wicLogger.info("The same voucher cannot be sued again.", Voucher.class);
+            wicLogger.info("The same voucher cannot be used again.", Voucher.class);
         }
         return null;
     }
@@ -77,9 +77,6 @@ public class SaveWicOrderService {
     }
 
     private boolean isNewVoucher(Voucher voucher, long customerId) {
-        if(voucher.getId() == 0) {
-           return true;
-        }
         voucher.setCustomerId(customerId);
         String voucherQuery = String.format("select * from voucher where voucher_number = '%s' and customer_id = '%s' limit 1", voucher.getVoucherNumber(), voucher.getCustomerId());
         return fetchService.findByNativeQuery(voucherQuery, Voucher.class) == null;

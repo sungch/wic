@@ -3,14 +3,19 @@ package bettercare.wic.service.manual;
 import bettercare.wic.dal.entity.Category;
 import bettercare.wic.dal.entity.Product;
 import bettercare.wic.service.common.InitSetup;
+import bettercare.wic.service.supports.FetchService;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ProductStocker extends InitSetup {
+
+  @Resource
+  private FetchService fetchService;
 
   @Test
   public void addNewProducts() {
@@ -24,7 +29,7 @@ public class ProductStocker extends InitSetup {
       for (int i = start; i < end; i++) {
         addProducsOnEachCategoryIfNew(category, where, i);
       }
-      List<Product> products = wicTransactionManager.findProductsByCategoryId(categoryId);
+      List<Product> products = fetchService.findProductsByCategoryId(categoryId);
       wicLogger.log("Created products:" + products.size());
       Assert.assertFalse(products.isEmpty());
     }
@@ -40,7 +45,7 @@ public class ProductStocker extends InitSetup {
 
     if (isEmpty(query, Product.class)) {
       Product product = prepareProduct(category, barcode, desc, productName, imageName);
-      Product newProduct = wicTransactionManager.saveOrUpdateProduct(product);
+      Product newProduct = fetchService.saveOrUpdateProduct(product);
       wicLogger.log(String.format("Created product %s", newProduct.toString()));
     }
     else {
@@ -78,7 +83,7 @@ public class ProductStocker extends InitSetup {
   }
 
   private boolean isEmpty(String query, Class clz) {
-    return wicEntityManasger.findListByNativeQuery(query, clz).isEmpty();
+    return fetchService.findListByNativeQuery(query, clz).isEmpty();
   }
 
 }

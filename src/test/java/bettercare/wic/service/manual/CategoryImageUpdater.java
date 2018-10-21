@@ -2,11 +2,15 @@ package bettercare.wic.service.manual;
 
 import bettercare.wic.dal.entity.Category;
 import bettercare.wic.service.common.InitSetup;
+import bettercare.wic.service.supports.FetchService;
 import org.junit.Test;
 
-import java.util.Map;
+import javax.annotation.Resource;
 
 public class CategoryImageUpdater extends InitSetup {
+
+    @Resource
+    private FetchService fetchService;
 
     @Test
     public void updateCategoryImages() {
@@ -16,7 +20,7 @@ public class CategoryImageUpdater extends InitSetup {
                 continue;
             }
             category.setImageUrl(url);
-            category = wicTransactionManager.saveOrUpdateCategory(category);
+            category = fetchService.saveOrUpdateCategory(category);
             wicLogger.log(String.format("Created a Category %s", category.toString()));
         }
     }

@@ -1,13 +1,12 @@
 package bettercare.wic.service.common;
 
 import bettercare.wic.app.WicApplication;
-import bettercare.wic.dal.em.WicEntityManager;
-import bettercare.wic.dal.em.WicTransactionManager;
 import bettercare.wic.dal.entity.Category;
 import bettercare.wic.dal.entity.Product;
 import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.SaveWicOrderService;
 import bettercare.wic.dal.WicLogger;
+import bettercare.wic.service.supports.FetchService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,13 +18,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = WicApplication.class)
 public class InitSetup {
 
-  @Resource protected WicTransactionManager wicTransactionManager;
-  @Resource protected WicEntityManager wicEntityManasger;
+  @Resource protected FetchService fetchService;
   @Resource protected WicLogger wicLogger;
   @Resource protected SaveWicOrderService saveWicOrderService;
 
@@ -37,15 +36,15 @@ public class InitSetup {
   // Use this for all other purposes.
   protected List<Category> categories;
 
-  private String wicNumber = "12hwewekh2323";
-  private String customerName = "customer_1";
+  private String wicNumber = "customer_wic_number_" + String.valueOf(new Random(System.currentTimeMillis()).nextInt());
+  private String customerName = "customer_" + String.valueOf(new Random(System.currentTimeMillis()).nextInt());
   private String address = "5122 woodsmere lane, herriman, UT 84096";
   private String phone = "801-809-0915";
   private long aDay = (24 * 60 * 60 * 1000);
   private long now = new Date().getTime();
   private long startDate = now - aDay;
   private long expirationDate = now + aDay;
-  private String voucherNumber = "hifh23heiuh23hredfi";
+  private String voucherNumber = "voucherNum_" + String.valueOf(new Random(System.currentTimeMillis()).nextInt());
 
   protected String productImageName = "img001"; // to update product image name
   protected String categoryImageName = "img000"; // to update product image name
@@ -61,9 +60,8 @@ public class InitSetup {
 
   @Before
   public void setup() {
-    Assert.assertNotNull(wicTransactionManager);
-    Assert.assertNotNull(wicEntityManasger);
-    categories = wicTransactionManager.findAllCategories();
+    Assert.assertNotNull(fetchService);
+    categories = fetchService.fetchAllCategories();
   }
 
   protected WicOrderRepresentation getModel() {
@@ -91,7 +89,7 @@ public class InitSetup {
     String ITEM_DELIMITER = "&";
     String PROD_QUANTITY_DELIMITER = ":";
 
-    List<Product> productList = wicTransactionManager.findAllProducts();
+    List<Product> productList = fetchService.fetchAllProducts();
 
     for(Product product : productList) {
       String orderQuantity = String.valueOf((int)(quantity + product.getId()));
