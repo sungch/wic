@@ -1,4 +1,4 @@
-package bettercare.wic.service.config;
+package bettercare.wic.config;
 
 import bettercare.wic.dal.em.WicEntityManager;
 import bettercare.wic.dal.em.WicTransactionManager;

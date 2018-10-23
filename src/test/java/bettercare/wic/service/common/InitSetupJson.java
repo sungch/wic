@@ -1,6 +1,6 @@
 package bettercare.wic.service.common;
 
-import bettercare.wic.app.WicApplication;
+import bettercare.wic.config.WicApplication;
 import bettercare.wic.dal.em.WicEntityManager;
 import bettercare.wic.dal.em.WicTransactionManager;
 import bettercare.wic.service.SaveWicOrderService;

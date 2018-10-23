@@ -1,4 +1,4 @@
-package bettercare.wic.dal.config;
+package bettercare.wic.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.cfg.AvailableSettings;
