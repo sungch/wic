@@ -3,7 +3,7 @@ package bettercare.wic.service.config;
 import bettercare.wic.dal.em.WicEntityManager;
 import bettercare.wic.dal.em.WicTransactionManager;
 import bettercare.wic.service.supports.FetchService;
-import bettercare.wic.service.marshaller.ObjectMapperFactory;
+//import bettercare.wic.service.marshaller.ObjectMapperFactory;
 import bettercare.wic.service.SaveWicOrderService;
 import bettercare.wic.service.supports.TimeTrimmer;
 import bettercare.wic.dal.WicLogger;
@@ -15,10 +15,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ServiceConfiguration {
 
-  @Bean
-  public ObjectMapper objectMapper() {
-    return ObjectMapperFactory.instance();
-  }
+//  @Bean
+//  public ObjectMapper objectMapper() {
+//    return ObjectMapperFactory.instance();
+//  }
 
   @Bean
   public WicLogger wicLogger() {

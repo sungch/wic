@@ -21,32 +21,13 @@
     </context-param>
 
     <filter>
-        <filter-name>rootServletFilter</filter-name>
-        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-        <init-param>
-            <param-name>defaultLogger</param-name>
-            <param-value>bettercare.wic</param-value>
-        </init-param>
-        <init-param>
-            <param-name>targetFilterLifecycle</param-name>
-            <param-value>true</param-value>
-        </init-param>
-    </filter>
-
-    <filter>
         <filter-name>Jersey Spring Web Application</filter-name>
         <filter-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</filter-class>
-        <!--Mix in enunciate providers-->
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <!-- This installs EnunciateJaxbContextResolver and ClientAbortExceptionMapper -->
             <param-value>
-                com.webcohesion.enunciate.rt
-                org.familysearch.ws.rt.tomcat
-                com.sun.jersey.atom.abdera.impl.provider.entity
                 org.codehaus.jackson.jaxrs
-                org.familysearch.idx.rest.workflow.support
-                org.familysearch.idx.rest.workflow.endpoints
+                bettercare.wic.endpoint
             </param-value>
         </init-param>
         <init-param>
@@ -59,30 +40,32 @@
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
-            <param-value>com.sun.jersey.api.container.filter.GZIPContentEncodingFilter,
-                org.familysearch.idx.api.rest.filters.AcceptLanguageRequestFilter
+            <param-value>com.sun.jersey.api.container.filter.GZIPContentEncodingFilter
             </param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
-            <param-value>com.sun.jersey.api.container.filter.GZIPContentEncodingFilter,
-                org.familysearch.idx.api.rest.filters.IERemoveVaryResponseFilter
+            <param-value>com.sun.jersey.api.container.filter.GZIPContentEncodingFilter
             </param-value>
         </init-param>
     </filter>
-    <filter>
-        <filter-name>OpenSessionInViewFilter</filter-name>
-        <filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>OpenSessionInViewFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>rootServletFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    <!--<filter>-->
+        <!--<filter-name>OpenSessionInViewFilter</filter-name>-->
+        <!--<filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter>-->
+    <!--<filter-name>rootServletFilter</filter-name>-->
+    <!--<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>-->
+    <!--</filter>-->
 
+    <!--<filter-mapping>-->
+    <!--<filter-name>rootServletFilter</filter-name>-->
+    <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>OpenSessionInViewFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
     <filter-mapping>
         <filter-name>Jersey Spring Web Application</filter-name>
         <url-pattern>/*</url-pattern>
