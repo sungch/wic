@@ -24,6 +24,24 @@ public class WicOrderRepresentation implements Serializable {
     private long startDate;
     private String voucherNumber;
 
+    public WicOrderRepresentation() {}
+
+    public WicOrderRepresentation(boolean isEmergency, long orderedTime, String products, String status, String address,
+                                  String name, String phone, String wicNumber, long startDate, long expirationDate,
+                                  String voucherNumber) {
+        this.isEmergency = isEmergency;
+        this.orderedTime = orderedTime;
+        this.products = products;
+        this.status = status;
+        this.address = address;
+        this.name = name;
+        this.phone = phone;
+        this.wicNumber = wicNumber;
+        this.startDate = startDate;
+        this.expirationDate = expirationDate;
+        this.voucherNumber = voucherNumber;
+    }
+
     public boolean isEmergency() {
         return isEmergency;
     }

@@ -1,0 +1,180 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Building wic 1.0.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.0.0:clean (default-clean) @ wic ---
+[INFO] Deleting /Users/sungch/sandbox/wic/target
+[INFO] 
+[INFO] --- maven-resources-plugin:3.0.2:resources (default-resources) @ wic ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.7.0:compile (default-compile) @ wic ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 31 source files to /Users/sungch/sandbox/wic/target/classes
+[INFO] /Users/sungch/sandbox/wic/src/main/java/bettercare/wic/dal/em/WicEntityManager.java: Some input files use unchecked or unsafe operations.
+[INFO] /Users/sungch/sandbox/wic/src/main/java/bettercare/wic/dal/em/WicEntityManager.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- maven-resources-plugin:3.0.2:testResources (default-testResources) @ wic ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /Users/sungch/sandbox/wic/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.7.0:testCompile (default-testCompile) @ wic ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 10 source files to /Users/sungch/sandbox/wic/target/test-classes
+[INFO] /Users/sungch/sandbox/wic/src/test/java/bettercare/wic/service/manual/CategoryCreater.java: Some input files use unchecked or unsafe operations.
+[INFO] /Users/sungch/sandbox/wic/src/test/java/bettercare/wic/service/manual/CategoryCreater.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.21.0:test (default-test) @ wic ---
+[INFO] 
+[INFO] --- maven-war-plugin:3.1.0:war (default-war) @ wic ---
+[INFO] Packaging webapp
+[INFO] Assembling webapp [wic] in [/Users/sungch/sandbox/wic/target/wic-1.0.0-SNAPSHOT]
+[INFO] Processing war project
+[INFO] Copying webapp resources [/Users/sungch/sandbox/wic/src/main/webapp]
+[INFO] Webapp assembled in [311 msecs]
+[INFO] Building war: /Users/sungch/sandbox/wic/target/wic-1.0.0-SNAPSHOT.war
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.0.5.RELEASE:repackage (default) @ wic ---
+[INFO] 
+[INFO] --- maven-install-plugin:2.5.2:install (default-install) @ wic ---
+[INFO] Installing /Users/sungch/sandbox/wic/target/wic-1.0.0-SNAPSHOT.war to /Users/sungch/.m2/repository/bettercare/wic/1.0.0-SNAPSHOT/wic-1.0.0-SNAPSHOT.war
+[INFO] Installing /Users/sungch/sandbox/wic/pom.xml to /Users/sungch/.m2/repository/bettercare/wic/1.0.0-SNAPSHOT/wic-1.0.0-SNAPSHOT.pom
+[INFO] 
+[INFO] --- cargo-maven2-plugin:1.4.14:run (default-cli) @ wic ---
+[INFO] [en2.ContainerRunMojo] Resolved container artifact org.codehaus.cargo:cargo-core-container-tomcat:jar:1.4.14 for container tomcat8x
+[INFO] [talledLocalContainer] Tomcat 8.x starting...
+[INFO] [stalledLocalDeployer] Deploying [/Users/sungch/sandbox/wic/target/wic-1.0.0-SNAPSHOT.war] to [/Users/sungch/sandbox/wic/target/tomcat8x/webapps]...
+[INFO] [talledLocalContainer] Listening for transport dt_socket at address: 8000
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.tomcat.util.digester.SetPropertiesRule begin
+[WARNING] [talledLocalContainer] WARNING: [SetPropertiesRule]{Server/Service/Engine/Host/Valve} Setting property 'resolveHosts' to 'false' did not find a matching property.
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Server version:        Apache Tomcat/8.0.22
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Server built:          Apr 29 2015 11:46:15 UTC
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Server number:         8.0.22.0
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: OS Name:               Mac OS X
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: OS Version:            10.13.6
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Architecture:          x86_64
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Java Home:             /Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: JVM Version:           1.8.0_144-b01
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: JVM Vendor:            Oracle Corporation
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: CATALINA_BASE:         /Users/sungch/sandbox/wic/target/tomcat8x
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: CATALINA_HOME:         /Users/sungch/sandbox/wic/target/cargo/installs/apache-tomcat-8.0.22/apache-tomcat-8.0.22
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Command line argument: -Xdebug
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Command line argument: -Xnoagent
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Command line argument: -Djava.compiler=NONE
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Command line argument: -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Command line argument: -Dcom.sun.management.jmxremote
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Command line argument: -Dcom.sun.management.jmxremote.ssl=false
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Command line argument: -Dcom.sun.management.jmxremote.authenticate=false
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Command line argument: -Dcom.sun.management.jmxremote.port=9000
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Command line argument: -Xms128m
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Command line argument: -Xmx512m
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Command line argument: -Dcatalina.home=/Users/sungch/sandbox/wic/target/cargo/installs/apache-tomcat-8.0.22/apache-tomcat-8.0.22
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Command line argument: -Dcatalina.base=/Users/sungch/sandbox/wic/target/tomcat8x
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Command line argument: -Djava.io.tmpdir=/Users/sungch/sandbox/wic/target/tomcat8x/temp
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.VersionLoggerListener log
+[INFO] [talledLocalContainer] INFO: Command line argument: -Djava.util.logging.config.file=/Users/sungch/sandbox/wic/target/tomcat8x/conf/logging.properties
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.core.AprLifecycleListener lifecycleEvent
+[INFO] [talledLocalContainer] INFO: The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: /Users/sungch/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.coyote.AbstractProtocol init
+[INFO] [talledLocalContainer] INFO: Initializing ProtocolHandler ["http-nio-8090"]
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.tomcat.util.net.NioSelectorPool getSharedSelector
+[INFO] [talledLocalContainer] INFO: Using a shared selector for servlet write/read
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.coyote.AbstractProtocol init
+[INFO] [talledLocalContainer] INFO: Initializing ProtocolHandler ["ajp-nio-8019"]
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.tomcat.util.net.NioSelectorPool getSharedSelector
+[INFO] [talledLocalContainer] INFO: Using a shared selector for servlet write/read
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.Catalina load
+[INFO] [talledLocalContainer] INFO: Initialization processed in 426 ms
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.core.StandardService startInternal
+[INFO] [talledLocalContainer] INFO: Starting service Catalina
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.core.StandardEngine startInternal
+[INFO] [talledLocalContainer] INFO: Starting Servlet Engine: Apache Tomcat/8.0.22
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:46 AM org.apache.catalina.startup.HostConfig deployWAR
+[INFO] [talledLocalContainer] INFO: Deploying web application archive /Users/sungch/sandbox/wic/target/tomcat8x/webapps/wic-1.0.0-SNAPSHOT.war
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:49 AM org.apache.jasper.servlet.TldScanner scanJars
+[INFO] [talledLocalContainer] INFO: At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+[INFO] [talledLocalContainer] SLF4J: Class path contains multiple SLF4J bindings.
+[INFO] [talledLocalContainer] SLF4J: Found binding in [jar:file:/Users/sungch/sandbox/wic/target/tomcat8x/webapps/wic-1.0.0-SNAPSHOT/WEB-INF/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+[INFO] [talledLocalContainer] SLF4J: Found binding in [jar:file:/Users/sungch/sandbox/wic/target/tomcat8x/webapps/wic-1.0.0-SNAPSHOT/WEB-INF/lib/logback-classic-1.2.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+[INFO] [talledLocalContainer] SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+[INFO] [talledLocalContainer] SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:49 AM org.apache.catalina.core.ApplicationContext log
+[INFO] [talledLocalContainer] INFO: 1 Spring WebApplicationInitializers detected on classpath
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:49 AM org.apache.catalina.core.ApplicationContext log
+[INFO] [talledLocalContainer] INFO: Initializing Spring root WebApplicationContext
+[WARNING] [talledLocalContainer] log4j:WARN No appenders could be found for logger (org.springframework.web.context.ContextLoader).
+[WARNING] [talledLocalContainer] log4j:WARN Please initialize the log4j system properly.
+[WARNING] [talledLocalContainer] log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+[WARNING] [talledLocalContainer] Tue Oct 23 11:58:52 MDT 2018 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+[WARNING] [talledLocalContainer] Tue Oct 23 11:58:52 MDT 2018 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+[WARNING] [talledLocalContainer] Tue Oct 23 11:58:52 MDT 2018 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+[WARNING] [talledLocalContainer] Tue Oct 23 11:58:52 MDT 2018 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+[WARNING] [talledLocalContainer] Tue Oct 23 11:58:52 MDT 2018 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+[WARNING] [talledLocalContainer] Tue Oct 23 11:58:52 MDT 2018 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM com.sun.jersey.api.core.PackagesResourceConfig init
+[INFO] [talledLocalContainer] INFO: Scanning for root resource and provider classes in the packages:
+[INFO] [talledLocalContainer]   org.codehaus.jackson.jaxrs
+[INFO] [talledLocalContainer]   bettercare.wic
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM com.sun.jersey.api.core.ScanningResourceConfig logClasses
+[INFO] [talledLocalContainer] INFO: Root resource classes found:
+[INFO] [talledLocalContainer]   class bettercare.wic.endpoint.OrderEndpointImpl
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM com.sun.jersey.api.core.ScanningResourceConfig logClasses
+[INFO] [talledLocalContainer] INFO: Provider classes found:
+[INFO] [talledLocalContainer]   class bettercare.wic.service.marshaller.DefaultExceptionMapper
+[INFO] [talledLocalContainer]   class bettercare.wic.service.marshaller.JasonMarshallerForWicOrderRepresentation
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM com.sun.jersey.spi.spring.container.servlet.SpringServlet getContext
+[INFO] [talledLocalContainer] INFO: Using default applicationContext
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM com.sun.jersey.server.impl.application.WebApplicationImpl _initiate
+[INFO] [talledLocalContainer] INFO: Initiating Jersey application, version 'Jersey: 1.19.2 08/25/2016 12:00 AM'
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM org.apache.catalina.startup.HostConfig deployWAR
+[INFO] [talledLocalContainer] INFO: Deployment of web application archive /Users/sungch/sandbox/wic/target/tomcat8x/webapps/wic-1.0.0-SNAPSHOT.war has finished in 10,974 ms
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM org.apache.catalina.startup.HostConfig deployWAR
+[INFO] [talledLocalContainer] INFO: Deploying web application archive /Users/sungch/sandbox/wic/target/tomcat8x/webapps/cargocpc.war
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM org.apache.catalina.startup.HostConfig deployWAR
+[INFO] [talledLocalContainer] INFO: Deployment of web application archive /Users/sungch/sandbox/wic/target/tomcat8x/webapps/cargocpc.war has finished in 19 ms
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM org.apache.catalina.startup.HostConfig deployDirectory
+[INFO] [talledLocalContainer] INFO: Deploying web application directory /Users/sungch/sandbox/wic/target/tomcat8x/webapps/manager
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM org.apache.catalina.startup.HostConfig deployDirectory
+[INFO] [talledLocalContainer] INFO: Deployment of web application directory /Users/sungch/sandbox/wic/target/tomcat8x/webapps/manager has finished in 23 ms
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM org.apache.catalina.startup.HostConfig deployDirectory
+[INFO] [talledLocalContainer] INFO: Deploying web application directory /Users/sungch/sandbox/wic/target/tomcat8x/webapps/host-manager
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM org.apache.catalina.startup.HostConfig deployDirectory
+[INFO] [talledLocalContainer] INFO: Deployment of web application directory /Users/sungch/sandbox/wic/target/tomcat8x/webapps/host-manager has finished in 16 ms
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM org.apache.coyote.AbstractProtocol start
+[INFO] [talledLocalContainer] INFO: Starting ProtocolHandler ["http-nio-8090"]
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM org.apache.coyote.AbstractProtocol start
+[INFO] [talledLocalContainer] INFO: Starting ProtocolHandler ["ajp-nio-8019"]
+[INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM org.apache.catalina.startup.Catalina start
+[INFO] [talledLocalContainer] INFO: Server startup in 11102 ms
+[INFO] [talledLocalContainer] Tomcat 8.x started on port [8090]
+[INFO] Press Ctrl-C to stop the container...

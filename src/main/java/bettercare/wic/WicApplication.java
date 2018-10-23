@@ -1,9 +1,9 @@
-package bettercare.wic.config;
+package bettercare.wic;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = {"bettercare.wic"})
+@SpringBootApplication
 public class WicApplication {
 
 	public static void main(String[] args) {
