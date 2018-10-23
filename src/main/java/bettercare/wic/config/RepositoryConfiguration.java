@@ -27,7 +27,7 @@ import static org.hibernate.cfg.AvailableSettings.SHOW_SQL;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories("bettercare.wic.dal")
-@PropertySource({"classpath:/config.properties"})
+@PropertySource({"classpath:/application.properties"})
 public class RepositoryConfiguration {
 
     @Value("${db.url:}")

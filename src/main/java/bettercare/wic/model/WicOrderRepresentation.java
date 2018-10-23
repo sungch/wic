@@ -1,5 +1,7 @@
 package bettercare.wic.model;
 
+import org.springframework.stereotype.Component;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 

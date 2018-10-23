@@ -6,10 +6,13 @@ import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.*;
 import org.codehaus.jackson.map.module.SimpleModule;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.Instant;
 
+@Service
 public class ObjectMapperFactory {
 
     private static final ObjectMapper objectMapper;
@@ -39,6 +42,7 @@ public class ObjectMapperFactory {
 
 }
 
+@Service
 class JsonInstantDeserializer extends JsonDeserializer<Instant> {
     @Override
     public Instant deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
@@ -47,6 +51,7 @@ class JsonInstantDeserializer extends JsonDeserializer<Instant> {
     }
 }
 
+@Service
 class JsonInstantSerializer extends JsonSerializer<Instant> {
     @Override
     public void serialize(Instant value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {

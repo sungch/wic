@@ -17,17 +17,19 @@
      <!--Load Spring Java Config: @SpringBootApplication took care of this.-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>bettercare.wic.config</param-value>
+        <param-value>bettercare.wic</param-value>
     </context-param>
 
     <filter>
+
         <filter-name>Jersey Spring Web Application</filter-name>
+
         <filter-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</filter-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
             <param-value>
                 org.codehaus.jackson.jaxrs
-                bettercare.wic
+                bettercare.wic.service.marshaller
             </param-value>
         </init-param>
         <init-param>

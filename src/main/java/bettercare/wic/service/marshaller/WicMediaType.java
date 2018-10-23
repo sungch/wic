@@ -1,7 +1,9 @@
-//package bettercare.wic.service.marshaller;
-//
-//public class WicMediaType {
-//
-//  public static final String APPLICATION_WIC_ORDER_JSON = "application/wicOrderRepresentation+json";
-//
-//}
+package bettercare.wic.service.marshaller;
+
+import javax.ws.rs.core.MediaType;
+
+public class WicMediaType extends MediaType {
+
+  public final static String APPLICATION_WIC_ORDER_JSON = "application/wicOrderRepresentation+json";
+
+}
