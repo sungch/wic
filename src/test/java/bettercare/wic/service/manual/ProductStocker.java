@@ -3,7 +3,7 @@ package bettercare.wic.service.manual;
 import bettercare.wic.dal.entity.Category;
 import bettercare.wic.dal.entity.Product;
 import bettercare.wic.service.common.InitSetup;
-import bettercare.wic.service.supports.FetchService;
+import bettercare.wic.service.EntityService;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ import java.util.Map;
 public class ProductStocker extends InitSetup {
 
   @Resource
-  private FetchService fetchService;
+  private EntityService fetchService;
 
   @Test
   public void addNewProducts() {

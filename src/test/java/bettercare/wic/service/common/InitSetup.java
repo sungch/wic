@@ -6,7 +6,7 @@ import bettercare.wic.dal.entity.Product;
 import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.SaveWicOrderService;
 import bettercare.wic.dal.WicLogger;
-import bettercare.wic.service.supports.FetchService;
+import bettercare.wic.service.EntityService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +24,7 @@ import java.util.Random;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = WicApplication.class)
 public class InitSetup {
 
-  @Resource protected FetchService fetchService;
+  @Resource protected EntityService fetchService;
   @Resource protected WicLogger wicLogger;
   @Resource protected SaveWicOrderService saveWicOrderService;
 
@@ -61,7 +61,7 @@ public class InitSetup {
   @Before
   public void setup() {
     Assert.assertNotNull(fetchService);
-    categories = fetchService.fetchAllCategories();
+    categories = fetchService.fetchCategories();
   }
 
   protected WicOrderRepresentation getModel() {
@@ -89,7 +89,7 @@ public class InitSetup {
     String ITEM_DELIMITER = "&";
     String PROD_QUANTITY_DELIMITER = ":";
 
-    List<Product> productList = fetchService.fetchAllProducts();
+    List<Product> productList = fetchService.fetchProducts();
 
     for(Product product : productList) {
       String orderQuantity = String.valueOf((int)(quantity + product.getId()));

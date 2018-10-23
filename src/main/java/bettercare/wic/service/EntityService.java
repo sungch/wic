@@ -1,25 +1,27 @@
-package bettercare.wic.service.supports;
+package bettercare.wic.service;
 
 import bettercare.wic.dal.em.WicEntityManager;
 import bettercare.wic.dal.em.WicTransactionManager;
 import bettercare.wic.dal.entity.*;
+import bettercare.wic.service.supports.OrderStatus;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
-public class FetchService {
+public class EntityService {
 
   @Resource
   private WicTransactionManager wicTransactionManager;
   @Resource
   private WicEntityManager wicEntityManager;
 
-  public List<Product> fetchAllProducts() {
-    return wicTransactionManager.findAllProducts();
+  public List<Product> fetchProducts() {
+    return wicTransactionManager.findProducts();
   }
 
-  public List<Category> fetchAllCategories() {
-    return wicTransactionManager.findAllCategories();
+  public List<Category> fetchCategories() {
+    return wicTransactionManager.findCategories();
   }
 
   public Category saveOrUpdateCategory(Category category) {
@@ -53,7 +55,15 @@ public class FetchService {
     return wicEntityManager.findByNativeQuery(voucherQuery, clz);
   }
 
-  public List fetchAllPendingOrders() {
+  public List fetchOrders() {
+    return wicTransactionManager.findOrders();
+  }
+
+  public Optional<WicOrder> fetchOrder(long id) {
+    return wicTransactionManager.findOrder(id);
+  }
+
+  public List fetchPendingOrders() {
     String qry = "select * from wic_order where status is not " + OrderStatus.DELIVERY_COMPLETED.name();
     return wicEntityManager.findListByNativeQuery(qry, WicOrder.class);
   }
@@ -62,4 +72,7 @@ public class FetchService {
     return wicEntityManager.findListByNativeQuery(query, clz);
   }
 
+  public void deleteOrderById(long id) {
+    wicTransactionManager.deleteOrderById(id);
+  }
 }

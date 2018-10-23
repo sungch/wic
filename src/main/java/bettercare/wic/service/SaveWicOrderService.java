@@ -6,7 +6,6 @@ import bettercare.wic.dal.entity.Product;
 import bettercare.wic.dal.entity.Voucher;
 import bettercare.wic.dal.entity.WicOrder;
 import bettercare.wic.model.WicOrderRepresentation;
-import bettercare.wic.service.supports.FetchService;
 import bettercare.wic.service.supports.OrderStatus;
 import bettercare.wic.service.supports.TimeTrimmer;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ import java.util.Date;
 public class SaveWicOrderService {
 
     @Resource
-    private FetchService fetchService;
+    private EntityService fetchService;
     @Resource
     private WicLogger wicLogger;
     @Resource

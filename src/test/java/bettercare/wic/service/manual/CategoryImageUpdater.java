@@ -2,7 +2,7 @@ package bettercare.wic.service.manual;
 
 import bettercare.wic.dal.entity.Category;
 import bettercare.wic.service.common.InitSetup;
-import bettercare.wic.service.supports.FetchService;
+import bettercare.wic.service.EntityService;
 import org.junit.Test;
 
 import javax.annotation.Resource;
@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 public class CategoryImageUpdater extends InitSetup {
 
     @Resource
-    private FetchService fetchService;
+    private EntityService fetchService;
 
     @Test
     public void updateCategoryImages() {

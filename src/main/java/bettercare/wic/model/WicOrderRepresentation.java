@@ -5,11 +5,11 @@ import org.springframework.stereotype.Component;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
-@XmlRootElement
 public class WicOrderRepresentation implements Serializable {
 
     private static final long serialVersionUID = -1437982395144640698L;
 
+    private long orderId;
     private boolean isEmergency;
     private long orderedTime;
     private String products;
@@ -26,9 +26,10 @@ public class WicOrderRepresentation implements Serializable {
 
     public WicOrderRepresentation() {}
 
-    public WicOrderRepresentation(boolean isEmergency, long orderedTime, String products, String status, String address,
+    public WicOrderRepresentation(long orderId, boolean isEmergency, long orderedTime, String products, String status, String address,
                                   String name, String phone, String wicNumber, long startDate, long expirationDate,
                                   String voucherNumber) {
+        this.orderId = orderId;
         this.isEmergency = isEmergency;
         this.orderedTime = orderedTime;
         this.products = products;
@@ -40,6 +41,14 @@ public class WicOrderRepresentation implements Serializable {
         this.startDate = startDate;
         this.expirationDate = expirationDate;
         this.voucherNumber = voucherNumber;
+    }
+
+    public long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(long orderId) {
+        this.orderId = orderId;
     }
 
     public boolean isEmergency() {

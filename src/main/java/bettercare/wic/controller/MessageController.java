@@ -2,8 +2,14 @@ package bettercare.wic.controller;
 
 import bettercare.wic.dal.entity.WicOrder;
 import bettercare.wic.model.WicOrderRepresentation;
-import org.springframework.stereotype.Controller;
+import bettercare.wic.service.EntityService;
+import bettercare.wic.service.SaveWicOrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.ws.rs.QueryParam;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @Controller + @ResponseBody (converter of string to json) === @RestController
@@ -18,8 +24,11 @@ import org.springframework.web.bind.annotation.*;
  */
 
 
-@RestController
+@RestController("/wic")
 public class MessageController {
+
+    @Autowired private SaveWicOrderService saveWicOrderService;
+    @Autowired private EntityService entityService;
 
     // GET localhost:8080/message
 
@@ -39,5 +48,40 @@ public class MessageController {
         return model;
     }
 
+    @PostMapping("/order")
+    WicOrderRepresentation createOrder(@RequestBody WicOrderRepresentation model) {
+        WicOrder wicOrder = saveWicOrderService.saveWicOrder(model);
+        model.setOrderId(wicOrder.getId());
+        return model;
+    }
+
+    @GetMapping("/order/{id}")
+    Optional<WicOrder> readOrder(@PathVariable long orderId) {
+        return entityService.fetchOrder(orderId);
+    }
+
+    // TODO make pending as a query param
+    @GetMapping("/pending-orders")
+    List readPendingOrders() {
+        return entityService.fetchOrders();
+    }
+
+    @GetMapping("/orders")
+    List readOrders() {
+        return entityService.fetchOrders();
+    }
+
+    // TODO logic is not clear
+    @PutMapping("/order")
+    WicOrderRepresentation updateOrder(@RequestBody WicOrderRepresentation model) {
+        WicOrder wicOrder =  saveWicOrderService.saveWicOrder(model);
+        model.setOrderId(wicOrder.getId());
+        return model;
+    }
+
+    @DeleteMapping("/order/{id}")
+    void delete(@PathVariable long orderId) {
+        entityService.deleteOrderById(orderId);
+    }
 
 }

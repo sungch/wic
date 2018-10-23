@@ -22,16 +22,24 @@ public class WicTransactionManager {
     @Resource private WicLogger wicLogger;
 
 
-    public List<Category> findAllCategories() {
+    public List<Category> findCategories() {
         return categoryDao.findAll();
     }
 
-    public List<Product> findAllProducts() {
+    public List<Product> findProducts() {
         return productDao.findAll();
     }
 
-    public List<Customer> findAllCustomers() {
+    public List<Customer> findCustomers() {
         return customerDao.findAll();
+    }
+
+    public List<WicOrder> findOrders() {
+        return wicOrderDao.findAll();
+    }
+
+    public Optional<WicOrder> findOrder(long id) {
+        return wicOrderDao.findById(id);
     }
 
 // --
@@ -57,6 +65,10 @@ public class WicTransactionManager {
     public WicOrder saveOrUpdateWicOrder(WicOrder wicOrder) {
         wicLogger.debug("Saving wic order: " + wicOrder.toString(), WicOrder.class);
         return wicOrderDao.saveAndFlush(wicOrder);
+    }
+
+    public void deleteOrderById(long id) {
+        wicOrderDao.deleteById(id);
     }
 
 // --

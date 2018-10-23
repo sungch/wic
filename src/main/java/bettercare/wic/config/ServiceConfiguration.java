@@ -7,7 +7,7 @@ import bettercare.wic.service.marshaller.DefaultExceptionMapper;
 import bettercare.wic.service.marshaller.JasonMarshallerForWicOrderRepresentation;
 import bettercare.wic.service.marshaller.ObjectMapperFactory;
 import bettercare.wic.service.marshaller.WicMediaType;
-import bettercare.wic.service.supports.FetchService;
+import bettercare.wic.service.EntityService;
 import bettercare.wic.service.SaveWicOrderService;
 import bettercare.wic.service.supports.TimeTrimmer;
 import bettercare.wic.dal.WicLogger;
@@ -15,8 +15,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
-
-import javax.ws.rs.ext.ExceptionMapper;
 
 
 @Configuration
@@ -53,8 +51,8 @@ public class ServiceConfiguration {
   }
 
   @Bean
-  public FetchService fetchService() {
-    return new FetchService();
+  public EntityService fetchService() {
+    return new EntityService();
   }
 
   @Bean
