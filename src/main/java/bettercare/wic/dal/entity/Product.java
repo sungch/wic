@@ -28,7 +28,7 @@ public class Product implements Serializable {
   private String name;
 
   @Column(name = "is_handling")
-  private boolean isHandling;
+  private String isHandling;
 
   @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "product_id")
@@ -108,19 +108,19 @@ public class Product implements Serializable {
     this.category = category;
   }
 
-  public boolean isHandling() {
+  public String isHandling() {
     return isHandling;
   }
 
-  public void setHandling(boolean handling) {
-    isHandling = handling;
+  public void setHandling(String is_handling) {
+    isHandling = is_handling;
   }
 
   @Override
   public String toString() {
-    return String.format("productId:%s cateoryId:%s imageId:%s barcode:%s description:%s productName:%s ",
+    return String.format("productId:%s cateoryId:%s imageId:%s barcode:%s description:%s productName:%s isHandling:%s ",
         this.getId(), this.getCategory().getId(), this.getImageUrl(),
-        this.getBarcode(), this.getDescription(), this.getName() );
+        this.getBarcode(), this.getDescription(), this.getName(), this.isHandling );
   }
 
   /**

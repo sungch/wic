@@ -22,7 +22,7 @@ public class ProductStocker extends InitSetup {
       int start = (int)startProductId;
       int end = (int)startProductId + numOfProductsToCreatePerCategory;
       for (int i = start; i < end; i++) {
-        addProducsOnEachCategoryIfNew(category, where, i);
+        addProducsOnEachCategoryIfNew(category, where, i, "Y");
       }
       List<Product> products = entityService.findProductsByCategoryId(categoryId);
       wicLogger.log("Created products:" + products.size());
@@ -30,16 +30,17 @@ public class ProductStocker extends InitSetup {
     }
   }
 
-  private void addProducsOnEachCategoryIfNew(Category category, Map<String, Object> where, int i) {
+  private void addProducsOnEachCategoryIfNew(Category category, Map<String, Object> where, int i, String isHandling) {
     String imageName = null;
     String barcode = "barcode_0w3422932989232_" + i;
     String desc = "desc _" + i;
     String productName = "prodName_" + i;
     where.put("name", productName);
+    where.put("is_handling", isHandling);
     String query = composeQuery(Product.class, where, " limit 1 ");
 
     if (isEmpty(query, Product.class)) {
-      Product product = prepareProduct(category, barcode, desc, productName, imageName);
+      Product product = prepareProduct(category, barcode, desc, productName, imageName, isHandling);
       Product newProduct = entityService.saveOrUpdate(Product.class, product);
       wicLogger.log(String.format("Created product %s", newProduct.toString()));
     }
@@ -48,13 +49,14 @@ public class ProductStocker extends InitSetup {
     }
   }
 
-  private Product prepareProduct(Category category, String barcode, String desc, String prodName, String imageName) {
+  private Product prepareProduct(Category category, String barcode, String desc, String prodName, String imageName, String isHandling) {
     Product product = new Product();
     product.setCategory(category);
     product.setBarcode(barcode);
     product.setDescription(desc);
     product.setImageUrl(imageName);
     product.setName(prodName);
+    product.setHandling(isHandling);
     return product;
   }
 
