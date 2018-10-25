@@ -151,16 +151,17 @@ public class WicOrder implements Serializable {
 			return false;
 		}
 		WicOrder that = (WicOrder) thatObj;
-		return !isDifferent(that.toString(), this.toString());
+		return isSame(that.toString(), this.toString());
 	}
 
-	private boolean isDifferent(String that, String me) {
-		if(that == null) {
+	private boolean isSame(String that, String me) {
+		if (that == null) {
 			return me == null;
 		}
-		else {
-			return that.equals(me);
+		if (me == null) {
+			return false;
 		}
+		return that.equals(me);
 	}
 
 }

@@ -7,7 +7,6 @@ import bettercare.wic.service.supports.OrderStatus;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Optional;
 
 public class EntityService {
 
@@ -16,63 +15,37 @@ public class EntityService {
   @Resource
   private WicEntityManager wicEntityManager;
 
-  public List<Product> fetchProducts() {
-    return wicTransactionManager.findProducts();
+
+  public <T> T saveOrUpdate(Class<T> clz, T obj) {
+    return wicTransactionManager.saveOrUpdate(clz, obj);
   }
 
-  public List<Category> fetchCategories() {
-    return wicTransactionManager.findCategories();
+  public <T> T findById(Class<T> clz, long id) {
+    return wicEntityManager.find(clz, id);
   }
 
-  public Category saveOrUpdateCategory(Category category) {
-    return wicTransactionManager.saveOrUpdateCategory(category);
-  }
-
-  public Voucher saveOrUpdateVoucher(Voucher voucher) {
-    return wicTransactionManager.saveOrUpdateVoucher(voucher);
-  }
-
-  public Customer saveOrUpdateCustomer(Customer customer) {
-    return wicTransactionManager.saveOrUpdateCustomer(customer);
-  }
-
-  public WicOrder saveOrUpdateWicOrder(WicOrder wicOrder) {
-    return wicTransactionManager.saveOrUpdateWicOrder(wicOrder);
-  }
-
-  public List<Product> findProductsByCategoryId(long id) {
-    return wicTransactionManager.findProductsByCategoryId(id);
-  }
-
-
-  public Product saveOrUpdateProduct(Product product) {
-    return wicTransactionManager.saveOrUpdateProduct(product);
-  }
-
-  // --
-
-  public <T> T findByNativeQuery(String voucherQuery, Class<T> clz) {
+  public <T> T findByNativeQuery(Class<T> clz, String voucherQuery) {
     return wicEntityManager.findByNativeQuery(voucherQuery, clz);
   }
 
-  public List fetchOrders() {
-    return wicTransactionManager.findOrders();
+  public <T> List findListByNativeQuery(Class<T> clz, String query) {
+    return wicEntityManager.findListByNativeQuery(query, clz);
   }
 
-  public Optional<WicOrder> fetchOrder(long id) {
-    return wicTransactionManager.findOrder(id);
+  public <T> List<T> findAll(Class<T> clz) {
+    return wicTransactionManager.findAll(clz);
   }
 
-  public List fetchPendingOrders() {
+  public List findPendingOrders() {
     String qry = "select * from wic_order where status is not " + OrderStatus.DELIVERY_COMPLETED.name();
     return wicEntityManager.findListByNativeQuery(qry, WicOrder.class);
   }
 
-  public <T> List<T> findListByNativeQuery(String query, Class<T> clz) {
-    return wicEntityManager.findListByNativeQuery(query, clz);
+  public <T> void deleteOrderById(T obj) {
+    wicEntityManager.remove(obj);
   }
 
-  public void deleteOrderById(long id) {
-    wicTransactionManager.deleteOrderById(id);
+  public List<Product> findProductsByCategoryId(long id) {
+    return wicEntityManager.findProductsByCategoryId(id);
   }
 }

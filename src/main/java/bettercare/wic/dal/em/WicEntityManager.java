@@ -1,10 +1,12 @@
 package bettercare.wic.dal.em;
 
 import bettercare.wic.dal.WicLogger;
+import bettercare.wic.dal.entity.Category;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -30,6 +32,11 @@ public class WicEntityManager {
 
   public <T> T find(Class<T> type, Long id) {
     return entityManager.find(type, id);
+  }
+
+  public List findProductsByCategoryId(long categoryId) {
+    Category category = this.find(Category.class, categoryId);
+    return category == null ? Collections.EMPTY_LIST : category.getProducts();
   }
 
   public <T> T findByNativeQuery(String qry, Class<T> clz) {

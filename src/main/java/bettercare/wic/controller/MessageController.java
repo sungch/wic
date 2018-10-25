@@ -7,9 +7,7 @@ import bettercare.wic.service.SaveWicOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.QueryParam;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @Controller + @ResponseBody (converter of string to json) === @RestController
@@ -56,19 +54,19 @@ public class MessageController {
     }
 
     @GetMapping("/order/{id}")
-    Optional<WicOrder> readOrder(@PathVariable long orderId) {
-        return entityService.fetchOrder(orderId);
+    WicOrder readOrder(@PathVariable long orderId) {
+        return entityService.findById(WicOrder.class, orderId);
     }
 
     // TODO make pending as a query param
     @GetMapping("/pending-orders")
     List readPendingOrders() {
-        return entityService.fetchOrders();
+        return entityService.findAll(WicOrder.class);
     }
 
     @GetMapping("/orders")
     List readOrders() {
-        return entityService.fetchOrders();
+        return entityService.findAll(WicOrder.class);
     }
 
     // TODO logic is not clear

@@ -67,4 +67,41 @@ public class MissingProduct implements Serializable {
 		this.productId = productId;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("id:%s productId:%s quantity:%s", this.getId() + this.getProductId() + this.getQuantity());
+	}
+
+	@Override
+	public boolean equals(Object that_) {
+		if (that_ == null) {
+			return false;
+		}
+		if (!(that_ instanceof MissingProduct)) {
+			return false;
+		}
+		MissingProduct that = (MissingProduct) that_;
+		return isSame(that.toString(), this.toString());
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode() + getStringHash(this.toString());
+	}
+
+	private int getStringHash(String val) {
+		return val == null ? 0 : val.hashCode();
+	}
+
+	private boolean isSame(String that, String me) {
+		if (that == null) {
+			return me == null;
+		}
+		if (me == null) {
+			return false;
+		}
+		return that.equals(me);
+	}
+
+
 }

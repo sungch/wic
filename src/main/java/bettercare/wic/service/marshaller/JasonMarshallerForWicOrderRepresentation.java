@@ -1,9 +1,6 @@
 package bettercare.wic.service.marshaller;
 
 import bettercare.wic.model.WicOrderRepresentation;
-import com.sun.jersey.spi.resource.Singleton;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;

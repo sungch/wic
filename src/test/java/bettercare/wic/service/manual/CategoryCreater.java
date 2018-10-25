@@ -16,7 +16,7 @@ public class CategoryCreater extends InitSetup {
       String query = composeQuery(Category.class, where, " limit 1 ");
       if (isEmpty(query, Category.class)) {
         Category category = prepareCategory(categoryName);
-        category = fetchService.saveOrUpdateCategory(category);
+        category = entityService.saveOrUpdate(Category.class, category);
         wicLogger.log(String.format("Created a Category %s", category.toString()));
       }
       else {
@@ -26,7 +26,7 @@ public class CategoryCreater extends InitSetup {
   }
 
   private boolean isEmpty(String query, Class clz) {
-    return fetchService.findListByNativeQuery(query, clz).isEmpty();
+    return entityService.findListByNativeQuery(clz, query).isEmpty();
   }
 
   private Category prepareCategory(String categoryName) {

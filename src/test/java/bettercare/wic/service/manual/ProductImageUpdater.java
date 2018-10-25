@@ -13,7 +13,7 @@ public class ProductImageUpdater extends InitSetup {
   public void updateProducts() {
     assert categories != null;
     for(Category category : categories) {
-      List<Product> products = fetchService.findProductsByCategoryId(category.getId());
+      List<Product> products = entityService.findProductsByCategoryId(category.getId());
       for(Product product : products) {
         updateProduct(product);
       }
@@ -32,7 +32,7 @@ public class ProductImageUpdater extends InitSetup {
       return;
     }
     product.setImageUrl(imageUrl.replaceAll("[\\s]", "").toLowerCase());
-    fetchService.saveOrUpdateProduct(product);
+    entityService.saveOrUpdate(Product.class, product);
     wicLogger.log("Replaced image file name from " + product.getImageUrl() + " to " + imageUrl);
   }
 

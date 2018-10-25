@@ -3,19 +3,14 @@ package bettercare.wic.service.manual;
 import bettercare.wic.dal.entity.Category;
 import bettercare.wic.dal.entity.Product;
 import bettercare.wic.service.common.InitSetup;
-import bettercare.wic.service.EntityService;
 import org.junit.Assert;
 import org.junit.Test;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ProductStocker extends InitSetup {
-
-  @Resource
-  private EntityService fetchService;
 
   @Test
   public void addNewProducts() {
@@ -29,7 +24,7 @@ public class ProductStocker extends InitSetup {
       for (int i = start; i < end; i++) {
         addProducsOnEachCategoryIfNew(category, where, i);
       }
-      List<Product> products = fetchService.findProductsByCategoryId(categoryId);
+      List<Product> products = entityService.findProductsByCategoryId(categoryId);
       wicLogger.log("Created products:" + products.size());
       Assert.assertFalse(products.isEmpty());
     }
@@ -45,7 +40,7 @@ public class ProductStocker extends InitSetup {
 
     if (isEmpty(query, Product.class)) {
       Product product = prepareProduct(category, barcode, desc, productName, imageName);
-      Product newProduct = fetchService.saveOrUpdateProduct(product);
+      Product newProduct = entityService.saveOrUpdate(Product.class, product);
       wicLogger.log(String.format("Created product %s", newProduct.toString()));
     }
     else {
@@ -63,12 +58,12 @@ public class ProductStocker extends InitSetup {
     return product;
   }
 
-  private String composeQuery(Class claz, Map<String, Object> whereSource, String otherClause) {
+  private String composeQuery(Class clz, Map<String, Object> whereSource, String otherClause) {
     String alias = "o";
     String whereClause = composeWhereClause(whereSource, alias);
     otherClause = otherClause == null ? "" : otherClause;
     return String.format("select * from %s as %s where %s %s",
-        claz.getSimpleName().toLowerCase(), alias, whereClause, otherClause);
+        clz.getSimpleName().toLowerCase(), alias, whereClause, otherClause);
   }
 
   private String composeWhereClause(Map<String, Object> whereSource, String alias) {
@@ -83,7 +78,7 @@ public class ProductStocker extends InitSetup {
   }
 
   private boolean isEmpty(String query, Class clz) {
-    return fetchService.findListByNativeQuery(query, clz).isEmpty();
+    return entityService.findListByNativeQuery(clz, query).isEmpty();
   }
 
 }

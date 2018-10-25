@@ -17,7 +17,7 @@ import java.util.Date;
 public class SaveWicOrderService {
 
     @Resource
-    private EntityService fetchService;
+    private EntityService entityService;
     @Resource
     private WicLogger wicLogger;
     @Resource
@@ -46,7 +46,7 @@ public class SaveWicOrderService {
         if(isNewVoucher(voucher_, customer.getId())) {
             normalizeVoucherEffectiveDates(voucher_);
             if(isVoucherDateValid(voucher_.getStartDate(), voucher_.getExpirationDate())) {
-                Voucher voucher = fetchService.saveOrUpdateVoucher(voucher_);
+                Voucher voucher = entityService.saveOrUpdate(Voucher.class, voucher_);
                 WicOrder wicOrder = saveWicOrderData(products, false, new Date().getTime(), voucher);
                 wicLogger.info("Your order number is " + wicOrder.getId(), Customer.class);
                 return wicOrder;
@@ -78,14 +78,14 @@ public class SaveWicOrderService {
     private boolean isNewVoucher(Voucher voucher, long customerId) {
         voucher.setCustomerId(customerId);
         String voucherQuery = String.format("select * from voucher where voucher_number = '%s' and customer_id = '%s' limit 1", voucher.getVoucherNumber(), voucher.getCustomerId());
-        return fetchService.findByNativeQuery(voucherQuery, Voucher.class) == null;
+        return entityService.findByNativeQuery(Voucher.class, voucherQuery) == null;
     }
 
     private Customer persistCustomerIfNew(Customer customer) {
         String customerQuery = String.format("select * from customer where wic_number = '%s' and phone = '%s' and  address = '%s' and name = '%s' limit 1", customer.getWicNumber(), customer.getPhone(), customer.getAddress(), customer.getName());
-        Customer persistedCustomer = fetchService.findByNativeQuery(customerQuery, Customer.class);
+        Customer persistedCustomer = entityService.findByNativeQuery(Customer.class, customerQuery);
         if (persistedCustomer == null) {
-            persistedCustomer = fetchService.saveOrUpdateCustomer(customer);
+            persistedCustomer = entityService.saveOrUpdate(Customer.class, customer);
         }
         else {
             wicLogger.log("Same customer already exist. Using existing customer: " + persistedCustomer.toString());
@@ -101,7 +101,7 @@ public class SaveWicOrderService {
     private WicOrder saveWicOrderData(String products, boolean isEmergency, long orderTime, Voucher voucher) {
         WicOrder wicOrder = new WicOrder(isEmergency, orderTime, products, OrderStatus.ORDER_RECEIVED.name(), voucher);
         wicLogger.info("Saving a voucher info:" + wicOrder.toString(), WicOrder.class);
-        return fetchService.saveOrUpdateWicOrder(wicOrder);
+        return entityService.saveOrUpdate(WicOrder.class, wicOrder);
     }
 
 }

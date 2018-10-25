@@ -3,6 +3,7 @@ package bettercare.wic.dal.em;
 import bettercare.wic.dal.WicLogger;
 import bettercare.wic.dal.dao.*;
 import bettercare.wic.dal.entity.*;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -13,78 +14,54 @@ import java.util.Optional;
 @Service
 public class WicTransactionManager {
 
-    // requires @EnableJpaRepositories("bettercare.wic.dal") in somewhere configuration
-    @Resource private CategoryDao categoryDao;
-    @Resource private ProductDao productDao;
-    @Resource private CustomerDao customerDao;
-    @Resource private VoucherDao voucherDao;
-    @Resource private WicOrderDao wicOrderDao;
-    @Resource private WicLogger wicLogger;
+  // requires @EnableJpaRepositories("bettercare.wic.dal") in somewhere configuration
+  @Resource
+  private CategoryDao categoryDao;
+  @Resource
+  private ProductDao productDao;
+  @Resource
+  private CustomerDao customerDao;
+  @Resource
+  private VoucherDao voucherDao;
+  @Resource
+  private WicOrderDao wicOrderDao;
+  @Resource
+  private WicLogger wicLogger;
+  @Resource
+  private MissingProductDao missingProductDao;
+  @Resource
+  private DeliveryDao deliveryDao;
 
+  public <T> List<T> findAll(Class<T> clz) {
+    return getDao(clz).findAll();
+  }
 
-    public List<Category> findCategories() {
-        return categoryDao.findAll();
+  public <T> T saveOrUpdate(Class<T> clz, T obj) {
+    return (T) getDao(clz).saveAndFlush(obj);
+  }
+
+  private <T> JpaRepository getDao(Class<T> repo) {
+    if (repo.equals(Category.class)) {
+      return categoryDao;
     }
-
-    public List<Product> findProducts() {
-        return productDao.findAll();
+    if (repo.equals(Customer.class)) {
+      return customerDao;
     }
-
-    public List<Customer> findCustomers() {
-        return customerDao.findAll();
+    if (repo.equals(Delivery.class)) {
+      return deliveryDao;
     }
-
-    public List<WicOrder> findOrders() {
-        return wicOrderDao.findAll();
+    if (repo.equals(MissingProduct.class)) {
+      return missingProductDao;
     }
-
-    public Optional<WicOrder> findOrder(long id) {
-        return wicOrderDao.findById(id);
+    if (repo.equals(Product.class)) {
+      return productDao;
     }
-
-// --
-
-    public Category saveOrUpdateCategory(Category category) {
-        return categoryDao.saveAndFlush(category);
+    if (repo.equals(Voucher.class)) {
+      return voucherDao;
     }
-
-    public Product saveOrUpdateProduct(Product product) {
-        return productDao.saveAndFlush(product);
+    if (repo.equals(WicOrder.class)) {
+      return wicOrderDao;
     }
-
-    public Customer saveOrUpdateCustomer(Customer customer) {
-        wicLogger.debug("Saving customer: " + customer.toString(), Customer.class);
-        return customerDao.saveAndFlush(customer);
-    }
-
-    public Voucher saveOrUpdateVoucher(Voucher voucher) {
-        wicLogger.debug("Saving voucher: " + voucher.toString(), Voucher.class);
-        return voucherDao.saveAndFlush(voucher);
-    }
-
-    public WicOrder saveOrUpdateWicOrder(WicOrder wicOrder) {
-        wicLogger.debug("Saving wic order: " + wicOrder.toString(), WicOrder.class);
-        return wicOrderDao.saveAndFlush(wicOrder);
-    }
-
-    public void deleteOrderById(long id) {
-        wicOrderDao.deleteById(id);
-    }
-
-// --
-
-    public List<Product> findProductsByCategoryId(long categoryId) {
-        Optional<Category> categoryOptional = categoryDao.findById(categoryId);
-        if(categoryOptional.isPresent()) {
-            Category category = categoryOptional.get();
-            return category.getProducts();
-        }
-        return Collections.EMPTY_LIST;
-    }
-
-    public Product findProductById(long productId) {
-        Optional<Product> productOptional = productDao.findById(productId);
-        return productOptional.orElse(null);
-    }
-
+    return null;
+  }
 }

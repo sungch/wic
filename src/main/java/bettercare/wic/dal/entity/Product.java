@@ -27,6 +27,9 @@ public class Product implements Serializable {
 
   private String name;
 
+  @Column(name = "is_handling")
+  private boolean isHandling;
+
   @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "product_id")
   private List<MissingProduct> missingProducts;
@@ -97,14 +100,6 @@ public class Product implements Serializable {
     return missingProduct;
   }
 
-//  public long getCategoryId() {
-//    return this.categoryId;
-//  }
-//
-//  public void setCategoryId(Long categoryId) {
-//    this.categoryId = categoryId;
-//  }
-
   public Category getCategory() {
     return this.category;
   }
@@ -112,6 +107,15 @@ public class Product implements Serializable {
   public void setCategory(Category category) {
     this.category = category;
   }
+
+  public boolean isHandling() {
+    return isHandling;
+  }
+
+  public void setHandling(boolean handling) {
+    isHandling = handling;
+  }
+
   @Override
   public String toString() {
     return String.format("productId:%s cateoryId:%s imageId:%s barcode:%s description:%s productName:%s ",
@@ -145,15 +149,17 @@ public class Product implements Serializable {
       return false;
     }
     Product that = (Product)thatObj;
-    return !isDifferent(that.toString(), this.toString());
+    return isSame(that.toString(), this.toString());
   }
 
-  private boolean isDifferent(String that, String me) {
-    if(that == null) {
+  private boolean isSame(String that, String me) {
+    if (that == null) {
       return me == null;
     }
-    else {
-      return that.equals(me);
+    if (me == null) {
+      return false;
     }
+    return that.equals(me);
   }
+
 }
