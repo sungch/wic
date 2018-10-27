@@ -58,6 +58,8 @@ public class WicEntityManager {
     return nativeQuery.getResultList();
   }
 
+
+
   public <T> void remove(T obj) {
     entityManager.remove(obj);
     entityManager.flush();

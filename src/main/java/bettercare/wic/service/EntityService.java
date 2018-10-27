@@ -40,6 +40,16 @@ public class EntityService {
     return wicEntityManager.findListByNativeQuery(qry, WicOrder.class);
   }
 
+  public List findSupportedProducts() {
+    String qry = "select * from product where is_handling = 'Y'";
+    return wicEntityManager.findListByNativeQuery(qry, Product.class);
+  }
+
+  public void findNotSupportedProducts() {
+    String qry = "select * from product where is_handling != 'Y'";
+    wicEntityManager.findListByNativeQuery(qry, Product.class);
+  }
+
   public <T> void deleteOrderById(T obj) {
     wicEntityManager.remove(obj);
   }
