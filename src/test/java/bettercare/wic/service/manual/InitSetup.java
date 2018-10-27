@@ -1,4 +1,4 @@
-package bettercare.wic.service.common;
+package bettercare.wic.service.manual;
 
 import bettercare.wic.config.WicApplication;
 import bettercare.wic.dal.entity.Category;

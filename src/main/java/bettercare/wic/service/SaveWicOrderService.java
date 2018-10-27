@@ -6,8 +6,6 @@ import bettercare.wic.dal.entity.Product;
 import bettercare.wic.dal.entity.Voucher;
 import bettercare.wic.dal.entity.WicOrder;
 import bettercare.wic.model.WicOrderRepresentation;
-import bettercare.wic.service.supports.OrderStatus;
-import bettercare.wic.service.supports.TimeTrimmer;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

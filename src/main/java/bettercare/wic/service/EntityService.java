@@ -3,7 +3,6 @@ package bettercare.wic.service;
 import bettercare.wic.dal.em.WicEntityManager;
 import bettercare.wic.dal.em.WicTransactionManager;
 import bettercare.wic.dal.entity.*;
-import bettercare.wic.service.supports.OrderStatus;
 
 import javax.annotation.Resource;
 import java.util.List;

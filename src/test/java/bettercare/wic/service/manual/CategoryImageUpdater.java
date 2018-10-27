@@ -1,7 +1,6 @@
 package bettercare.wic.service.manual;
 
 import bettercare.wic.dal.entity.Category;
-import bettercare.wic.service.common.InitSetup;
 import org.junit.Test;
 
 public class CategoryImageUpdater extends InitSetup {

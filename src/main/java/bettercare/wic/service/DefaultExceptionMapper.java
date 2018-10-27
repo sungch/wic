@@ -1,4 +1,4 @@
-package bettercare.wic.service.marshaller;
+package bettercare.wic.service;
 
 import bettercare.wic.dal.WicLogger;
 import com.sun.jersey.api.ConflictException;

@@ -2,7 +2,6 @@ package bettercare.wic.service.manual;
 
 import bettercare.wic.dal.entity.Category;
 import bettercare.wic.dal.entity.Product;
-import bettercare.wic.service.common.InitSetup;
 import org.junit.Test;
 
 import java.util.List;
