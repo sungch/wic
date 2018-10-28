@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class SaveWicOrderService {
@@ -21,6 +22,15 @@ public class SaveWicOrderService {
     @Resource
     private TimeTrimmer timeTrimmer;
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    public SaveWicOrderService() {
+        super();
+    }
+
     public WicOrder saveWicOrder(WicOrderRepresentation model) {
 
         String products = model.getProducts();
@@ -30,7 +40,7 @@ public class SaveWicOrderService {
         }
 
         if(isBlank(model.getWicNumber(), model.getName(), model.getPhone(), model.getAddress())) {
-            wicLogger.error("Customer not read.", Customer.class);
+            wicLogger.error("Customer information is misssing.", Customer.class);
             return null;
         }
         Customer customer = persistCustomerIfNew(new Customer(model.getWicNumber(), model.getName(), model.getPhone(), model.getAddress()));
@@ -75,20 +85,20 @@ public class SaveWicOrderService {
 
     private boolean isNewVoucher(Voucher voucher, long customerId) {
         voucher.setCustomerId(customerId);
-        String voucherQuery = String.format("select * from voucher where voucher_number = '%s' and customer_id = '%s' limit 1", voucher.getVoucherNumber(), voucher.getCustomerId());
-        return entityService.findByNativeQuery(Voucher.class, voucherQuery) == null;
+        List<Voucher> vouchers = entityService.findVoucherByVoucherNumberAndCustomerId(voucher.getVoucherNumber(), voucher.getCustomerId());
+        return vouchers.isEmpty();
     }
 
     private Customer persistCustomerIfNew(Customer customer) {
-        String customerQuery = String.format("select * from customer where wic_number = '%s' and phone = '%s' and  address = '%s' and name = '%s' limit 1", customer.getWicNumber(), customer.getPhone(), customer.getAddress(), customer.getName());
-        Customer persistedCustomer = entityService.findByNativeQuery(Customer.class, customerQuery);
-        if (persistedCustomer == null) {
-            persistedCustomer = entityService.saveOrUpdate(Customer.class, customer);
+        List<Customer> list = entityService.findCustomerByWicNumberAndPhoneAndAddressAndName(
+            customer.getWicNumber(), customer.getPhone(), customer.getAddress(), customer.getName());
+        if (list.isEmpty()) {
+            return entityService.saveOrUpdate(Customer.class, customer);
         }
         else {
-            wicLogger.log("Same customer already exist. Using existing customer: " + persistedCustomer.toString());
+            wicLogger.log("Same customer already exist. I am using the existing customer: " + customer.toString());
         }
-        return persistedCustomer;
+        return null;
     }
 
     private boolean isVoucherDateValid(long startDate, long expirationDate) {

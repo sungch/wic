@@ -4,10 +4,8 @@ import bettercare.wic.dal.entity.Category;
 import bettercare.wic.dal.entity.Product;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 public class ProductStocker extends InitSetup {
 
@@ -16,12 +14,10 @@ public class ProductStocker extends InitSetup {
     assert categories != null;
     for(Category category : categories) {
       long categoryId = category.getId();
-      Map<String, Object> where = new HashMap<>();
-      where.put("category_id", categoryId);
       int start = (int)startProductId;
       int end = (int)startProductId + numOfProductsToCreatePerCategory;
       for (int i = start; i < end; i++) {
-        addProducsOnEachCategoryIfNew(category, where, i, "Y");
+        addProducsOnEachCategoryIfNew(category, i, "Y");
       }
       List<Product> products = entityService.findProductsByCategoryId(categoryId);
       wicLogger.log("Created products:" + products.size());
@@ -29,22 +25,18 @@ public class ProductStocker extends InitSetup {
     }
   }
 
-  private void addProducsOnEachCategoryIfNew(Category category, Map<String, Object> where, int i, String isHandling) {
+  private void addProducsOnEachCategoryIfNew(Category category, int i, String isHandling) {
     String imageName = null;
     String barcode = "barcode_0w3422932989232_" + i;
     String desc = "desc _" + i;
     String productName = "prodName_" + i;
-    where.put("name", productName);
-    where.put("is_handling", isHandling);
-    String query = composeQuery(Product.class, where, " limit 1 ");
-
-    if (isEmpty(query, Product.class)) {
+    if (isProductEmpty(category.getId(), productName, isHandling)) {
       Product product = prepareProduct(category, barcode, desc, productName, imageName, isHandling);
       Product newProduct = entityService.saveOrUpdate(Product.class, product);
       wicLogger.log(String.format("Created product %s", newProduct.toString()));
     }
     else {
-      wicLogger.log("Product is already in the system:" + query);
+      wicLogger.log("Product is already in the system:" + productName);
     }
   }
 
@@ -59,27 +51,9 @@ public class ProductStocker extends InitSetup {
     return product;
   }
 
-  private String composeQuery(Class clz, Map<String, Object> whereSource, String otherClause) {
-    String alias = "o";
-    String whereClause = composeWhereClause(whereSource, alias);
-    otherClause = otherClause == null ? "" : otherClause;
-    return String.format("select * from %s as %s where %s %s",
-        clz.getSimpleName().toLowerCase(), alias, whereClause, otherClause);
-  }
-
-  private String composeWhereClause(Map<String, Object> whereSource, String alias) {
-    StringBuilder whereClause = new StringBuilder();
-    whereSource.forEach((columnName, value) -> {
-      if (whereClause.length() > 0) {
-        whereClause.append(" and ");
-      }
-      whereClause.append(alias).append(".").append(columnName).append("='").append(value).append("'");
-    });
-    return whereClause.toString();
-  }
-
-  private boolean isEmpty(String query, Class clz) {
-    return entityService.findListByNativeQuery(clz, query).isEmpty();
+  private boolean isProductEmpty(long categoryId, String name, String isHandling) {
+    List<Product> products = entityService.findProductByCategoryIdAndNameAndIsHandling(categoryId, name, isHandling);
+    return products.isEmpty();
   }
 
 }

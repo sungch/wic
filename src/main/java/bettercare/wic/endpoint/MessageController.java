@@ -1,5 +1,6 @@
-package bettercare.wic.controller;
+package bettercare.wic.endpoint;
 
+import bettercare.wic.dal.entity.Product;
 import bettercare.wic.dal.entity.WicOrder;
 import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.EntityService;
@@ -22,62 +23,44 @@ import java.util.List;
  */
 
 
-@RestController("/wic")
 public class MessageController {
 
     @Autowired private SaveWicOrderService saveWicOrderService;
     @Autowired private EntityService entityService;
 
-    // GET localhost:8080/message
-
-    @GetMapping("/message")
-    WicOrderRepresentation send() {
-        WicOrderRepresentation model = new WicOrderRepresentation();
-        model.setName("SUNGCH");
-        return model;
-    }
-
-
-    // POST localhost:8080/message
-
-    @PostMapping("/message")
-    WicOrderRepresentation echo(@RequestBody WicOrderRepresentation model) {
-        model.setName("SUNGCH-ECHO");
-        return model;
-    }
-
-    @PostMapping("/order")
+    @PostMapping("/wic/order")
     WicOrderRepresentation createOrder(@RequestBody WicOrderRepresentation model) {
         WicOrder wicOrder = saveWicOrderService.saveWicOrder(model);
         model.setOrderId(wicOrder.getId());
         return model;
     }
 
-    @GetMapping("/order/{id}")
+    @GetMapping("/wic/order/{id}")
     WicOrder readOrder(@PathVariable long orderId) {
         return entityService.findById(WicOrder.class, orderId);
     }
 
-    // TODO make pending as a query param
-    @GetMapping("/pending-orders")
-    List readPendingOrders() {
-        return entityService.findAll(WicOrder.class);
+    @GetMapping("/wic/product/isHandling")
+    List readHandlingProducts(@RequestParam(value = "isHandling", required = true) String isHandling) {
+        return entityService.findProductByIsHandling(isHandling);
     }
 
-    @GetMapping("/orders")
+    @GetMapping("/wic/order/pending")
+    List readPendingOrders(@RequestParam(value = "status", required = true) String status) {
+        return entityService.findOrderByStatus(status);
+    }
+
+    @GetMapping("/wic/orders")
     List readOrders() {
         return entityService.findAll(WicOrder.class);
     }
 
-    // TODO logic is not clear
-    @PutMapping("/order")
-    WicOrderRepresentation updateOrder(@RequestBody WicOrderRepresentation model) {
-        WicOrder wicOrder =  saveWicOrderService.saveWicOrder(model);
-        model.setOrderId(wicOrder.getId());
-        return model;
+    @GetMapping("/wic/product/category/{id}")
+    List<Product> readProductByCategoryId(@PathVariable long categoryId) {
+        return entityService.findProductsByCategoryId(categoryId);
     }
 
-    @DeleteMapping("/order/{id}")
+    @DeleteMapping("/wic/order/{id}")
     void delete(@PathVariable long orderId) {
         entityService.deleteOrderById(orderId);
     }

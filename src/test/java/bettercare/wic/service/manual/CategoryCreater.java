@@ -2,21 +2,18 @@ package bettercare.wic.service.manual;
 
 import bettercare.wic.dal.entity.Category;
 import org.junit.Test;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.List;
 
 public class CategoryCreater extends InitSetup {
 
   @Test
   public void addNewCategory() {
     for(String categoryName : categoryNames) {
-      Map<String, Object> where = new HashMap<>();
-      where.put("name", categoryName);
-      String query = composeQuery(Category.class, where, " limit 1 ");
-      if (isEmpty(query, Category.class)) {
+      if (isCategoryEmpty(categoryName)) {
         Category category = prepareCategory(categoryName);
-        category = entityService.saveOrUpdate(Category.class, category);
-        wicLogger.log(String.format("Created a Category %s", category.toString()));
+        Category persistedCategory = entityService.saveOrUpdate(Category.class, category);
+        wicLogger.log(String.format("Created a Category %s", persistedCategory.toString()));
       }
       else {
         wicLogger.log("The same Category name already found in the system. No transactions:" + categoryName);
@@ -24,8 +21,9 @@ public class CategoryCreater extends InitSetup {
     }
   }
 
-  private boolean isEmpty(String query, Class clz) {
-    return entityService.findListByNativeQuery(clz, query).isEmpty();
+  private boolean isCategoryEmpty(String name) {
+    List<Category> categories = entityService.findCategoryByName(name);
+    return categories.isEmpty();
   }
 
   private Category prepareCategory(String categoryName) {
@@ -34,22 +32,4 @@ public class CategoryCreater extends InitSetup {
     return category;
   }
 
-  private String composeQuery(Class claz, Map<String, Object> whereSource, String otherClause) {
-    String alias = "o";
-    String whereClause = composeWhereClause(whereSource, alias);
-    otherClause = otherClause == null ? "" : otherClause;
-    return String.format("select * from %s as %s where %s %s",
-        claz.getSimpleName().toLowerCase(), alias, whereClause, otherClause);
-  }
-
-  private String composeWhereClause(Map<String, Object> whereSource, String alias) {
-    StringBuilder whereClause = new StringBuilder();
-    whereSource.forEach((columnName, value) -> {
-      if (whereClause.length() > 0) {
-        whereClause.append(" and ");
-      }
-      whereClause.append(alias).append(".").append(columnName).append("='").append(value).append("'");
-    });
-    return whereClause.toString();
-  }
 }

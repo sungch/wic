@@ -23,31 +23,16 @@ public class EntityService {
     return wicEntityManager.find(clz, id);
   }
 
-  public <T> T findByNativeQuery(Class<T> clz, String voucherQuery) {
-    return wicEntityManager.findByNativeQuery(voucherQuery, clz);
-  }
-
-  public <T> List findListByNativeQuery(Class<T> clz, String query) {
-    return wicEntityManager.findListByNativeQuery(query, clz);
-  }
-
   public <T> List<T> findAll(Class<T> clz) {
     return wicTransactionManager.findAll(clz);
   }
 
-  public List findPendingOrders() {
-    String qry = "select * from wic_order where status is not " + OrderStatus.DELIVERY_COMPLETED.name();
-    return wicEntityManager.findListByNativeQuery(qry, WicOrder.class);
+  public List findOrderByStatus(String status ) {
+    return wicTransactionManager.findOrderByStatus(status);
   }
 
-  public List findSupportedProducts() {
-    String qry = "select * from product where is_handling = 'Y'";
-    return wicEntityManager.findListByNativeQuery(qry, Product.class);
-  }
-
-  public void findNotSupportedProducts() {
-    String qry = "select * from product where is_handling != 'Y'";
-    wicEntityManager.findListByNativeQuery(qry, Product.class);
+  public List findProductByIsHandling(String isHandling) {
+    return wicTransactionManager.findProductByIsHandling(isHandling);
   }
 
   public <T> void deleteOrderById(T obj) {
@@ -55,6 +40,22 @@ public class EntityService {
   }
 
   public List<Product> findProductsByCategoryId(long id) {
-    return wicEntityManager.findProductsByCategoryId(id);
+    return wicTransactionManager.findproductByCategoryId(id);
+  }
+
+  public List<Voucher> findVoucherByVoucherNumberAndCustomerId(String voucherNumber, long customerId) {
+    return wicTransactionManager.findVoucherByVoucherNumberAndCustomerId(voucherNumber, customerId);
+  }
+
+  public List<Customer> findCustomerByWicNumberAndPhoneAndAddressAndName(String wicNumber, String phone, String address, String name) {
+    return wicTransactionManager.findCustomerByWicNumberAndPhoneAndAddressAndName(wicNumber, phone, address, name);
+  }
+
+  public List<Product> findProductByCategoryIdAndNameAndIsHandling(long categoryId, String name, String isHandling) {
+    return wicTransactionManager.findProductByCategoryIdAndNameAndIsHandling(categoryId, name, isHandling);
+  }
+
+  public List<Category> findCategoryByName(String name) {
+    return wicTransactionManager.findCategoryByName(name);
   }
 }

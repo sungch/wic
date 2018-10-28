@@ -7,9 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class WicTransactionManager {
@@ -40,6 +38,26 @@ public class WicTransactionManager {
     return (T) getDao(clz).saveAndFlush(obj);
   }
 
+  public List<Product> findProductByIsHandling(String isHandling) {
+    return productDao.findByIsHandling(isHandling);
+  }
+
+  public List<WicOrder> findOrderByStatus(String status) {
+    return wicOrderDao.findByStatus(status);
+  }
+
+  public List<Product> findproductByCategoryId(long categoryId) {
+    return productDao.findByCategoryId(categoryId);
+  }
+
+  public List<Voucher> findVoucherByVoucherNumberAndCustomerId(String voucherNumber, long customerId) {
+    return voucherDao.findByVoucherNumberAndCustomerId(voucherNumber, customerId);
+  }
+
+  public List<Customer> findCustomerByWicNumberAndPhoneAndAddressAndName(String wicNumber, String phone, String address, String name) {
+    return customerDao.findByWicNumberAndPhoneAndAddressAndName(wicNumber, phone, address, name);
+  }
+
   private <T> JpaRepository getDao(Class<T> repo) {
     if (repo.equals(Category.class)) {
       return categoryDao;
@@ -63,5 +81,13 @@ public class WicTransactionManager {
       return wicOrderDao;
     }
     return null;
+  }
+
+  public List<Product> findProductByCategoryIdAndNameAndIsHandling(long categoryId, String name, String isHandling) {
+    return productDao.findByCategoryIdAndNameAndIsHandling(categoryId, name, isHandling);
+  }
+
+  public List<Category> findCategoryByName(String name) {
+    return categoryDao.findByName(name);
   }
 }
