@@ -1,8 +1,10 @@
 package bettercare.wic.dal.entity;
 
+import bettercare.wic.model.VoucherModel;
+import org.codehaus.jackson.annotate.JsonBackReference;
+
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
 
 
 /**
@@ -27,14 +29,22 @@ public class Voucher implements Serializable {
     @Column(name = "voucher_number")
     private String voucherNumber;
 
-    @Column(name = "customer_id")
-    private long customerId;
+    @JsonBackReference
+    @ManyToOne
+    private Customer customer;
 
-    public Voucher(long startDate, long expirationDate, String voucherNumber, long customerId) {
+    public Voucher(long startDate, long expirationDate, String voucherNumber, Customer customer) {
         this.voucherNumber = voucherNumber;
         this.startDate = startDate;
         this.expirationDate = expirationDate;
-        this.customerId = customerId;
+        this.customer = customer;
+    }
+
+    public Voucher (VoucherModel voucherModel, Customer customer) {
+        this.voucherNumber = voucherModel.getVoucherNumber();
+        this.startDate = voucherModel.getStartDate();
+        this.expirationDate = voucherModel.getExpirationDate();
+        this.customer = customer;
     }
 
     @OneToOne(mappedBy = "voucher", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -76,12 +86,12 @@ public class Voucher implements Serializable {
         this.voucherNumber = voucherNumber;
     }
 
-    public long getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(long customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
 	public WicOrder getWicOrder() {

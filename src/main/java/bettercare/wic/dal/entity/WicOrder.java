@@ -1,5 +1,8 @@
 package bettercare.wic.dal.entity;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
@@ -30,10 +33,12 @@ public class WicOrder implements Serializable {
 
 	private String status;
 
+	@JsonManagedReference
 	@OneToMany(mappedBy = "wicOrder", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<MissingProduct> missingProducts;
 
 	@OneToOne
+	@JsonBackReference
 	private Voucher voucher;
 
 	@OneToOne(mappedBy = "wicOrder", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -125,7 +130,7 @@ public class WicOrder implements Serializable {
 		return String.format("id:%s missing:%s isEmergency:%s orderTime:%s orderContents:%s status:%s customerId:%s voucherId:%s",
 							 this.getId(), this.getMissingProducts(), this.getIsEmergency(),
 							 this.getOrderedTime(), this.getProducts(), this.getStatus(),
-							 this.getVoucher().getCustomerId(), this.getVoucher().toString());
+							 this.getVoucher().getCustomer().toString(), this.getVoucher().toString());
 	}
 
 	@Override

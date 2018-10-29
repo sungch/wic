@@ -1,46 +1,37 @@
 package bettercare.wic.model;
 
-import org.springframework.stereotype.Component;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.Embedded;
 import java.io.Serializable;
 
 public class WicOrderRepresentation implements Serializable {
 
     private static final long serialVersionUID = -1437982395144640698L;
-
+    //@JsonProperty("order-id")
     private long orderId;
+    //@JsonIgnore
     private boolean isEmergency;
     private long orderedTime;
     private String products;
     private String status;
 
-    private String address;
-    private String name;
-    private String phone;
-    private String wicNumber;
+    @Embedded
+    CustomerModel customerModel;
 
-    private long expirationDate;
-    private long startDate;
-    private String voucherNumber;
+    @Embedded
+    VoucherModel voucherModel;
 
     public WicOrderRepresentation() {}
 
-    public WicOrderRepresentation(long orderId, boolean isEmergency, long orderedTime, String products, String status, String address,
-                                  String name, String phone, String wicNumber, long startDate, long expirationDate,
-                                  String voucherNumber) {
+    public WicOrderRepresentation(long orderId, boolean isEmergency, long orderedTime, String products, String status,
+                                  CustomerModel customerModel, VoucherModel voucherModel) {
         this.orderId = orderId;
         this.isEmergency = isEmergency;
         this.orderedTime = orderedTime;
         this.products = products;
         this.status = status;
-        this.address = address;
-        this.name = name;
-        this.phone = phone;
-        this.wicNumber = wicNumber;
-        this.startDate = startDate;
-        this.expirationDate = expirationDate;
-        this.voucherNumber = voucherNumber;
+        this.customerModel = customerModel;
+        this.voucherModel = voucherModel;
     }
 
     public long getOrderId() {
@@ -83,59 +74,19 @@ public class WicOrderRepresentation implements Serializable {
         this.status = status;
     }
 
-    public String getAddress() {
-        return address;
+    public CustomerModel getCustomerModel() {
+        return customerModel;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setCustomerModel(CustomerModel customerModel) {
+        this.customerModel = customerModel;
     }
 
-    public String getName() {
-        return name;
+    public VoucherModel getVoucherModel() {
+        return voucherModel;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getWicNumber() {
-        return wicNumber;
-    }
-
-    public void setWicNumber(String wicNumber) {
-        this.wicNumber = wicNumber;
-    }
-
-    public long getExpirationDate() {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(long expirationDate) {
-        this.expirationDate = expirationDate;
-    }
-
-    public long getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(long startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getVoucherNumber() {
-        return voucherNumber;
-    }
-
-    public void setVoucherNumber(String voucherNumber) {
-        this.voucherNumber = voucherNumber;
+    public void setVoucherModel(VoucherModel voucherModel) {
+        this.voucherModel = voucherModel;
     }
 }

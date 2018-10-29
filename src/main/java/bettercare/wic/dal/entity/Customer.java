@@ -1,5 +1,8 @@
 package bettercare.wic.dal.entity;
 
+import bettercare.wic.model.CustomerModel;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
@@ -27,8 +30,8 @@ public class Customer implements Serializable {
 	@Column(name="wic_number")
 	private String wicNumber;
 
-  @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(name = "customer_id")
+	@JsonManagedReference
+	@OneToMany(mappedBy = "customer", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<Voucher> vouchers;
 
 
@@ -37,6 +40,10 @@ public class Customer implements Serializable {
 		this.name = name;
 		this.phone = phone;
 		this.address = address;
+	}
+
+	public Customer(CustomerModel customerModel) {
+  	this(customerModel.getWicNumber(), customerModel.getName(), customerModel.getPhone(), customerModel.getAddress());
 	}
 
 	public Customer() {
@@ -92,7 +99,7 @@ public class Customer implements Serializable {
 
   public Voucher addVoucher(Voucher voucher) {
     getVouchers().add(voucher);
-    voucher.setCustomerId(this.getId());
+    voucher.setCustomer(this);
     return voucher;
   }
 

@@ -1,5 +1,7 @@
 package bettercare.wic.dal.entity;
 
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
@@ -24,6 +26,7 @@ public class  Category implements Serializable {
 	@Column(name = "image_url")
 	private String imageUrl;
 
+	@JsonManagedReference
 	@OneToMany(mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Product> products;
 

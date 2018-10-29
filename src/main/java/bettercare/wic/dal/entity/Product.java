@@ -1,5 +1,8 @@
 package bettercare.wic.dal.entity;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
@@ -30,10 +33,11 @@ public class Product implements Serializable {
   @Column(name = "is_handling")
   private String isHandling;
 
-  @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(name = "product_id")
-  private List<MissingProduct> missingProducts;
+  @JsonManagedReference
+  @OneToOne(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private MissingProduct missingProduct;
 
+  @JsonBackReference
   @ManyToOne
   private Category category;
 
@@ -80,24 +84,12 @@ public class Product implements Serializable {
     this.name = name;
   }
 
-  public List<MissingProduct> getMissingProducts() {
-    return this.missingProducts;
+  public MissingProduct getMissingProduct() {
+    return this.missingProduct;
   }
 
-  public void setMissingProducts(List<MissingProduct> missingProducts) {
-    this.missingProducts = missingProducts;
-  }
-
-  public MissingProduct addMissingProduct(MissingProduct missingProduct) {
-    getMissingProducts().add(missingProduct);
-    missingProduct.setProductId(this.getId());
-    return missingProduct;
-  }
-
-  public MissingProduct removeMissingProduct(MissingProduct missingProduct) {
-    getMissingProducts().remove(missingProduct);
-    missingProduct.setProductId(null);
-    return missingProduct;
+  public void setMissingProduct(MissingProduct missingProduct) {
+    this.missingProduct = missingProduct;
   }
 
   public Category getCategory() {

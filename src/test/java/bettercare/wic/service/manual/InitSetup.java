@@ -3,6 +3,8 @@ package bettercare.wic.service.manual;
 import bettercare.wic.config.WicApplication;
 import bettercare.wic.dal.entity.Category;
 import bettercare.wic.dal.entity.Product;
+import bettercare.wic.model.CustomerModel;
+import bettercare.wic.model.VoucherModel;
 import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.SaveWicOrderService;
 import bettercare.wic.dal.WicLogger;
@@ -68,15 +70,10 @@ public class InitSetup {
     WicOrderRepresentation model = new WicOrderRepresentation();
 
     // Customer
-    model.setWicNumber(wicNumber);
-    model.setName(customerName);
-    model.setAddress(address);
-    model.setPhone(phone);
+    model.setCustomerModel(new CustomerModel(address, customerName, phone, wicNumber));
 
     // Voucher
-    model.setStartDate(startDate);
-    model.setExpirationDate(expirationDate);
-    model.setVoucherNumber(voucherNumber);
+    model.setVoucherModel(new VoucherModel(startDate, expirationDate, voucherNumber));
 
     // Product
     model.setProducts(createSimulatedProductOrders());

@@ -1,5 +1,7 @@
 package bettercare.wic.dal.entity;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -20,18 +22,20 @@ public class MissingProduct implements Serializable {
 
 	private int quantity;
 
+	@JsonBackReference
 	@ManyToOne
 	private WicOrder wicOrder;
 
-	@Column(name = "product_id")
-	private long productId;
+	@JsonBackReference
+	@OneToOne
+	private Product product;
 
 	public MissingProduct() {
 	}
 
-	public MissingProduct(WicOrder wicOrder, long productId, int quantity) {
+	public MissingProduct(WicOrder wicOrder, Product product, int quantity) {
 		this.wicOrder = wicOrder;
-		this.productId = productId;
+		this.product = product;
 		this.quantity = quantity;
 	}
 
@@ -59,17 +63,17 @@ public class MissingProduct implements Serializable {
 		this.wicOrder = wicOrder;
 	}
 
-	public long getProductId() {
-		return this.productId;
+	public Product getProduct() {
+		return this.product;
 	}
 
-	public void setProductId(Long productId) {
-		this.productId = productId;
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("id:%s productId:%s quantity:%s", this.getId() + this.getProductId() + this.getQuantity());
+		return String.format("id:%s productId:%s quantity:%s", this.getId() + this.getProduct().toString() + this.getQuantity());
 	}
 
 	@Override

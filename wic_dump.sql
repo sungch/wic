@@ -54,7 +54,7 @@ CREATE TABLE `customer` (
   `phone` varchar(255) DEFAULT NULL,
   `wic_number` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +63,6 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (1,'5122 woodsmere lane, herriman, UT 84096','customer_356797739','801-809-0915','customer_wic_number_356797739');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -103,12 +102,12 @@ DROP TABLE IF EXISTS `missing_product`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `missing_product` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `product_id` bigint(20) DEFAULT NULL,
   `quantity` int(11) NOT NULL,
+  `product_id` bigint(20) DEFAULT NULL,
   `wicOrder_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `FKrtttmokiyx6lwmoliy95gi1js` (`wicOrder_id`),
-  KEY `FKjv8eyubdunsxe5eu8e8xdun77` (`product_id`)
+  KEY `FKjv8eyubdunsxe5eu8e8xdun77` (`product_id`),
+  KEY `FKrtttmokiyx6lwmoliy95gi1js` (`wicOrder_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -138,7 +137,7 @@ CREATE TABLE `product` (
   `category_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK1mtsbur82frn64de7balymq9s` (`category_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,7 +146,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,'barcode_0w3422932989232_9','desc _9','product/1/prodname_9.jpg','Y','prodName_9',1),(2,'barcode_0w3422932989232_10','desc _10','product/1/prodname_10.jpg','Y','prodName_10',1),(3,'barcode_0w3422932989232_11','desc _11','product/1/prodname_11.jpg','Y','prodName_11',1),(4,'barcode_0w3422932989232_12','desc _12','product/1/prodname_12.jpg','Y','prodName_12',1),(5,'barcode_0w3422932989232_13','desc _13','product/1/prodname_13.jpg','Y','prodName_13',1),(6,'barcode_0w3422932989232_9','desc _9','product/2/prodname_9.jpg','Y','prodName_9',2),(7,'barcode_0w3422932989232_10','desc _10','product/2/prodname_10.jpg','Y','prodName_10',2),(8,'barcode_0w3422932989232_11','desc _11','product/2/prodname_11.jpg','Y','prodName_11',2),(9,'barcode_0w3422932989232_12','desc _12','product/2/prodname_12.jpg','Y','prodName_12',2),(10,'barcode_0w3422932989232_13','desc _13','product/2/prodname_13.jpg','Y','prodName_13',2),(11,'barcode_0w3422932989232_9','desc _9','product/3/prodname_9.jpg','Y','prodName_9',3),(12,'barcode_0w3422932989232_10','desc _10','product/3/prodname_10.jpg','Y','prodName_10',3),(13,'barcode_0w3422932989232_11','desc _11','product/3/prodname_11.jpg','Y','prodName_11',3),(14,'barcode_0w3422932989232_12','desc _12','product/3/prodname_12.jpg','Y','prodName_12',3),(15,'barcode_0w3422932989232_1','desc _1','product/1/prodname_1.jpg','Y','prodName_1',1),(16,'barcode_0w3422932989232_2','desc _2','product/1/prodname_2.jpg','Y','prodName_2',1),(17,'barcode_0w3422932989232_1','desc _1','product/2/prodname_1.jpg','Y','prodName_1',2),(18,'barcode_0w3422932989232_2','desc _2','product/2/prodname_2.jpg','Y','prodName_2',2),(19,'barcode_0w3422932989232_1','desc _1','product/3/prodname_1.jpg','Y','prodName_1',3),(20,'barcode_0w3422932989232_2','desc _2','product/3/prodname_2.jpg','Y','prodName_2',3),(21,'barcode_0w3422932989232_1','desc _1','product/4/prodname_1.jpg','Y','prodName_1',4),(22,'barcode_0w3422932989232_2','desc _2','product/4/prodname_2.jpg','Y','prodName_2',4),(23,'barcode_0w3422932989232_1','desc _1','product/5/prodname_1.jpg','Y','prodName_1',5),(24,'barcode_0w3422932989232_2','desc _2','product/5/prodname_2.jpg','Y','prodName_2',5),(25,'barcode_0w3422932989232_1','desc _1','product/6/prodname_1.jpg','Y','prodName_1',6),(26,'barcode_0w3422932989232_2','desc _2','product/6/prodname_2.jpg','Y','prodName_2',6),(27,'barcode_0w3422932989232_1','desc _1','product/7/prodname_1.jpg','Y','prodName_1',7),(28,'barcode_0w3422932989232_2','desc _2','product/7/prodname_2.jpg','Y','prodName_2',7),(29,'barcode_0w3422932989232_1','desc _1','product/8/prodname_1.jpg','Y','prodName_1',8),(30,'barcode_0w3422932989232_2','desc _2','product/8/prodname_2.jpg','Y','prodName_2',8),(31,'barcode_0w3422932989232_1','desc _1','product/9/prodname_1.jpg','Y','prodName_1',9),(32,'barcode_0w3422932989232_2','desc _2','product/9/prodname_2.jpg','Y','prodName_2',9),(33,'barcode_0w3422932989232_1','desc _1','product/10/prodname_1.jpg','Y','prodName_1',10),(34,'barcode_0w3422932989232_2','desc _2','product/10/prodname_2.jpg','Y','prodName_2',10),(35,'barcode_0w3422932989232_1','desc _1','product/11/prodname_1.jpg','Y','prodName_1',11),(36,'barcode_0w3422932989232_2','desc _2','product/11/prodname_2.jpg','Y','prodName_2',11),(37,'barcode_0w3422932989232_1','desc _1','product/12/prodname_1.jpg','Y','prodName_1',12),(38,'barcode_0w3422932989232_2','desc _2','product/12/prodname_2.jpg','Y','prodName_2',12),(39,'barcode_0w3422932989232_1','desc _1','product/13/prodname_1.jpg','Y','prodName_1',13),(40,'barcode_0w3422932989232_2','desc _2','product/13/prodname_2.jpg','Y','prodName_2',13),(41,'barcode_0w3422932989232_1','desc _1','product/14/prodname_1.jpg','Y','prodName_1',14),(42,'barcode_0w3422932989232_2','desc _2','product/14/prodname_2.jpg','Y','prodName_2',14),(43,'barcode_0w3422932989232_1','desc _1','product/15/prodname_1.jpg','Y','prodName_1',15),(44,'barcode_0w3422932989232_2','desc _2','product/15/prodname_2.jpg','Y','prodName_2',15),(45,'barcode_0w3422932989232_1','desc _1','product/16/prodname_1.jpg','Y','prodName_1',16),(46,'barcode_0w3422932989232_2','desc _2','product/16/prodname_2.jpg','Y','prodName_2',16),(47,'barcode_0w3422932989232_1','desc _1','product/17/prodname_1.jpg','Y','prodName_1',17),(48,'barcode_0w3422932989232_2','desc _2','product/17/prodname_2.jpg','Y','prodName_2',17),(49,'barcode_0w3422932989232_1','desc _1','product/18/prodname_1.jpg','Y','prodName_1',18),(50,'barcode_0w3422932989232_2','desc _2','product/18/prodname_2.jpg','Y','prodName_2',18),(51,'barcode_0w3422932989232_1','desc _1','product/19/prodname_1.jpg','Y','prodName_1',19),(52,'barcode_0w3422932989232_2','desc _2','product/19/prodname_2.jpg','Y','prodName_2',19);
+INSERT INTO `product` VALUES (1,'barcode_0w3422932989232_1','desc _1','product/1/prodname_1.jpg','Y','prodName_1',1),(2,'barcode_0w3422932989232_2','desc _2','product/1/prodname_2.jpg','Y','prodName_2',1),(3,'barcode_0w3422932989232_1','desc _1','product/2/prodname_1.jpg','Y','prodName_1',2),(4,'barcode_0w3422932989232_2','desc _2','product/2/prodname_2.jpg','Y','prodName_2',2),(5,'barcode_0w3422932989232_1','desc _1','product/3/prodname_1.jpg','Y','prodName_1',3),(6,'barcode_0w3422932989232_2','desc _2','product/3/prodname_2.jpg','Y','prodName_2',3),(7,'barcode_0w3422932989232_1','desc _1','product/4/prodname_1.jpg','Y','prodName_1',4),(8,'barcode_0w3422932989232_2','desc _2','product/4/prodname_2.jpg','Y','prodName_2',4),(9,'barcode_0w3422932989232_1','desc _1','product/5/prodname_1.jpg','Y','prodName_1',5),(10,'barcode_0w3422932989232_2','desc _2','product/5/prodname_2.jpg','Y','prodName_2',5),(11,'barcode_0w3422932989232_1','desc _1','product/6/prodname_1.jpg','Y','prodName_1',6),(12,'barcode_0w3422932989232_2','desc _2','product/6/prodname_2.jpg','Y','prodName_2',6),(13,'barcode_0w3422932989232_1','desc _1','product/7/prodname_1.jpg','Y','prodName_1',7),(14,'barcode_0w3422932989232_2','desc _2','product/7/prodname_2.jpg','Y','prodName_2',7),(15,'barcode_0w3422932989232_1','desc _1','product/8/prodname_1.jpg','Y','prodName_1',8),(16,'barcode_0w3422932989232_2','desc _2','product/8/prodname_2.jpg','Y','prodName_2',8),(17,'barcode_0w3422932989232_1','desc _1','product/9/prodname_1.jpg','Y','prodName_1',9),(18,'barcode_0w3422932989232_2','desc _2','product/9/prodname_2.jpg','Y','prodName_2',9),(19,'barcode_0w3422932989232_1','desc _1','product/10/prodname_1.jpg','Y','prodName_1',10),(20,'barcode_0w3422932989232_2','desc _2','product/10/prodname_2.jpg','Y','prodName_2',10),(21,'barcode_0w3422932989232_1','desc _1','product/11/prodname_1.jpg','Y','prodName_1',11),(22,'barcode_0w3422932989232_2','desc _2','product/11/prodname_2.jpg','Y','prodName_2',11),(23,'barcode_0w3422932989232_1','desc _1','product/12/prodname_1.jpg','Y','prodName_1',12),(24,'barcode_0w3422932989232_2','desc _2','product/12/prodname_2.jpg','Y','prodName_2',12),(25,'barcode_0w3422932989232_1','desc _1','product/13/prodname_1.jpg','Y','prodName_1',13),(26,'barcode_0w3422932989232_2','desc _2','product/13/prodname_2.jpg','Y','prodName_2',13),(27,'barcode_0w3422932989232_1','desc _1','product/14/prodname_1.jpg','Y','prodName_1',14),(28,'barcode_0w3422932989232_2','desc _2','product/14/prodname_2.jpg','Y','prodName_2',14),(29,'barcode_0w3422932989232_1','desc _1','product/15/prodname_1.jpg','Y','prodName_1',15),(30,'barcode_0w3422932989232_2','desc _2','product/15/prodname_2.jpg','Y','prodName_2',15),(31,'barcode_0w3422932989232_1','desc _1','product/16/prodname_1.jpg','Y','prodName_1',16),(32,'barcode_0w3422932989232_2','desc _2','product/16/prodname_2.jpg','Y','prodName_2',16),(33,'barcode_0w3422932989232_1','desc _1','product/17/prodname_1.jpg','Y','prodName_1',17),(34,'barcode_0w3422932989232_2','desc _2','product/17/prodname_2.jpg','Y','prodName_2',17),(35,'barcode_0w3422932989232_1','desc _1','product/18/prodname_1.jpg','Y','prodName_1',18),(36,'barcode_0w3422932989232_2','desc _2','product/18/prodname_2.jpg','Y','prodName_2',18),(37,'barcode_0w3422932989232_1','desc _1','product/19/prodname_1.jpg','Y','prodName_1',19),(38,'barcode_0w3422932989232_2','desc _2','product/19/prodname_2.jpg','Y','prodName_2',19);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,13 +159,13 @@ DROP TABLE IF EXISTS `voucher`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `voucher` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `customer_id` bigint(20) DEFAULT NULL,
   `expiration_date` bigint(20) DEFAULT NULL,
   `start_date` bigint(20) DEFAULT NULL,
   `voucher_number` varchar(255) DEFAULT NULL,
+  `customer_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK54x7dllq1ts557joc0cunvyk9` (`customer_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -175,7 +174,6 @@ CREATE TABLE `voucher` (
 
 LOCK TABLES `voucher` WRITE;
 /*!40000 ALTER TABLE `voucher` DISABLE KEYS */;
-INSERT INTO `voucher` VALUES (1,1,1540835999999,1540620000000,'voucherNum_356797739');
 /*!40000 ALTER TABLE `voucher` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -190,7 +188,7 @@ CREATE TABLE `wic_order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `is_emergency` bit(1) DEFAULT NULL,
   `ordered_time` bigint(20) DEFAULT NULL,
-  `product_and_quantity` varchar(2048) DEFAULT NULL,
+  `product_and_quantity` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `voucher_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -216,4 +214,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-28  9:47:16
+-- Dump completed on 2018-10-28 20:05:52

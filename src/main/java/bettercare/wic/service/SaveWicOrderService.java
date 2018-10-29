@@ -5,6 +5,8 @@ import bettercare.wic.dal.entity.Customer;
 import bettercare.wic.dal.entity.Product;
 import bettercare.wic.dal.entity.Voucher;
 import bettercare.wic.dal.entity.WicOrder;
+import bettercare.wic.model.CustomerModel;
+import bettercare.wic.model.VoucherModel;
 import bettercare.wic.model.WicOrderRepresentation;
 import org.springframework.stereotype.Service;
 
@@ -39,19 +41,21 @@ public class SaveWicOrderService {
             return null;
         }
 
-        if(isBlank(model.getWicNumber(), model.getName(), model.getPhone(), model.getAddress())) {
+        CustomerModel customerModel = model.getCustomerModel();
+        if(isBlank(customerModel.getWicNumber(), customerModel.getName(), customerModel.getPhone(), customerModel.getAddress())) {
             wicLogger.error("Customer information is misssing.", Customer.class);
             return null;
         }
-        Customer customer = persistCustomerIfNew(new Customer(model.getWicNumber(), model.getName(), model.getPhone(), model.getAddress()));
+        Customer customer = persistCustomerIfNew(new Customer(customerModel));
 
-        if(isBlank(model.getVoucherNumber())) {
+        if(isBlank(model.getVoucherModel().getVoucherNumber())) {
             wicLogger.error("Voucher number is blank.", Voucher.class);
             return null;
         }
 
-        Voucher voucher_ = new Voucher(model.getStartDate(), model.getExpirationDate(), model.getVoucherNumber(), customer.getId());
-        if(isNewVoucher(voucher_, customer.getId())) {
+        VoucherModel voucherModel = model.getVoucherModel();
+        Voucher voucher_ = new Voucher(voucherModel, customer);
+        if(isNewVoucher(voucher_, customer)) {
             normalizeVoucherEffectiveDates(voucher_);
             if(isVoucherDateValid(voucher_.getStartDate(), voucher_.getExpirationDate())) {
                 Voucher voucher = entityService.saveOrUpdate(Voucher.class, voucher_);
@@ -83,9 +87,9 @@ public class SaveWicOrderService {
         voucher.setExpirationDate(timeTrimmer.adjustExpiringTime(voucher.getExpirationDate()));
     }
 
-    private boolean isNewVoucher(Voucher voucher, long customerId) {
-        voucher.setCustomerId(customerId);
-        List<Voucher> vouchers = entityService.findVoucherByVoucherNumberAndCustomerId(voucher.getVoucherNumber(), voucher.getCustomerId());
+    private boolean isNewVoucher(Voucher voucher, Customer customer) {
+        voucher.setCustomer(customer);
+        List<Voucher> vouchers = entityService.findVoucherByVoucherNumberAndCustomerId(voucher.getVoucherNumber(), voucher.getCustomer().getId());
         return vouchers.isEmpty();
     }
 
