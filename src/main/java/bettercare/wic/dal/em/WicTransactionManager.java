@@ -90,4 +90,8 @@ public class WicTransactionManager {
   public List<Category> findCategoryByName(String name) {
     return categoryDao.findByName(name);
   }
+
+  public boolean isProductExist(long id) {
+    return productDao.findById(id).isPresent();
+  }
 }

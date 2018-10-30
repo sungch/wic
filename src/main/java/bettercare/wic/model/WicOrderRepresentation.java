@@ -2,18 +2,18 @@ package bettercare.wic.model;
 
 
 import javax.persistence.Embedded;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 public class WicOrderRepresentation implements Serializable {
 
     private static final long serialVersionUID = -1437982395144640698L;
-    //@JsonProperty("order-id")
     private long orderId;
-    //@JsonIgnore
     private boolean isEmergency;
     private long orderedTime;
-    private String products;
     private String status;
+    @NotBlank
+    private String products;
 
     @Embedded
     CustomerModel customerModel;

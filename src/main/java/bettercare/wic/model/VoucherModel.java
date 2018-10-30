@@ -2,13 +2,17 @@ package bettercare.wic.model;
 
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Embeddable
 public class VoucherModel implements Serializable {
 
+    @NotBlank
     private long expirationDate;
+    @NotBlank
     private long startDate;
+    @NotBlank
     private String voucherNumber;
 
     public VoucherModel() {}

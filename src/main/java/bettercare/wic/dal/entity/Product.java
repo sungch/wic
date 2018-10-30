@@ -5,6 +5,7 @@ import org.codehaus.jackson.annotate.JsonManagedReference;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 
@@ -28,6 +29,7 @@ public class Product implements Serializable {
   @Column(name = "image_url")
   private String imageUrl;
 
+  @NotBlank
   private String name;
 
   @Column(name = "is_handling")

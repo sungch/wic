@@ -31,6 +31,10 @@ public class EntityService {
     return wicTransactionManager.findOrderByStatus(status);
   }
 
+  public boolean isProductExist(long id) {
+    return wicTransactionManager.isProductExist(id);
+  }
+
   public List findProductByIsHandling(String isHandling) {
     return wicTransactionManager.findProductByIsHandling(isHandling);
   }

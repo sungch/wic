@@ -1,14 +1,19 @@
 package bettercare.wic.model;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Embeddable
 public class CustomerModel implements Serializable {
 
+  @NotBlank
   private String address;
+  @NotBlank
   private String name;
+  @NotBlank
   private String phone;
+  @NotBlank
   private String wicNumber;
 
   public CustomerModel(String address, String name, String phone, String wicNumber) {
