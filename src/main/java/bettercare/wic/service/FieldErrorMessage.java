@@ -5,7 +5,9 @@ public class FieldErrorMessage {
   private String field;
   private String message;
 
-
+  /**
+   * This is only for @ExceptionHandler(MethodArgumentNotValidException.class)
+   */
   public FieldErrorMessage(String field, String message) {
     this.field = field;
     this.message = message;

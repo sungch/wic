@@ -1,5 +1,10 @@
 package bettercare.wic.service;
 
+/**
+ * This is used only by
+ * @ControllerAdvice
+ * public class ControllerExceptionHandler
+ */
 public class ErrorMessage {
 
   private String status;
