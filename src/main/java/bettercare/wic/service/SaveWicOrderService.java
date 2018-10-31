@@ -48,12 +48,11 @@ public class SaveWicOrderService {
         }
         Customer customer = persistCustomerIfNew(new Customer(customerModel));
 
-        if(isBlank(model.getVoucherModel().getVoucherNumber())) {
+        VoucherModel voucherModel = model.getVoucherModel();
+        if(isBlank(voucherModel.getVoucherNumber())) {
             wicLogger.error("Voucher number is blank.", Voucher.class);
             return null;
         }
-
-        VoucherModel voucherModel = model.getVoucherModel();
         Voucher voucher_ = new Voucher(voucherModel, customer);
         if(isNewVoucher(voucher_, customer)) {
             normalizeVoucherEffectiveDates(voucher_);
@@ -64,7 +63,7 @@ public class SaveWicOrderService {
                 return wicOrder;
             }
             else {
-                wicLogger.error("Voucher date is invalid. ", Voucher.class);
+                wicLogger.error("Bad Voucher date:", Voucher.class);
             }
         }
         else {
@@ -112,7 +111,7 @@ public class SaveWicOrderService {
 
     private WicOrder saveWicOrderData(String products, boolean isEmergency, long orderTime, Voucher voucher) {
         WicOrder wicOrder = new WicOrder(isEmergency, orderTime, products, OrderStatus.ORDER_RECEIVED.name(), voucher);
-        wicLogger.info("Saving a voucher info:" + wicOrder.toString(), WicOrder.class);
+        wicLogger.info("Save or update a wicOrder info:" + wicOrder.toString(), WicOrder.class);
         return entityService.saveOrUpdate(WicOrder.class, wicOrder);
     }
 

@@ -38,25 +38,56 @@ public class WicTransactionManager {
     return (T) getDao(clz).saveAndFlush(obj);
   }
 
+  public <T> void deleteById(Class<T> clz, long id) {
+    getDao(clz).deleteById(id);
+  }
+
+  // Category
+
+  public List<Category> findCategoryByName(String name) {
+    return categoryDao.findByName(name);
+  }
+
+
+  // Product
+
+  public boolean isProductExist(long id) {
+    return productDao.findById(id).isPresent();
+  }
+
+  public List<Product> findProductByCategoryIdAndNameAndIsHandling(long categoryId, String name, String isHandling) {
+    return productDao.findByCategoryIdAndNameAndIsHandling(categoryId, name, isHandling);
+  }
+
   public List<Product> findProductByIsHandling(String isHandling) {
     return productDao.findByIsHandling(isHandling);
   }
 
-  public List<WicOrder> findOrderByStatus(String status) {
+  public List<Product> findProductByCategoryId(long categoryId) {
+    return productDao.findByCategoryId(categoryId);
+  }
+
+
+  // WicOrder
+
+  public List<WicOrder> findWicOrderByStatus(String status) {
     return wicOrderDao.findByStatus(status);
   }
 
-  public List<Product> findproductByCategoryId(long categoryId) {
-    return productDao.findByCategoryId(categoryId);
-  }
+
+  // Voucher
 
   public List<Voucher> findVoucherByVoucherNumberAndCustomerId(String voucherNumber, long customerId) {
     return voucherDao.findByVoucherNumberAndCustomerId(voucherNumber, customerId);
   }
 
+
+  // Customer
+
   public List<Customer> findCustomerByWicNumberAndPhoneAndAddressAndName(String wicNumber, String phone, String address, String name) {
     return customerDao.findByWicNumberAndPhoneAndAddressAndName(wicNumber, phone, address, name);
   }
+
 
   private <T> JpaRepository getDao(Class<T> repo) {
     if (repo.equals(Category.class)) {
@@ -83,15 +114,4 @@ public class WicTransactionManager {
     return null;
   }
 
-  public List<Product> findProductByCategoryIdAndNameAndIsHandling(long categoryId, String name, String isHandling) {
-    return productDao.findByCategoryIdAndNameAndIsHandling(categoryId, name, isHandling);
-  }
-
-  public List<Category> findCategoryByName(String name) {
-    return categoryDao.findByName(name);
-  }
-
-  public boolean isProductExist(long id) {
-    return productDao.findById(id).isPresent();
-  }
 }

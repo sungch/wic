@@ -15,6 +15,8 @@ public class EntityService {
   private WicEntityManager wicEntityManager;
 
 
+  // Generics
+
   public <T> T saveOrUpdate(Class<T> clz, T obj) {
     return wicTransactionManager.saveOrUpdate(clz, obj);
   }
@@ -27,24 +29,30 @@ public class EntityService {
     return wicTransactionManager.findAll(clz);
   }
 
-  public List findOrderByStatus(String status ) {
-    return wicTransactionManager.findOrderByStatus(status);
+  public <T> void deleteById(Class<T> T, long id) {
+    wicTransactionManager.deleteById(T, id);
   }
+
+
+  // Utils
 
   public boolean isProductExist(long id) {
     return wicTransactionManager.isProductExist(id);
+  }
+
+
+  // Query by JPA patterns
+
+  public List findOrderByStatus(String status ) {
+    return wicTransactionManager.findWicOrderByStatus(status);
   }
 
   public List findProductByIsHandling(String isHandling) {
     return wicTransactionManager.findProductByIsHandling(isHandling);
   }
 
-  public <T> void deleteOrderById(T obj) {
-    wicEntityManager.remove(obj);
-  }
-
   public List<Product> findProductsByCategoryId(long id) {
-    return wicTransactionManager.findproductByCategoryId(id);
+    return wicTransactionManager.findProductByCategoryId(id);
   }
 
   public List<Voucher> findVoucherByVoucherNumberAndCustomerId(String voucherNumber, long customerId) {

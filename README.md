@@ -1,5 +1,7 @@
 Use @Transactional in unit test to roll back at the end of the test.
 
+Use @WebMvcTest, MockMvc, @MockBean
+
 Use @GeneratedValue(strategy=GenerationType.IDENTITY.
     AUTO lets hibernate choose strategy based on hibernate dialect.
     Desirable if to support multiple DBs
