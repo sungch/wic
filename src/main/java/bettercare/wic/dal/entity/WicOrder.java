@@ -1,7 +1,7 @@
 package bettercare.wic.dal.entity;
 
-import org.codehaus.jackson.annotate.JsonBackReference;
-import org.codehaus.jackson.annotate.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -39,8 +39,10 @@ public class WicOrder implements Serializable {
 
 	@OneToOne
 	@JsonBackReference
+	@JoinColumn(name = "customer_id")
 	private Voucher voucher;
 
+	@JsonManagedReference
 	@OneToOne(mappedBy = "wicOrder", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Delivery delivery;
 

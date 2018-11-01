@@ -1,5 +1,7 @@
 package bettercare.wic.dal.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -26,7 +28,9 @@ public class Delivery implements Serializable {
   @Column(name = "store_id")
   private int storeId;
 
+  @JsonBackReference
   @OneToOne
+  @JoinColumn(name = "wicOrder_id")
   private WicOrder wicOrder;
 
   public Delivery(int storeId, WicOrder wicOrder) {

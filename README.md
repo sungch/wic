@@ -2,6 +2,12 @@ Use @Transactional in unit test to roll back at the end of the test.
 
 Use @WebMvcTest, MockMvc, @MockBean
 
+mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+
+Two Field annotations
+@JsonManagedReference (for parent) which must meet its child pair
+@JsonBackReference (for child)
+
 Use @GeneratedValue(strategy=GenerationType.IDENTITY.
     AUTO lets hibernate choose strategy based on hibernate dialect.
     Desirable if to support multiple DBs

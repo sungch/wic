@@ -51,9 +51,9 @@ public class EntityService {
     return wicTransactionManager.findProductByIsHandling(isHandling);
   }
 
-  public List<Product> findProductsByCategoryId(long id) {
-    return wicTransactionManager.findProductByCategoryId(id);
-  }
+//  public List<Product> findProductsByCategoryId(long id) {
+//    return wicTransactionManager.findProductByCategoryId(id);
+//  }
 
   public List<Voucher> findVoucherByVoucherNumberAndCustomerId(String voucherNumber, long customerId) {
     return wicTransactionManager.findVoucherByVoucherNumberAndCustomerId(voucherNumber, customerId);
@@ -63,9 +63,9 @@ public class EntityService {
     return wicTransactionManager.findCustomerByWicNumberAndPhoneAndAddressAndName(wicNumber, phone, address, name);
   }
 
-  public List<Product> findProductByCategoryIdAndNameAndIsHandling(long categoryId, String name, String isHandling) {
-    return wicTransactionManager.findProductByCategoryIdAndNameAndIsHandling(categoryId, name, isHandling);
-  }
+//  public List<Product> findProductByCategoryIdAndNameAndIsHandling(long categoryId, String name, String isHandling) {
+//    return wicTransactionManager.findProductByCategoryIdAndNameAndIsHandling(categoryId, name, isHandling);
+//  }
 
   public List<Category> findCategoryByName(String name) {
     return wicTransactionManager.findCategoryByName(name);

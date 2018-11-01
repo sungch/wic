@@ -1,7 +1,7 @@
 package bettercare.wic.dal.entity;
 
 import bettercare.wic.model.CustomerModel;
-import org.codehaus.jackson.annotate.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
 import java.util.List;

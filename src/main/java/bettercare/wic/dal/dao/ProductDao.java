@@ -13,7 +13,7 @@ public interface ProductDao extends JpaRepository<Product, Long> {
 
   public List<Product> findByIsHandling(String isHandling);
 
-  public List<Product> findByCategoryId(long categoryId);
+//  public List<Product> findByCategoryId(long categoryId);
 
-  public List<Product> findByCategoryIdAndNameAndIsHandling(long categoryId, String name, String isHandling);
+//  public List<Product> findByCategoryIdAndNameAndIsHandling(long categoryId, String name, String isHandling);
 }

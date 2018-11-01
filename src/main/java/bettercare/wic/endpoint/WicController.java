@@ -150,10 +150,10 @@ public class WicController {
     return entityService.findProductByIsHandling(isHandling);
   }
 
-  @GetMapping("/wic/product/category/{id}")
-  List<Product> readProductByCategoryId(@PathVariable long categoryId) {
-    return entityService.findProductsByCategoryId(categoryId);
-  }
+//  @GetMapping("/wic/product/category/{id}")
+//  List<Product> readProductByCategoryId(@PathVariable long categoryId) {
+//    return entityService.findProductsByCategoryId(categoryId);
+//  }
 
 
   // Customer CRUD

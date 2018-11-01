@@ -19,9 +19,9 @@ public class ProductStocker extends InitSetup {
       for (int i = start; i < end; i++) {
         addProducsOnEachCategoryIfNew(category, i, "Y");
       }
-      List<Product> products = entityService.findProductsByCategoryId(categoryId);
-      wicLogger.log("Created products:" + products.size());
-      Assert.assertFalse(products.isEmpty());
+//      List<Product> products = entityService.findProductsByCategoryId(categoryId);
+//      wicLogger.log("Created products:" + products.size());
+//      Assert.assertFalse(products.isEmpty());
     }
   }
 
@@ -52,8 +52,9 @@ public class ProductStocker extends InitSetup {
   }
 
   private boolean isProductEmpty(long categoryId, String name, String isHandling) {
-    List<Product> products = entityService.findProductByCategoryIdAndNameAndIsHandling(categoryId, name, isHandling);
-    return products.isEmpty();
+    return false;
+//    List<Product> products = entityService.findProductByCategoryIdAndNameAndIsHandling(categoryId, name, isHandling);
+//    return products.isEmpty();
   }
 
 }

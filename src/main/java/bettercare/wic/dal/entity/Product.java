@@ -1,12 +1,11 @@
 package bettercare.wic.dal.entity;
 
-import org.codehaus.jackson.annotate.JsonBackReference;
-import org.codehaus.jackson.annotate.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 
 /**
@@ -40,7 +39,8 @@ public class Product implements Serializable {
   private MissingProduct missingProduct;
 
   @JsonBackReference
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "category_id")
   private Category category;
 
   public Product() {
@@ -113,7 +113,7 @@ public class Product implements Serializable {
   @Override
   public String toString() {
     return String.format("productId:%s cateoryId:%s imageId:%s barcode:%s description:%s productName:%s isHandling:%s ",
-        this.getId(), this.getCategory().getId(), this.getImageUrl(),
+        this.getId(), this.getImageUrl(),
         this.getBarcode(), this.getDescription(), this.getName(), this.isHandling );
   }
 
@@ -123,7 +123,6 @@ public class Product implements Serializable {
   @Override
   public int hashCode() {
     return Long.valueOf(this.getId()).hashCode()
-        + Long.valueOf(this.getCategory().getId()).hashCode()
         + getStringHash(this.getImageUrl())
         + getStringHash(this.getBarcode())
         + getStringHash(this.getDescription())
