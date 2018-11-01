@@ -8,6 +8,20 @@ Two Field annotations
 @JsonManagedReference (for parent) which must meet its child pair
 @JsonBackReference (for child)
 
+Those two annotaion worked only with jackson-databind in com.fastxml.jackson.core.
+They did not work with jackson-mapper-asl of org.codehaus.jackson.
+<!--<dependency>-->
+            <!--<groupId>org.codehaus.jackson</groupId>-->
+            <!--<artifactId>jackson-mapper-asl</artifactId>-->
+            <!--<version>1.9.13</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.6</version>
+        </dependency>
+
+
 Use @GeneratedValue(strategy=GenerationType.IDENTITY.
     AUTO lets hibernate choose strategy based on hibernate dialect.
     Desirable if to support multiple DBs
