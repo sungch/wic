@@ -55,17 +55,17 @@ public class WicTransactionManager {
     return productDao.findById(id).isPresent();
   }
 
-//  public List<Product> findProductByCategoryIdAndNameAndIsHandling(long categoryId, String name, String isHandling) {
-//    return productDao.findByCategoryIdAndNameAndIsHandling(categoryId, name, isHandling);
-//  }
+  public List<Product> findProductByCategoryAndNameAndIsHandling(Category category, String productName, String isHandling) {
+    return productDao.findByCategoryAndNameAndIsHandling(category, productName, isHandling);
+  }
 
   public List<Product> findProductByIsHandling(String isHandling) {
     return productDao.findByIsHandling(isHandling);
   }
 
-//  public List<Product> findProductByCategoryId(long categoryId) {
-//    return productDao.findByCategoryId(categoryId);
-//  }
+  public List<Product> findProductByCategory(Category category) {
+    return productDao.findByCategory(category);
+  }
 
 
   // WicOrder

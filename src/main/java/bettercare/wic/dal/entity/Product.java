@@ -112,8 +112,8 @@ public class Product implements Serializable {
 
   @Override
   public String toString() {
-    return String.format("productId:%s cateoryId:%s imageId:%s barcode:%s description:%s productName:%s isHandling:%s ",
-        this.getId(), this.getImageUrl(),
+    return String.format("productId:%s cateoryId:%s imageUrl:%s barcode:%s description:%s productName:%s isHandling:%s ",
+        this.getId(), this.getCategory().getId(), this.getImageUrl(),
         this.getBarcode(), this.getDescription(), this.getName(), this.isHandling );
   }
 

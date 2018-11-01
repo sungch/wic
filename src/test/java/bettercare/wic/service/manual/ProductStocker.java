@@ -13,15 +13,14 @@ public class ProductStocker extends InitSetup {
   public void addNewProducts() {
     assert categories != null;
     for(Category category : categories) {
-      long categoryId = category.getId();
       int start = (int)startProductId;
       int end = (int)startProductId + numOfProductsToCreatePerCategory;
       for (int i = start; i < end; i++) {
         addProducsOnEachCategoryIfNew(category, i, "Y");
       }
-//      List<Product> products = entityService.findProductsByCategoryId(categoryId);
-//      wicLogger.log("Created products:" + products.size());
-//      Assert.assertFalse(products.isEmpty());
+      List<Product> products = entityService.findProductsByCategory(category);
+      wicLogger.log("Created products:" + products.size());
+      Assert.assertFalse(products.isEmpty());
     }
   }
 
@@ -30,7 +29,7 @@ public class ProductStocker extends InitSetup {
     String barcode = "barcode_0w3422932989232_" + i;
     String desc = "desc _" + i;
     String productName = "prodName_" + i;
-    if (isProductEmpty(category.getId(), productName, isHandling)) {
+    if (isProductEmpty(category, productName, isHandling)) {
       Product product = prepareProduct(category, barcode, desc, productName, imageName, isHandling);
       Product newProduct = entityService.saveOrUpdate(Product.class, product);
       wicLogger.log(String.format("Created product %s", newProduct.toString()));
@@ -51,10 +50,9 @@ public class ProductStocker extends InitSetup {
     return product;
   }
 
-  private boolean isProductEmpty(long categoryId, String name, String isHandling) {
-    return false;
-//    List<Product> products = entityService.findProductByCategoryIdAndNameAndIsHandling(categoryId, name, isHandling);
-//    return products.isEmpty();
+  private boolean isProductEmpty(Category category, String productName, String isHandling) {
+    List<Product> products = entityService.findProductByCategoryAndNameAndIsHandling(category, productName, isHandling);
+    return products.isEmpty();
   }
 
 }

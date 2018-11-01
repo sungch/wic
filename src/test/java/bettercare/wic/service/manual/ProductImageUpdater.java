@@ -12,10 +12,10 @@ public class ProductImageUpdater extends InitSetup {
   public void updateProducts() {
     assert categories != null;
     for(Category category : categories) {
-//      List<Product> products = entityService.findProductsByCategoryId(category.getId());
-//      for(Product product : products) {
-//        updateProduct(product);
-//      }
+      List<Product> products = entityService.findProductsByCategory(category);
+      for(Product product : products) {
+        updateProduct(product);
+      }
     }
   }
 
