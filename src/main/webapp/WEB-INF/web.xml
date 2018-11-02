@@ -29,7 +29,7 @@
             <param-name>com.sun.jersey.config.property.packages</param-name>
             <param-value>
                 org.codehaus.jackson.jaxrs
-                bettercare.wic.service.marshaller
+                bettercare.wic
             </param-value>
         </init-param>
         <init-param>
