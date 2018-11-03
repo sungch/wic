@@ -64,11 +64,6 @@
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.codehaus.jackson</groupId>-->
-            <!--<artifactId>jackson-mapper-asl</artifactId>-->
-            <!--<version>1.9.13</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -102,6 +97,7 @@
     </dependencies>
 
     <build>
+        <finalName>wic</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

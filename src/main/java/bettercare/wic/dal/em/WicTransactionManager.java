@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WicTransactionManager {
@@ -48,6 +49,9 @@ public class WicTransactionManager {
     return categoryDao.findByName(name);
   }
 
+  public Category findCategoryById(long id) {
+    return categoryDao.findById(id).orElse(null);
+  }
 
   // Product
 

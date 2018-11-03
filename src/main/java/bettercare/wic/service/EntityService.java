@@ -15,14 +15,17 @@ public class EntityService {
   private WicEntityManager wicEntityManager;
 
 
-  // Generics
-
-  public <T> T saveOrUpdate(Class<T> clz, T obj) {
-    return wicTransactionManager.saveOrUpdate(clz, obj);
-  }
+  // Generics via wicEntityManager
 
   public <T> T findById(Class<T> clz, long id) {
     return wicEntityManager.find(clz, id);
+  }
+
+
+  // Generics via wicTransactionManager
+
+  public <T> T saveOrUpdate(Class<T> clz, T obj) {
+    return wicTransactionManager.saveOrUpdate(clz, obj);
   }
 
   public <T> List<T> findAll(Class<T> clz) {
@@ -69,5 +72,10 @@ public class EntityService {
 
   public List<Category> findCategoryByName(String name) {
     return wicTransactionManager.findCategoryByName(name);
+  }
+
+  public Category findCategoryById(long categoryId) {
+    return wicTransactionManager.findCategoryById(categoryId);
+
   }
 }
