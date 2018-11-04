@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Past;
 
 
 /**
@@ -21,9 +23,11 @@ public class Voucher implements Serializable {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
 
+    @Future
     @Column(name = "expiration_date")
     private long expirationDate;
 
+    @Past
     @Column(name = "start_date")
     private long startDate;
 

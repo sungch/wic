@@ -3,14 +3,12 @@ package bettercare.wic.config;
 import bettercare.wic.dal.em.WicEntityManager;
 import bettercare.wic.dal.em.WicTransactionManager;
 import bettercare.wic.model.WicOrderRepresentation;
-import bettercare.wic.service.DefaultExceptionMapper;
 import bettercare.wic.service.EntityService;
 import bettercare.wic.service.SaveWicOrderService;
 import bettercare.wic.service.TimeTrimmer;
 import bettercare.wic.dal.WicLogger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 
 
 @Configuration
@@ -44,12 +42,6 @@ public class ServiceConfiguration {
   @Bean
   public EntityService fetchService() {
     return new EntityService();
-  }
-
-  @Bean
-  @Scope("singleton")
-  public DefaultExceptionMapper defaultExceptionMapper() {
-    return new DefaultExceptionMapper();
   }
 
   @Bean

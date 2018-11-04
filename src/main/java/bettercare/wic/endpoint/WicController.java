@@ -117,21 +117,20 @@ public class WicController {
   }
 
   @PostMapping("/product")
-  Product createProduct(@Valid @RequestBody Product product) {
+  Product createProduct(@Valid @RequestBody Product product) throws ValidationException {
     return entityService.saveOrUpdate(Product.class, product);
+//    if(product.getId() == 0) {
+//
+//    }
+//    throw new ValidationException(product.toString(), "400");
   }
 
   @PutMapping("/product")
-  Product updateProduct(@RequestBody Product product) {
-    return entityService.saveOrUpdate(Product.class, product);
-  }
-
-  @PutMapping("/product_")
-  ResponseEntity<Product> updateProduct_(@Valid @RequestBody Product product) throws ValidationException {
+  ResponseEntity<Product> updateProduct(@Valid @RequestBody Product product) {
     if (entityService.isProductExist(product.getId())) {
       return new ResponseEntity<>(entityService.saveOrUpdate(Product.class, product), HttpStatus.OK);
     }
-    throw new ValidationException("Invalid Payload:" + product.toString(), "400");
+    return new ResponseEntity<>(product, HttpStatus.BAD_REQUEST);
   }
 
   @DeleteMapping("/product/{id}")
