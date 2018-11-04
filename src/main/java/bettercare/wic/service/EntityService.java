@@ -21,6 +21,9 @@ public class EntityService {
     return wicEntityManager.find(clz, id);
   }
 
+  public List findPendingOrders() {
+    return wicEntityManager.findPendingOrders();
+  }
 
   // Generics via wicTransactionManager
 
@@ -78,4 +81,5 @@ public class EntityService {
     return wicTransactionManager.findCategoryById(categoryId);
 
   }
+
 }

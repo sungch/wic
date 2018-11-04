@@ -1,3 +1,10 @@
+TODO
+
+1. remove relationshu between product and missing-product
+
+
+To make it deployable to tomcat, Had to Add "WicApplication extends SpringBootServletInitializer" and delete web.xml before deploy.
+
 Use @Transactional in unit test to roll back at the end of the test.
 
 Use @WebMvcTest, MockMvc, @MockBean

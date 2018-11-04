@@ -1,9 +1,12 @@
 package bettercare.wic.dal.em;
 
+import bettercare.wic.dal.entity.WicOrder;
+import bettercare.wic.service.OrderStatus;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.persistence.*;
+import java.util.List;
 
 
 @Service
@@ -33,6 +36,11 @@ public class WicEntityManager {
     entityManager.flush();
   }
 
+  public List findPendingOrders() {
+    Query query = entityManager.createNativeQuery("select * from wic_order where status != '" + OrderStatus.DELIVERY_COMPLETED.name() + "'");
+    System.out.println(query.toString());
+    return query.getResultList();
+  }
 
   @PrePersist
   @PreUpdate

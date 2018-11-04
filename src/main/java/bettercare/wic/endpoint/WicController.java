@@ -3,19 +3,15 @@ package bettercare.wic.endpoint;
 import bettercare.wic.dal.entity.*;
 import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.EntityService;
-import bettercare.wic.service.FieldErrorMessage;
 import bettercare.wic.service.SaveWicOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.xml.bind.ValidationException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @Controller + @ResponseBody (converter of string to json) === @RestController
@@ -57,7 +53,7 @@ public class WicController {
     return entityService.saveOrUpdate(WicOrder.class, wicOrder);
   }
 
-  @GetMapping("/wicOrder/{id}")
+  @GetMapping("/wicOrders/{id}")
   WicOrder readWicOrder(@PathVariable long id) {
     return entityService.findById(WicOrder.class, id);
   }
@@ -72,9 +68,14 @@ public class WicController {
     entityService.deleteById(WicOrder.class, orderId);
   }
 
-  @GetMapping("/wicOrder/pending")
-  List readPendingOrders(@RequestParam(value = "status", required = true) String status) {
+  @GetMapping("/wicOrders/status")
+  List readOrdersByStatus(@RequestParam(value = "status", required = false, defaultValue = "ORDER_RECEIVED") String status) {
     return entityService.findOrderByStatus(status);
+  }
+
+  @GetMapping("/wicOrders/pending")
+  List readPendingOrders() {
+    return entityService.findPendingOrders();
   }
 
   @GetMapping("/wicOrders")
@@ -142,12 +143,9 @@ public class WicController {
   }
 
   @GetMapping("/products")
-  List readProducts() {
-    return entityService.findAll(Product.class);
-  }
-  @GetMapping("/product/isHandling")
-  List readHandlingProducts(@RequestParam(value = "isHandling", required = true) String isHandling) {
-    return entityService.findProductByIsHandling(isHandling);
+  List readProducts(@RequestParam(value = "isHandling", required = false, defaultValue = "true") String isHandling) {
+    String isHandling_ = Boolean.valueOf(isHandling) ? "Y" : "N";
+    return entityService.findProductByIsHandling(isHandling_);
   }
 
   @GetMapping("/product/category/{id}")
