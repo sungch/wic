@@ -4,13 +4,10 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 
-/**
- * The persistent class for the category database table.
- * 
- */
 @Entity
 @Table(name="category")
 @NamedQuery(name="Category.findAll", query="SELECT c FROM Category c")
@@ -21,6 +18,7 @@ public class  Category implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 
+	@NotEmpty
 	private String name;
 
 	@Column(name = "image_url")

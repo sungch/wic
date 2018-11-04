@@ -117,12 +117,8 @@ public class WicController {
   }
 
   @PostMapping("/product")
-  Product createProduct(@Valid @RequestBody Product product) throws ValidationException {
+  Product createProduct(@Valid @RequestBody Product product) {
     return entityService.saveOrUpdate(Product.class, product);
-//    if(product.getId() == 0) {
-//
-//    }
-//    throw new ValidationException(product.toString(), "400");
   }
 
   @PutMapping("/product")
