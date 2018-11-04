@@ -1,7 +1,6 @@
 package bettercare.wic.dal.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -33,10 +32,6 @@ public class Product implements Serializable {
 
   @Column(name = "is_handling")
   private String isHandling;
-
-  @JsonManagedReference
-  @OneToOne(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private MissingProduct missingProduct;
 
   @JsonBackReference
   @ManyToOne(fetch = FetchType.LAZY)
@@ -86,14 +81,6 @@ public class Product implements Serializable {
     this.name = name;
   }
 
-  public MissingProduct getMissingProduct() {
-    return this.missingProduct;
-  }
-
-  public void setMissingProduct(MissingProduct missingProduct) {
-    this.missingProduct = missingProduct;
-  }
-
   public Category getCategory() {
     return this.category;
   }
@@ -102,12 +89,12 @@ public class Product implements Serializable {
     this.category = category;
   }
 
-  public String isHandling() {
+  public String getIsHandling() {
     return isHandling;
   }
 
-  public void setHandling(String is_handling) {
-    isHandling = is_handling;
+  public void setIsHandling(String isHandling) {
+    this.isHandling = isHandling;
   }
 
   @Override

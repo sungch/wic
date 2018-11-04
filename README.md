@@ -1,6 +1,19 @@
 TODO
 
-1. remove relationshu between product and missing-product
+/**
+ * @Controller + @ResponseBody (converter of string to json) === @RestController
+ * <p>
+ * Somehow, client has to assume that POST Content-Type is application/json via @RequestBody
+ * GET Accept via @RestController
+ * <p>
+ * Workflow: Client -> DispatcherServlet -> @RequestBody JSON to Java -> @Controller java format
+ * Workflow Controller -> @ResponseBody Java to JSON -> DispatcherServlet -> client
+ * <p>
+ * mvn spring-boot:run
+ * @RequestParameter -- method parameter
+ * @RequestBody -- payload
+ * @PathParameter -- path
+ */
 
 
 To make it deployable to tomcat, Had to Add "WicApplication extends SpringBootServletInitializer" and delete web.xml before deploy.

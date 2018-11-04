@@ -1,7 +1,5 @@
 package bettercare.wic.dal.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -21,23 +19,17 @@ public class MissingProduct implements Serializable {
 	private long id;
 
 	private int quantity;
-
-	@JsonBackReference
-	@ManyToOne
-	@JoinColumn(name = "wicOrder_id")
-	private WicOrder wicOrder;
-
-	@JsonBackReference
-	@OneToOne
-	@JoinColumn(name = "product_id")
-	private Product product;
+	@Column(name = "wicOrder_id")
+	private long wicOrderId;
+	@Column(name = "product_id")
+	private long productId;
 
 	public MissingProduct() {
 	}
 
-	public MissingProduct(WicOrder wicOrder, Product product, int quantity) {
-		this.wicOrder = wicOrder;
-		this.product = product;
+	public MissingProduct(long wicOrderId, long productId, int quantity) {
+		this.wicOrderId = wicOrderId;
+		this.productId = productId;
 		this.quantity = quantity;
 	}
 
@@ -57,20 +49,20 @@ public class MissingProduct implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public WicOrder getWicOrder() {
-		return this.wicOrder;
+	public long getWicOrderId() {
+		return this.wicOrderId;
 	}
 
-	public void setWicOrder(WicOrder wicOrder) {
-		this.wicOrder = wicOrder;
+	public void setWicOrder(long wicOrderId) {
+		this.wicOrderId = wicOrderId;
 	}
 
-	public Product getProduct() {
-		return this.product;
+	public long getProductId() {
+		return this.productId;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProductId(long productId) {
+		this.productId = productId;
 	}
 
 	@Override

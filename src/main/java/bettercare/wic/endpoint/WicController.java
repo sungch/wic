@@ -13,20 +13,6 @@ import javax.validation.Valid;
 import javax.xml.bind.ValidationException;
 import java.util.List;
 
-/**
- * @Controller + @ResponseBody (converter of string to json) === @RestController
- * <p>
- * Somehow, client has to assume that POST Content-Type is application/json via @RequestBody
- * GET Accept via @RestController
- * <p>
- * Workflow: Client -> DispatcherServlet -> @RequestBody JSON to Java -> @Controller java format
- * Workflow Controller -> @ResponseBody Java to JSON -> DispatcherServlet -> client
- * <p>
- * mvn spring-boot:run
- * @RequestParameter -- method parameter
- * @RequestBody -- payload
- * @PathParameter -- path
- */
 
 @RestController
 public class WicController {
@@ -48,24 +34,9 @@ public class WicController {
 
   // WicOrder CRUD
 
-  @PostMapping("/wicOrder")
-  WicOrder createWicOrder(@Valid @RequestBody WicOrder wicOrder) {
-    return entityService.saveOrUpdate(WicOrder.class, wicOrder);
-  }
-
-  @GetMapping("/wicOrders/{id}")
-  WicOrder readWicOrder(@PathVariable long id) {
-    return entityService.findById(WicOrder.class, id);
-  }
-
-  @PutMapping("/wicOrder")
-  WicOrder updateWicOrder(@RequestBody WicOrder wicOrder) {
-    return entityService.saveOrUpdate(WicOrder.class, wicOrder);
-  }
-
-  @DeleteMapping("/wicOrder/{id}")
-  void deleteWicOrder(@PathVariable long orderId) {
-    entityService.deleteById(WicOrder.class, orderId);
+  @GetMapping("/wicOrders")
+  List readWicOrders() {
+    return entityService.findAll(WicOrder.class);
   }
 
   @GetMapping("/wicOrders/status")
@@ -78,22 +49,42 @@ public class WicController {
     return entityService.findPendingOrders();
   }
 
-  @GetMapping("/wicOrders")
-  List readWicOrders() {
-    return entityService.findAll(WicOrder.class);
+  @GetMapping("/wicOrders/{id}")
+  WicOrder readWicOrder(@PathVariable long id) {
+    return entityService.findById(WicOrder.class, id);
+  }
+
+  @PostMapping("/wicOrder")
+  WicOrder createWicOrder(@Valid @RequestBody WicOrder wicOrder) {
+    return entityService.saveOrUpdate(WicOrder.class, wicOrder);
+  }
+
+  @PutMapping("/wicOrder")
+  WicOrder updateWicOrder(@RequestBody WicOrder wicOrder) {
+    return entityService.saveOrUpdate(WicOrder.class, wicOrder);
+  }
+
+  @DeleteMapping("/wicOrder/{id}")
+  void deleteWicOrder(@PathVariable long orderId) {
+    entityService.deleteById(WicOrder.class, orderId);
   }
 
 
   // Category CRUD
 
+  @GetMapping("/categories")
+  List readCategories() {
+    return entityService.findAll(Category.class);
+  }
+
+  @GetMapping("/categories/{id}")
+  Category readCategory(@PathVariable long id) {
+    return entityService.findById(Category.class, id);
+  }
+
   @PostMapping("/category")
   Category createCategory(@Valid @RequestBody Category category) {
     return entityService.saveOrUpdate(Category.class, category);
-  }
-
-  @GetMapping("/category/{id}")
-  Category readCategory(@PathVariable long id) {
-    return entityService.findById(Category.class, id);
   }
 
   @PutMapping("/category")
@@ -106,22 +97,28 @@ public class WicController {
     entityService.deleteById(Category.class, id);
   }
 
-  @GetMapping("/categories")
-  List readCategories() {
-    return entityService.findAll(Category.class);
-  }
-
 
   // Product CRUD
+
+  @GetMapping("/products")
+  List readProducts(@RequestParam(value = "isHandling", required = false, defaultValue = "true") String isHandling) {
+    return entityService.findProductByIsHandling(Boolean.valueOf(isHandling) ? "Y" : "N");
+  }
+
+  @GetMapping("/products/{id}")
+  Product readProduct(@PathVariable long id) {
+    return entityService.findById(Product.class, id);
+  }
+
+  @GetMapping("/products/categories/{id}")
+  List<Product> readProductByCategoryId(@PathVariable long categoryId) {
+    Category category = entityService.findCategoryById(categoryId);
+    return entityService.findProductsByCategory(category);
+  }
 
   @PostMapping("/product")
   Product createProduct(@Valid @RequestBody Product product) {
     return entityService.saveOrUpdate(Product.class, product);
-  }
-
-  @GetMapping("/product/{id}")
-  Product readProduct(@PathVariable long id) {
-    return entityService.findById(Product.class, id);
   }
 
   @PutMapping("/product")
@@ -142,29 +139,22 @@ public class WicController {
     entityService.deleteById(Product.class, id);
   }
 
-  @GetMapping("/products")
-  List readProducts(@RequestParam(value = "isHandling", required = false, defaultValue = "true") String isHandling) {
-    String isHandling_ = Boolean.valueOf(isHandling) ? "Y" : "N";
-    return entityService.findProductByIsHandling(isHandling_);
-  }
-
-  @GetMapping("/product/category/{id}")
-  List<Product> readProductByCategoryId(@PathVariable long categoryId) {
-    Category category = entityService.findCategoryById(categoryId);
-    return entityService.findProductsByCategory(category);
-  }
-
 
   // Customer CRUD
+
+  @GetMapping("/customers")
+  List readCustomers() {
+    return entityService.findAll(Customer.class);
+  }
+
+  @GetMapping("/customers/{id}")
+  Customer readCustomer(@PathVariable long id) {
+    return entityService.findById(Customer.class, id);
+  }
 
   @PostMapping("/customer")
   Customer createCustomer(@Valid @RequestBody Customer customer) {
     return entityService.saveOrUpdate(Customer.class, customer);
-  }
-
-  @GetMapping("/customer/{id}")
-  Customer readCustomer(@PathVariable long id) {
-    return entityService.findById(Customer.class, id);
   }
 
   @PutMapping("/customer")
@@ -177,22 +167,22 @@ public class WicController {
     entityService.deleteById(Customer.class, id);
   }
 
-  @GetMapping("/customers")
-  List readCustomers() {
-    return entityService.findAll(Customer.class);
-  }
-
 
   // Delivery CRUD
+
+  @GetMapping("/deliveries")
+  List readDeliveries() {
+    return entityService.findAll(Delivery.class);
+  }
+
+  @GetMapping("/deliveries/{id}")
+  Delivery readDelivery(@PathVariable long id) {
+    return entityService.findById(Delivery.class, id);
+  }
 
   @PostMapping("/delivery")
   Delivery createDelivery(@Valid @RequestBody Delivery delivery) {
     return entityService.saveOrUpdate(Delivery.class, delivery);
-  }
-
-  @GetMapping("/delivery/{id}")
-  Delivery readDelivery(@PathVariable long id) {
-    return entityService.findById(Delivery.class, id);
   }
 
   @PutMapping("/delivery")
@@ -205,21 +195,22 @@ public class WicController {
     entityService.deleteById(Delivery.class, id);
   }
 
-  @GetMapping("/deliveries")
-  List readDeliveries() {
-    return entityService.findAll(Delivery.class);
-  }
 
   // MissingProduct CRUD
+
+  @GetMapping("/missingProducts")
+  List readMissingProducts() {
+    return entityService.findAll(MissingProduct.class);
+  }
+
+  @GetMapping("/missingProducts/{id}")
+  MissingProduct readMissingProduct(@PathVariable long id) {
+    return entityService.findById(MissingProduct.class, id);
+  }
 
   @PostMapping("/missingProduct")
   MissingProduct createMissingProduct(@Valid @RequestBody MissingProduct missingProduct) {
     return entityService.saveOrUpdate(MissingProduct.class, missingProduct);
-  }
-
-  @GetMapping("/missingProduct/{id}")
-  MissingProduct readMissingProduct(@PathVariable long id) {
-    return entityService.findById(MissingProduct.class, id);
   }
 
   @PutMapping("/missingProduct")
@@ -232,22 +223,22 @@ public class WicController {
     entityService.deleteById(MissingProduct.class, id);
   }
 
-  @GetMapping("/missingProducts")
-  List readMissingProducts() {
-    return entityService.findAll(MissingProduct.class);
-  }
-
 
   // Voucher CRUD
+
+  @GetMapping("/vouchers")
+  List readVouchers() {
+    return entityService.findAll(Voucher.class);
+  }
+
+  @GetMapping("/vouchers/{id}")
+  Voucher readVoucher(@PathVariable long id) {
+    return entityService.findById(Voucher.class, id);
+  }
 
   @PostMapping("/voucher")
   Voucher createVoucher(@Valid @RequestBody Voucher voucher) {
     return entityService.saveOrUpdate(Voucher.class, voucher);
-  }
-
-  @GetMapping("/voucher/{id}")
-  Voucher readVoucher(@PathVariable long id) {
-    return entityService.findById(Voucher.class, id);
   }
 
   @PutMapping("/voucher")
@@ -258,11 +249,6 @@ public class WicController {
   @DeleteMapping("/voucher/{id}")
   void deleteVoucher(@PathVariable long id) {
     entityService.deleteById(Voucher.class, id);
-  }
-
-  @GetMapping("/vouchers")
-  List readVouchers() {
-    return entityService.findAll(Voucher.class);
   }
 
 }

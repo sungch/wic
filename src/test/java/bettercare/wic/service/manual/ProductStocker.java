@@ -46,7 +46,7 @@ public class ProductStocker extends InitSetup {
     product.setDescription(desc);
     product.setImageUrl(imageName);
     product.setName(prodName);
-    product.setHandling(isHandling);
+    product.setIsHandling(isHandling);
     return product;
   }
 

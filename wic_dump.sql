@@ -132,7 +132,7 @@ CREATE TABLE `product` (
   `barcode` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `image_url` varchar(255) DEFAULT NULL,
-  `is_handling` varchar(255) DEFAULT NULL,
+  `is_handling` varchar(1) DEFAULT 'Y',
   `name` varchar(255) DEFAULT NULL,
   `category_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),

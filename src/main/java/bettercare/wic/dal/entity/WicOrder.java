@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
 
 
 /**
@@ -32,10 +31,6 @@ public class WicOrder implements Serializable {
 	private String products;
 
 	private String status;
-
-	@JsonManagedReference
-	@OneToMany(mappedBy = "wicOrder", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<MissingProduct> missingProducts;
 
 	@OneToOne
 	@JsonBackReference
@@ -99,26 +94,6 @@ public class WicOrder implements Serializable {
 		this.status = status;
 	}
 
-	public List<MissingProduct> getMissingProducts() {
-		return this.missingProducts;
-	}
-
-	public void setMissingProducts(List<MissingProduct> missingProducts) {
-		this.missingProducts = missingProducts;
-	}
-
-	public MissingProduct addMissingProduct(MissingProduct missingProduct) {
-		getMissingProducts().add(missingProduct);
-		missingProduct.setWicOrder(this);
-		return missingProduct;
-	}
-
-	public MissingProduct removeMissingProduct(MissingProduct missingProduct) {
-		getMissingProducts().remove(missingProduct);
-		missingProduct.setWicOrder(null);
-		return missingProduct;
-	}
-
 	public Voucher getVoucher() {
 		return voucher;
 	}
@@ -129,8 +104,8 @@ public class WicOrder implements Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("id:%s missing:%s isEmergency:%s orderTime:%s orderContents:%s status:%s customerId:%s voucherId:%s",
-							 this.getId(), this.getMissingProducts(), this.getIsEmergency(),
+		return String.format("id:%s isEmergency:%s orderTime:%s orderContents:%s status:%s customerId:%s voucherId:%s",
+							 this.getId(), this.getIsEmergency(),
 							 this.getOrderedTime(), this.getProducts(), this.getStatus(),
 							 this.getVoucher().getCustomer().toString(), this.getVoucher().toString());
 	}
@@ -138,7 +113,6 @@ public class WicOrder implements Serializable {
 	@Override
 	public int hashCode() {
 		return (int) (Long.valueOf(this.getId()).hashCode() +
-						(this.getMissingProducts().isEmpty() ? 0 : 1) +
 						(this.getIsEmergency() ? 1 : 0) +
 						this.getOrderedTime() +
 						getStringHash(getProducts()) +
