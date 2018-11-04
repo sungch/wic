@@ -37,9 +37,8 @@ public class WicEntityManager {
   }
 
   public List findPendingOrders() {
-    Query query = entityManager.createNativeQuery("select * from wic_order where status != '" + OrderStatus.DELIVERY_COMPLETED.name() + "'");
-    System.out.println(query.toString());
-    return query.getResultList();
+    return entityManager.createNativeQuery("select * from wic_order where status != '" +
+        OrderStatus.DELIVERY_COMPLETED.name() + "'").getResultList();
   }
 
   @PrePersist
