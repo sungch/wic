@@ -1,3 +1,15 @@
+----
+TODO
+-----
+Use CURRENT_TIMESTAMP as default timestamp is schema
+
+
+
+
+
+------
+INFO
+------
 When POSTing, ID must be 0. It cannot be empty or NULL.
 PUT POST adds an empty entry even though payload is not valid.
 @Past and @Future -> Are they work with LONG or must it be Date field?

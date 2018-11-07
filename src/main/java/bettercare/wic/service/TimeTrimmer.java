@@ -1,6 +1,7 @@
 package bettercare.wic.service;
 
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -10,26 +11,26 @@ import java.util.Date;
  */
 public class TimeTrimmer {
 
-  public long adjustStartingTime(long voucherTime) {
-    Date date = new Date(voucherTime);
+  public Timestamp adjustStartingTime(Timestamp voucherTime) {
+    Date date = voucherTime;
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(date);
     calendar.set(Calendar.MILLISECOND, 0);
     calendar.set(Calendar.SECOND, 0);
     calendar.set(Calendar.MINUTE, 0);
     calendar.set(Calendar.HOUR, 0);
-    return calendar.getTimeInMillis();
+    return new Timestamp(calendar.getTimeInMillis());
   }
 
-  public long adjustExpiringTime(long voucherTime) {
-    Date date = new Date(voucherTime);
+  public Timestamp adjustExpiringTime(Timestamp voucherTime) {
+    Date date = voucherTime;
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(date);
     calendar.set(Calendar.MILLISECOND, 999);
     calendar.set(Calendar.SECOND, 59);
     calendar.set(Calendar.MINUTE, 59);
     calendar.set(Calendar.HOUR, 11);
-    return calendar.getTimeInMillis();
+    return new Timestamp(calendar.getTimeInMillis());
   }
 
 }

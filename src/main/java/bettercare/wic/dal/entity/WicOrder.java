@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import javax.persistence.*;
 
 
@@ -25,7 +26,7 @@ public class WicOrder implements Serializable {
 	private boolean isEmergency;
 
 	@Column(name="ordered_time")
-	private long orderedTime;
+	private Timestamp orderedTime;
 
 	@Column(name="product_and_quantity")
 	private String products;
@@ -42,7 +43,7 @@ public class WicOrder implements Serializable {
 	private Delivery delivery;
 
 
-	public WicOrder(boolean isEmergency, long orderedTime, String products, String status, Voucher voucher) {
+	public WicOrder(boolean isEmergency, Timestamp orderedTime, String products, String status, Voucher voucher) {
 		this.isEmergency = isEmergency;
 		this.orderedTime = orderedTime;
 		this.products = products;
@@ -70,11 +71,11 @@ public class WicOrder implements Serializable {
 		this.isEmergency = isEmergency;
 	}
 
-	public long getOrderedTime() {
+	public Timestamp getOrderedTime() {
 		return this.orderedTime;
 	}
 
-	public void setOrderedTime(long orderedTime) {
+	public void setOrderedTime(Timestamp orderedTime) {
 		this.orderedTime = orderedTime;
 	}
 
@@ -114,7 +115,7 @@ public class WicOrder implements Serializable {
 	public int hashCode() {
 		return (int) (Long.valueOf(this.getId()).hashCode() +
 						(this.getIsEmergency() ? 1 : 0) +
-						this.getOrderedTime() +
+						this.getOrderedTime().getTime() +
 						getStringHash(getProducts()) +
 						getStringHash(this.getStatus()));
 	}

@@ -76,7 +76,7 @@ DROP TABLE IF EXISTS `delivery`;
 CREATE TABLE `delivery` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `deliverer_name` varchar(255) DEFAULT NULL,
-  `delivery_completion_time` bigint(20) DEFAULT NULL,
+  `delivery_completion_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `store_id` int(11) DEFAULT NULL,
   `wicOrder_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -159,8 +159,8 @@ DROP TABLE IF EXISTS `voucher`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `voucher` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `expiration_date` bigint(20) DEFAULT NULL,
-  `start_date` bigint(20) DEFAULT NULL,
+  `expiration_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `start_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `voucher_number` varchar(255) DEFAULT NULL,
   `customer_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -187,10 +187,10 @@ DROP TABLE IF EXISTS `wic_order`;
 CREATE TABLE `wic_order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `is_emergency` bit(1) DEFAULT NULL,
-  `ordered_time` bigint(20) DEFAULT NULL,
+  `ordered_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `product_and_quantity` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
-  `voucher_id` bigint(20) DEFAULT NULL,
+  `voucher_id` bigint(20) DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `FKmid1t382gd9qsqdh9rivboocc` (`voucher_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;

@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -73,7 +74,7 @@ public class InitSetup {
     model.setCustomerModel(new CustomerModel(address, customerName, phone, wicNumber));
 
     // Voucher
-    model.setVoucherModel(new VoucherModel(startDate, expirationDate, voucherNumber));
+    model.setVoucherModel(new VoucherModel(new Timestamp(startDate), new Timestamp(expirationDate), voucherNumber));
 
     // Product
     model.setProducts(createSimulatedProductOrders());

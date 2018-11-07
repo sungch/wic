@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Past;
@@ -25,11 +26,11 @@ public class Voucher implements Serializable {
 
     @Future
     @Column(name = "expiration_date")
-    private long expirationDate;
+    private Timestamp expirationDate;
 
     @Past
     @Column(name = "start_date")
-    private long startDate;
+    private Timestamp startDate;
 
     @Column(name = "voucher_number")
     private String voucherNumber;
@@ -39,7 +40,7 @@ public class Voucher implements Serializable {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    public Voucher(long startDate, long expirationDate, String voucherNumber, Customer customer) {
+    public Voucher(Timestamp startDate, Timestamp expirationDate, String voucherNumber, Customer customer) {
         this.voucherNumber = voucherNumber;
         this.startDate = startDate;
         this.expirationDate = expirationDate;
@@ -69,19 +70,19 @@ public class Voucher implements Serializable {
         this.id = id;
     }
 
-    public long getExpirationDate() {
+    public Timestamp getExpirationDate() {
         return this.expirationDate;
     }
 
-    public void setExpirationDate(long expirationDate) {
+    public void setExpirationDate(Timestamp expirationDate) {
         this.expirationDate = expirationDate;
     }
 
-    public long getStartDate() {
+    public Timestamp getStartDate() {
         return this.startDate;
     }
 
-    public void setStartDate(long startDate) {
+    public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
 
@@ -116,7 +117,7 @@ public class Voucher implements Serializable {
 
     @Override
     public int hashCode() {
-        return (int) (Long.valueOf(this.getId()).hashCode() + this.getStartDate() + this.getExpirationDate()+ getStringHash(this.getVoucherNumber()));
+        return (int) (Long.valueOf(this.getId()).hashCode() + this.getStartDate().getTime() + this.getExpirationDate().getTime() + getStringHash(this.getVoucherNumber()));
     }
 
     private int getStringHash(String val) {

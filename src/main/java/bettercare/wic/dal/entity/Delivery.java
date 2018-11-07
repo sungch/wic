@@ -3,6 +3,7 @@ package bettercare.wic.dal.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import javax.persistence.*;
 
 
@@ -23,7 +24,7 @@ public class Delivery implements Serializable {
   private String delivererName;
 
   @Column(name = "delivery_completion_time")
-  private long deliveryCompletionTime;
+  private Timestamp deliveryCompletionTime;
 
   @Column(name = "store_id")
   private int storeId;
@@ -57,11 +58,11 @@ public class Delivery implements Serializable {
     this.delivererName = delivererName;
   }
 
-  public long getDeliveryCompletionTime() {
+  public Timestamp getDeliveryCompletionTime() {
     return this.deliveryCompletionTime;
   }
 
-  public void setDeliveryCompletionTime(long deliveryCompletionTime) {
+  public void setDeliveryCompletionTime(Timestamp deliveryCompletionTime) {
     this.deliveryCompletionTime = deliveryCompletionTime;
   }
 
@@ -83,7 +84,8 @@ public class Delivery implements Serializable {
 
   @Override
   public String toString() {
-    return String.format("nanme:%s storeId:%s completionTime:%s id:%s", this.getDelivererName().hashCode() + this.getStoreId() + this.getDeliveryCompletionTime() + this.getId());
+    return String.format("nanme:%s storeId:%s completionTime:%s id:%s",
+        this.getDelivererName().hashCode() + this.getStoreId() + this.getDeliveryCompletionTime().getTime() + this.getId());
   }
 
   @Override

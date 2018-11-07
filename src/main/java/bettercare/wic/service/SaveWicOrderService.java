@@ -11,6 +11,7 @@ import bettercare.wic.model.WicOrderRepresentation;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class SaveWicOrderService {
             normalizeVoucherEffectiveDates(voucher_);
             if(isVoucherDateValid(voucher_.getStartDate(), voucher_.getExpirationDate())) {
                 Voucher voucher = entityService.saveOrUpdate(Voucher.class, voucher_);
-                WicOrder wicOrder = saveWicOrderData(products, false, new Date().getTime(), voucher);
+                WicOrder wicOrder = saveWicOrderData(products, false, new Timestamp(new Date().getTime()), voucher);
                 wicLogger.info("Your order number is " + wicOrder.getId(), Customer.class);
                 return wicOrder;
             }
@@ -104,12 +105,12 @@ public class SaveWicOrderService {
         return null;
     }
 
-    private boolean isVoucherDateValid(long startDate, long expirationDate) {
+    private boolean isVoucherDateValid(Timestamp startDate, Timestamp expirationDate) {
         long today = new Date().getTime();
-        return today >= startDate && today <= expirationDate;
+        return today >= startDate.getTime() && today <= expirationDate.getTime();
     }
 
-    private WicOrder saveWicOrderData(String products, boolean isEmergency, long orderTime, Voucher voucher) {
+    private WicOrder saveWicOrderData(String products, boolean isEmergency, Timestamp orderTime, Voucher voucher) {
         WicOrder wicOrder = new WicOrder(isEmergency, orderTime, products, OrderStatus.ORDER_RECEIVED.name(), voucher);
         wicLogger.info("Save or update a wicOrder info:" + wicOrder.toString(), WicOrder.class);
         return entityService.saveOrUpdate(WicOrder.class, wicOrder);

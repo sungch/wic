@@ -4,38 +4,39 @@ package bettercare.wic.model;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Embeddable
 public class VoucherModel implements Serializable {
 
     @NotBlank
-    private long expirationDate;
+    private Timestamp expirationDate;
     @NotBlank
-    private long startDate;
+    private Timestamp startDate;
     @NotBlank
     private String voucherNumber;
 
     public VoucherModel() {}
 
-    public VoucherModel(long startDate, long expirationDate, String voucherNumber) {
+    public VoucherModel(Timestamp startDate, Timestamp expirationDate, String voucherNumber) {
         this.startDate = startDate;
         this.expirationDate = expirationDate;
         this.voucherNumber = voucherNumber;
     }
 
-    public long getExpirationDate() {
+    public Timestamp getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(long expirationDate) {
+    public void setExpirationDate(Timestamp expirationDate) {
         this.expirationDate = expirationDate;
     }
 
-    public long getStartDate() {
+    public Timestamp getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(long startDate) {
+    public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
 

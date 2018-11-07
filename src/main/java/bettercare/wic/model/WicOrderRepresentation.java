@@ -4,13 +4,14 @@ package bettercare.wic.model;
 import javax.persistence.Embedded;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 public class WicOrderRepresentation implements Serializable {
 
     private static final long serialVersionUID = -1437982395144640698L;
     private long orderId;
     private boolean isEmergency;
-    private long orderedTime;
+    private Timestamp orderedTime;
     private String status;
     @NotBlank
     private String products;
@@ -27,7 +28,7 @@ public class WicOrderRepresentation implements Serializable {
                                   CustomerModel customerModel, VoucherModel voucherModel) {
         this.orderId = orderId;
         this.isEmergency = isEmergency;
-        this.orderedTime = orderedTime;
+        this.orderedTime = new Timestamp(orderedTime);
         this.products = products;
         this.status = status;
         this.customerModel = customerModel;
@@ -50,11 +51,11 @@ public class WicOrderRepresentation implements Serializable {
         isEmergency = emergency;
     }
 
-    public long getOrderedTime() {
+    public Timestamp getOrderedTime() {
         return orderedTime;
     }
 
-    public void setOrderedTime(long orderedTime) {
+    public void setOrderedTime(Timestamp orderedTime) {
         this.orderedTime = orderedTime;
     }
 
