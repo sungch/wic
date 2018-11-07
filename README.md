@@ -1,7 +1,8 @@
 ----
 TODO
 -----
-Use CURRENT_TIMESTAMP as default timestamp is schema
+
+Fill out delivery database whil wic_order
 
 
 

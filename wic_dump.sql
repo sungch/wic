@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.24, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.21, for macos10.13 (x86_64)
 --
 -- Host: localhost    Database: wic
 -- ------------------------------------------------------
--- Server version	5.7.24-0ubuntu0.16.04.1
+-- Server version	5.7.21
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -54,7 +54,7 @@ CREATE TABLE `customer` (
   `phone` varchar(255) DEFAULT NULL,
   `wic_number` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,6 +63,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
+INSERT INTO `customer` VALUES (1,'5122 woodsmere lane, herriman, UT 84096','customer_1350328970','801-809-0915','customer_wic_number_1350328970');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -76,7 +77,7 @@ DROP TABLE IF EXISTS `delivery`;
 CREATE TABLE `delivery` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `deliverer_name` varchar(255) DEFAULT NULL,
-  `delivery_completion_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `delivery_completion_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `store_id` int(11) DEFAULT NULL,
   `wicOrder_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -159,13 +160,13 @@ DROP TABLE IF EXISTS `voucher`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `voucher` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `expiration_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `start_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `expiration_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `start_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `voucher_number` varchar(255) DEFAULT NULL,
   `customer_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK54x7dllq1ts557joc0cunvyk9` (`customer_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -174,6 +175,7 @@ CREATE TABLE `voucher` (
 
 LOCK TABLES `voucher` WRITE;
 /*!40000 ALTER TABLE `voucher` DISABLE KEYS */;
+INSERT INTO `voucher` VALUES (1,'2018-11-09 07:00:00','2018-11-06 19:00:00','voucherNum_1350328970',1);
 /*!40000 ALTER TABLE `voucher` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -187,13 +189,13 @@ DROP TABLE IF EXISTS `wic_order`;
 CREATE TABLE `wic_order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `is_emergency` bit(1) DEFAULT NULL,
-  `ordered_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `ordered_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `product_and_quantity` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
-  `voucher_id` bigint(20) DEFAULT 0,
+  `voucher_id` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `FKmid1t382gd9qsqdh9rivboocc` (`voucher_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -202,6 +204,7 @@ CREATE TABLE `wic_order` (
 
 LOCK TABLES `wic_order` WRITE;
 /*!40000 ALTER TABLE `wic_order` DISABLE KEYS */;
+INSERT INTO `wic_order` VALUES (1,'\0','2018-11-07 21:49:05','1:11&2:12&3:13&4:14&5:15&6:16&7:17&8:18&9:19&10:20&11:21&12:22&13:23&14:24&15:25&16:26&17:27&18:28&19:29&20:30&21:31&22:32&23:33&24:34&25:35&26:36&27:37&28:38&29:39&30:40&31:41&32:42&33:43&34:44&35:45&36:46&37:47&38:48','ORDER_RECEIVED',1);
 /*!40000 ALTER TABLE `wic_order` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -214,4 +217,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-28 20:05:52
+-- Dump completed on 2018-11-07 14:58:34

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 
 /**
@@ -35,7 +36,7 @@ public class WicOrder implements Serializable {
 
 	@OneToOne
 	@JsonBackReference
-	@JoinColumn(name = "customer_id")
+	@JoinColumn(name = "voucher_id")
 	private Voucher voucher;
 
 	@JsonManagedReference
@@ -99,7 +100,7 @@ public class WicOrder implements Serializable {
 		return voucher;
 	}
 
-	public void setVoucherId(Voucher voucher) {
+	public void setVoucher(Voucher voucher) {
 		this.voucher = voucher;
 	}
 
