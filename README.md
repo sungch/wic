@@ -2,7 +2,7 @@
 TODO
 -----
 
-Fill out delivery database whil wic_order
+Fill out delivery database while wic_order
 
 
 
