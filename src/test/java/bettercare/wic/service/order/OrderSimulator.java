@@ -14,6 +14,7 @@ public class OrderSimulator extends InitSetup {
     public void saveWicOrder() {
         WicOrderRepresentation model = getModel();
         WicOrder wicOrder = saveWicOrderService.saveWicOrder(model);
+
         wicLogger.log(wicOrder.toString());
         Assert.assertEquals(wicOrder.getStatus(), OrderStatus.ORDER_RECEIVED.name());
         wicLogger.log(" Order:" + wicOrder.toString());

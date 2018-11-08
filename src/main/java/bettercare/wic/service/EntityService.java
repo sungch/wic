@@ -46,7 +46,6 @@ public class EntityService {
     return wicTransactionManager.isProductExist(id);
   }
 
-
   // Query by JPA patterns
 
   public List findOrderByStatus(String status ) {
@@ -82,4 +81,7 @@ public class EntityService {
 
   }
 
+  public Delivery findDeliveryByWicOrder(WicOrder wicOrder) {
+    return wicTransactionManager.findDeliveryByWicOrder(wicOrder);
+  }
 }

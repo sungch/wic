@@ -2,8 +2,9 @@
 TODO
 -----
 
-Fill out delivery database while wic_order
-
+Add delivery start time
+Remove initializing delivery completion time
+Debug packaging and delivery further.
 
 
 

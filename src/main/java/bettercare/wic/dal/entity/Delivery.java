@@ -85,7 +85,8 @@ public class Delivery implements Serializable {
   @Override
   public String toString() {
     return String.format("nanme:%s storeId:%s completionTime:%s id:%s",
-        this.getDelivererName().hashCode() + this.getStoreId() + this.getDeliveryCompletionTime().getTime() + this.getId());
+        this.getDelivererName() == null ? "" : this.getDelivererName(),
+        + this.getStoreId(), this.getDeliveryCompletionTime(), this.getId());
   }
 
   @Override

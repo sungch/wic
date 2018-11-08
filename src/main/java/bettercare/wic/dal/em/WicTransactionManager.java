@@ -117,4 +117,7 @@ public class WicTransactionManager {
     return null;
   }
 
+  public Delivery findDeliveryByWicOrder(WicOrder wicOrder) {
+    return deliveryDao.findByWicOrder(wicOrder);
+  }
 }

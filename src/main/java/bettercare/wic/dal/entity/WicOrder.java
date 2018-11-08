@@ -64,14 +64,6 @@ public class WicOrder implements Serializable {
 		this.id = id;
 	}
 
-	public boolean getIsEmergency() {
-		return this.isEmergency;
-	}
-
-	public void setIsEmergency(boolean isEmergency) {
-		this.isEmergency = isEmergency;
-	}
-
 	public Timestamp getOrderedTime() {
 		return this.orderedTime;
 	}
@@ -104,10 +96,26 @@ public class WicOrder implements Serializable {
 		this.voucher = voucher;
 	}
 
+	public Delivery getDelivery() {
+		return delivery;
+	}
+
+	public void setDelivery(Delivery delivery) {
+		this.delivery = delivery;
+	}
+
+	public boolean isEmergency() {
+		return isEmergency;
+	}
+
+	public void setEmergency(boolean emergency) {
+		isEmergency = emergency;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("id:%s isEmergency:%s orderTime:%s orderContents:%s status:%s customerId:%s voucherId:%s",
-							 this.getId(), this.getIsEmergency(),
+							 this.getId(), this.isEmergency(),
 							 this.getOrderedTime(), this.getProducts(), this.getStatus(),
 							 this.getVoucher().getCustomer().toString(), this.getVoucher().toString());
 	}
@@ -115,7 +123,7 @@ public class WicOrder implements Serializable {
 	@Override
 	public int hashCode() {
 		return (int) (Long.valueOf(this.getId()).hashCode() +
-						(this.getIsEmergency() ? 1 : 0) +
+						(this.isEmergency() ? 1 : 0) +
 						this.getOrderedTime().getTime() +
 						getStringHash(getProducts()) +
 						getStringHash(this.getStatus()));
