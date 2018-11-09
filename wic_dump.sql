@@ -77,7 +77,7 @@ DROP TABLE IF EXISTS `delivery`;
 CREATE TABLE `delivery` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `deliverer_name` varchar(255) DEFAULT NULL,
-  `delivery_completion_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `delivery_completion_time` timestamp NULL,
   `store_id` int(11) DEFAULT NULL,
   `wicOrder_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -160,8 +160,8 @@ DROP TABLE IF EXISTS `voucher`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `voucher` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `expiration_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `start_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `expiration_date` timestamp NULL,
+  `start_date` timestamp NULL,
   `voucher_number` varchar(255) DEFAULT NULL,
   `customer_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),

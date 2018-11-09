@@ -27,32 +27,6 @@ import java.util.List;
 public class DeliverySimulator extends InitSetup {
 
     @Test
-    public void saveCustomerVoucherAndWicOrder() {
-        WicOrderRepresentation model = getModel();
-        WicOrder wicOrder = saveWicOrderService.saveWicOrder(model);
-        wicLogger.log(wicOrder.toString());
-        Assert.assertEquals(wicOrder.getStatus(), OrderStatus.ORDER_RECEIVED.name());
-        wicLogger.log(" Order:" + wicOrder.toString());
-    }
-
-    @Test
-    public void packaging() throws InterruptedException {
-        List<WicOrder> orders = entityService.findOrderByStatus(OrderStatus.ORDER_RECEIVED.name());
-        for(WicOrder order : orders) {
-            // Started Packaging
-            order.setStatus(OrderStatus.PACKAGING.name());
-            entityService.saveOrUpdate(WicOrder.class, order);
-            Thread.sleep(5000);
-            order.setStatus(OrderStatus.PACKAGING_COMPLETED.name());
-            entityService.saveOrUpdate(WicOrder.class, order);
-            // Ended Packaging. It took 5 seconds.
-
-            // Prepare for delivery
-            entityService.saveOrUpdate(Delivery.class, new Delivery(1, order));
-        }
-    }
-
-    @Test
     public void delivery() throws InterruptedException {
         List<WicOrder> orders = entityService.findOrderByStatus(OrderStatus.PACKAGING_COMPLETED.name());
         for(WicOrder order : orders) {
@@ -65,7 +39,7 @@ public class DeliverySimulator extends InitSetup {
             // Saving deliverer name, delievery start time, status to delivering
             Delivery delivery = order.getDelivery(); //entityService.findDeliveryByWicOrder(order);
             delivery.setDelivererName("Chulkee Sung");
-            // TODO set delivery start time in this line
+
             order.setStatus(OrderStatus.DELIVERY_ON_THE_WAY.name());
 
             // refresh order along with delivery and voucher
