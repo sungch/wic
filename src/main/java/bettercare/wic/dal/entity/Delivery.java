@@ -23,6 +23,9 @@ public class Delivery implements Serializable {
   @Column(name = "deliverer_name")
   private String delivererName;
 
+  @Column(name = "delivery_start_time")
+  private Timestamp deliveryStartTime;
+
   @Column(name = "delivery_completion_time")
   private Timestamp deliveryCompletionTime;
 
@@ -58,6 +61,14 @@ public class Delivery implements Serializable {
     this.delivererName = delivererName;
   }
 
+  public Timestamp getDeliveryStartTime() {
+    return deliveryStartTime;
+  }
+
+  public void setDeliveryStartTime(Timestamp deliveryStartTime) {
+    this.deliveryStartTime = deliveryStartTime;
+  }
+
   public Timestamp getDeliveryCompletionTime() {
     return this.deliveryCompletionTime;
   }
@@ -84,9 +95,12 @@ public class Delivery implements Serializable {
 
   @Override
   public String toString() {
-    return String.format("nanme:%s storeId:%s completionTime:%s id:%s",
+    return String.format("nanme:%s start:%s storeId:%s completionTime:%s id:%s",
         this.getDelivererName() == null ? "" : this.getDelivererName(),
-        + this.getStoreId(), this.getDeliveryCompletionTime(), this.getId());
+        this.getDeliveryStartTime() == null ? "" : this.getDeliveryStartTime(),
+        this.getStoreId(),
+        this.getDeliveryCompletionTime() == null ? "" : this.getDeliveryCompletionTime(),
+        this.getId());
   }
 
   @Override
@@ -97,8 +111,7 @@ public class Delivery implements Serializable {
     if (!(that_ instanceof Delivery)) {
       return false;
     }
-    Delivery that = (Delivery) that_;
-    return isSame(that.toString(), this.toString());
+    return this.toString().equals((that_).toString());
   }
 
   @Override
@@ -109,15 +122,4 @@ public class Delivery implements Serializable {
   private int getStringHash(String val) {
     return val == null ? 0 : val.hashCode();
   }
-
-  private boolean isSame(String that, String me) {
-    if (that == null) {
-      return me == null;
-    }
-    if (me == null) {
-      return false;
-    }
-    return that.equals(me);
-  }
-
 }

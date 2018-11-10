@@ -1,14 +1,11 @@
 package bettercare.wic.service.order;
 
-import bettercare.wic.dal.entity.Customer;
 import bettercare.wic.dal.entity.Delivery;
-import bettercare.wic.dal.entity.Voucher;
 import bettercare.wic.dal.entity.WicOrder;
 import bettercare.wic.service.OrderStatus;
 import bettercare.wic.service.manual.InitSetup;
 import org.junit.Test;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -37,7 +34,8 @@ public class PackagingSimulator extends InitSetup {
             // Ended Packaging. It took 5 seconds.
 
             // Prepare for delivery
-            entityService.saveOrUpdate(Delivery.class, new Delivery(1, order));
+            Delivery delivery = new Delivery(1, order);
+            entityService.saveOrUpdate(Delivery.class, delivery);
         }
     }
 }

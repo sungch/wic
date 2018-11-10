@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 
@@ -34,15 +35,13 @@ public class DeliverySimulator extends InitSetup {
             // print address
             Voucher voucher = order.getVoucher();
             Customer customer = voucher.getCustomer();
-            wicLogger.info("Delivery Address;" + customer.toString(), DeliverySimulator.class);
+            wicLogger.info("\nDelivery Address;" + customer.toString(), DeliverySimulator.class);
 
             // Saving deliverer name, delievery start time, status to delivering
-            Delivery delivery = order.getDelivery(); //entityService.findDeliveryByWicOrder(order);
+            Delivery delivery = order.getDelivery();
             delivery.setDelivererName("Chulkee Sung");
-
+            delivery.setDeliveryStartTime(new Timestamp(System.currentTimeMillis()));
             order.setStatus(OrderStatus.DELIVERY_ON_THE_WAY.name());
-
-            // refresh order along with delivery and voucher
             entityService.saveOrUpdate(WicOrder.class, order);
             order = entityService.findById(WicOrder.class, order.getId());
 

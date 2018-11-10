@@ -77,6 +77,7 @@ DROP TABLE IF EXISTS `delivery`;
 CREATE TABLE `delivery` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `deliverer_name` varchar(255) DEFAULT NULL,
+  `delivery_start_time` timestamp NULL,
   `delivery_completion_time` timestamp NULL,
   `store_id` int(11) DEFAULT NULL,
   `wicOrder_id` bigint(20) DEFAULT NULL,
