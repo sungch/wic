@@ -54,10 +54,6 @@ public class WicTransactionManager {
 
   // Product
 
-  public boolean isProductExist(long id) {
-    return productDao.findById(id).isPresent();
-  }
-
   public List<Product> findProductByCategoryAndNameAndIsHandling(Category category, String productName, String isHandling) {
     return productDao.findByCategoryAndNameAndIsHandling(category, productName, isHandling);
   }
@@ -92,32 +88,42 @@ public class WicTransactionManager {
   }
 
 
-  private <T> JpaRepository getDao(Class<T> repo) {
-    if (repo.equals(Category.class)) {
+  // Delivery
+
+  public Delivery findDeliveryByWicOrder(WicOrder wicOrder) {
+    return deliveryDao.findByWicOrder(wicOrder);
+  }
+
+
+  // Utils
+
+  public <T> boolean isEntityExist(Class<T> clz, long id) {
+    return getDao(clz).findById(id).isPresent();
+  }
+
+  private <T> JpaRepository getDao(Class<T> entityClaz) {
+    if (entityClaz.equals(Category.class)) {
       return categoryDao;
     }
-    if (repo.equals(Customer.class)) {
+    if (entityClaz.equals(Customer.class)) {
       return customerDao;
     }
-    if (repo.equals(Delivery.class)) {
+    if (entityClaz.equals(Delivery.class)) {
       return deliveryDao;
     }
-    if (repo.equals(MissingProduct.class)) {
+    if (entityClaz.equals(MissingProduct.class)) {
       return missingProductDao;
     }
-    if (repo.equals(Product.class)) {
+    if (entityClaz.equals(Product.class)) {
       return productDao;
     }
-    if (repo.equals(Voucher.class)) {
+    if (entityClaz.equals(Voucher.class)) {
       return voucherDao;
     }
-    if (repo.equals(WicOrder.class)) {
+    if (entityClaz.equals(WicOrder.class)) {
       return wicOrderDao;
     }
     return null;
   }
 
-  public Delivery findDeliveryByWicOrder(WicOrder wicOrder) {
-    return deliveryDao.findByWicOrder(wicOrder);
-  }
 }

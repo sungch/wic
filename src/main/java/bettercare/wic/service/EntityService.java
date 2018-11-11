@@ -42,9 +42,10 @@ public class EntityService {
 
   // Utils
 
-  public boolean isProductExist(long id) {
-    return wicTransactionManager.isProductExist(id);
+  public <T> boolean isEntityExist(Class<T> clz, long id) {
+    return wicTransactionManager.isEntityExist(clz, id);
   }
+
 
   // Query by JPA patterns
 

@@ -2,6 +2,7 @@ package bettercare.wic.dal.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 
 /**
@@ -19,8 +20,10 @@ public class MissingProduct implements Serializable {
 	private long id;
 
 	private int quantity;
+
 	@Column(name = "wicOrder_id")
 	private long wicOrderId;
+
 	@Column(name = "product_id")
 	private long productId;
 

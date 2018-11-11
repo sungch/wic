@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 
@@ -22,17 +23,17 @@ public class Product implements Serializable {
 
   private String barcode;
 
-  @NotEmpty
+  @NotBlank
   private String description;
 
-  @NotEmpty
+  @NotBlank
   @Column(name = "image_url")
   private String imageUrl;
 
-  @NotEmpty
+  @NotBlank
   private String name;
 
-  @NotEmpty
+  @NotBlank
   @Column(name = "is_handling")
   private String isHandling;
 

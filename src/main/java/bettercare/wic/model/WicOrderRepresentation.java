@@ -13,6 +13,7 @@ public class WicOrderRepresentation implements Serializable {
     private boolean isEmergency;
     private Timestamp orderedTime;
     private String status;
+
     @NotBlank
     private String products;
 

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 /**
  * The persistent class for the customer database table.
@@ -21,12 +22,16 @@ public class Customer implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 
+	@NotBlank
 	private String address;
 
+	@NotBlank
 	private String name;
 
+	@NotBlank
 	private String phone;
 
+	@NotBlank
 	@Column(name="wic_number")
 	private String wicNumber;
 

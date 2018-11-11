@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 
 /**
@@ -29,6 +30,7 @@ public class WicOrder implements Serializable {
 	@Column(name="ordered_time")
 	private Timestamp orderedTime;
 
+	@NotBlank
 	@Column(name="product_and_quantity")
 	private String products;
 

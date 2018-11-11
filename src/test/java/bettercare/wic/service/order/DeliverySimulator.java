@@ -37,19 +37,22 @@ public class DeliverySimulator extends InitSetup {
             Customer customer = voucher.getCustomer();
             wicLogger.info("\nDelivery Address;" + customer.toString(), DeliverySimulator.class);
 
-            // Saving deliverer name, delievery start time, status to delivering
+            // Saving deliverer name, delievery start time, status to delivering.
+            // User may check the order status. Update statue before delivery starts
             Delivery delivery = order.getDelivery();
             delivery.setDelivererName("Chulkee Sung");
             delivery.setDeliveryStartTime(new Timestamp(System.currentTimeMillis()));
             order.setStatus(OrderStatus.DELIVERY_ON_THE_WAY.name());
             entityService.saveOrUpdate(WicOrder.class, order);
-            order = entityService.findById(WicOrder.class, order.getId());
 
             // Start Delivery. Dellivery takes 5 secods
+            WicOrder order2 = entityService.findById(WicOrder.class, order.getId());
             Thread.sleep(5000);
-            delivery.setDeliveryCompletionTime(new Timestamp(System.currentTimeMillis()));
-            order.setStatus(OrderStatus.DELIVERY_COMPLETED.name());
-            entityService.saveOrUpdate(WicOrder.class, order);
+            Delivery delivery2 = order2.getDelivery();
+            delivery2.setDeliveryCompletionTime(new Timestamp(System.currentTimeMillis()));
+            order2.setStatus(OrderStatus.DELIVERY_COMPLETED.name());
+            order2.setDelivery(delivery2);
+            entityService.saveOrUpdate(WicOrder.class, order2);
             // Ended Delivery
         }
     }

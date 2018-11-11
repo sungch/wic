@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Future;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 
 
@@ -32,6 +33,7 @@ public class Voucher implements Serializable {
     @Column(name = "start_date")
     private Timestamp startDate;
 
+    @NotBlank
     @Column(name = "voucher_number")
     private String voucherNumber;
 
