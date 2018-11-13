@@ -9,6 +9,8 @@ import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.SaveWicOrderService;
 import bettercare.wic.dal.WicLogger;
 import bettercare.wic.service.EntityService;
+import bettercare.wic.service.ProductsParser;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +32,7 @@ public class InitSetup {
   @Resource protected EntityService entityService;
   @Resource protected WicLogger wicLogger;
   @Resource protected SaveWicOrderService saveWicOrderService;
+  @Resource protected ProductsParser productsParser;
 
   // Use this property ONLY to create categories.
   protected static final String[] categoryNames = {"Infant Cereal", "Baby Food", "Baby Food Meat", "Infant Formula",

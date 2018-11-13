@@ -5,12 +5,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 
 /**
  * The persistent class for the product database table.
  */
+@Embeddable
 @Entity
 @Table(name = "product")
 @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")

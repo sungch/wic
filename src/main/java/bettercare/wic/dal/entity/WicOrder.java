@@ -6,14 +6,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 
-/**
- * The persistent class for the order database table.
- * 
- */
 @Entity
 @Table(name="wic_order")
 @NamedQuery(name="WicOrder.findAll", query="SELECT o FROM WicOrder o")

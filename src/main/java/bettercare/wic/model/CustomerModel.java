@@ -7,6 +7,12 @@ import java.io.Serializable;
 @Embeddable
 public class CustomerModel implements Serializable {
 
+  /**
+   * Use built-in tool serialver: 
+   * serialver -classpath . bettercare.wic.model.CustomerModel
+   */
+  private static final long serialVersionUID = -8307727533285363981L;
+
   @NotBlank
   private String address;
   @NotBlank

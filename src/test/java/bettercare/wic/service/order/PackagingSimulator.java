@@ -2,12 +2,11 @@ package bettercare.wic.service.order;
 
 import bettercare.wic.dal.entity.Delivery;
 import bettercare.wic.dal.entity.WicOrder;
+import bettercare.wic.model.PackagingModel;
 import bettercare.wic.service.OrderStatus;
 import bettercare.wic.service.manual.InitSetup;
 import org.junit.Test;
-
 import java.util.List;
-
 
 /**
  * In Packaging area,
@@ -25,7 +24,12 @@ public class PackagingSimulator extends InitSetup {
     public void packaging() throws InterruptedException {
         List<WicOrder> orders = entityService.findOrderByStatus(OrderStatus.ORDER_RECEIVED.name());
         for(WicOrder order : orders) {
-            // Started Packaging
+
+            // Read product
+            PackagingModel packagingModel = productsParser.parseProducts(order.getProducts());
+            wicLogger.info(packagingModel.toString(), PackagingModel.class);
+
+            // Started Packaging based on packagingModel data.
             order.setStatus(OrderStatus.PACKAGING.name());
             entityService.saveOrUpdate(WicOrder.class, order);
             Thread.sleep(5000);
@@ -38,4 +42,5 @@ public class PackagingSimulator extends InitSetup {
             entityService.saveOrUpdate(Delivery.class, delivery);
         }
     }
+
 }

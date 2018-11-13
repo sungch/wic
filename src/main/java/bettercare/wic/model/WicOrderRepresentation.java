@@ -6,8 +6,16 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+/**
+ * This object is a representation of WicOrder, Voucher, and Customer to communicate 
+ * from a customer.
+ */
 public class WicOrderRepresentation implements Serializable {
 
+    /**
+     * Use built-in tool serialver: 
+     * serialver -classpath . bettercare.wic.model.WicOrderRepresentation
+     */
     private static final long serialVersionUID = -1437982395144640698L;
     private long orderId;
     private boolean isEmergency;

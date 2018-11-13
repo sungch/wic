@@ -11,6 +11,12 @@ import java.sql.Timestamp;
 @Embeddable
 public class VoucherModel implements Serializable {
 
+    /**
+     * Use built-in tool serialver: 
+     * serialver -classpath . bettercare.wic.model.VoucherModel
+     */
+    private static final long serialVersionUID = -7031762038088179417L;
+
     @NotBlank
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")//, timezone = "MST")
     private Timestamp expirationDate;

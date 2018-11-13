@@ -1,6 +1,5 @@
 package bettercare.wic.dal.em;
 
-import bettercare.wic.dal.entity.WicOrder;
 import bettercare.wic.service.OrderStatus;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +7,9 @@ import javax.annotation.Resource;
 import javax.persistence.*;
 import java.util.List;
 
-
+/**
+ * Use this object if a query cannot be handled by WicTransactionManager.
+ */
 @Service
 public class WicEntityManager {
 

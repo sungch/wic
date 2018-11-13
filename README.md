@@ -4,7 +4,7 @@ TODO
 
 
 Debug packaging and delivery further: Test customerOrder
-
+Ensure to generate serialver via serialver -classpath . bettercare.wic.model.OrderedProductsModel for instance.
 
 
 
