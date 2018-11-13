@@ -28,6 +28,8 @@ public class WicController {
   ResponseEntity<WicOrderRepresentation> createCustomerOrder(@Valid @RequestBody WicOrderRepresentation model) {
     WicOrder wicOrder = saveWicOrderService.saveWicOrder(model);
     model.setOrderId(wicOrder.getId());
+    model.setOrderedTime(wicOrder.getOrderedTime());
+    model.setStatus(wicOrder.getStatus());
     return new ResponseEntity<>(model, HttpStatus.CREATED);
   }
 

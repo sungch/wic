@@ -1,6 +1,8 @@
 package bettercare.wic.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -10,9 +12,13 @@ import java.sql.Timestamp;
 public class VoucherModel implements Serializable {
 
     @NotBlank
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")//, timezone = "MST")
     private Timestamp expirationDate;
+
     @NotBlank
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private Timestamp startDate;
+
     @NotBlank
     private String voucherNumber;
 
