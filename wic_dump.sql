@@ -77,13 +77,13 @@ DROP TABLE IF EXISTS `delivery`;
 CREATE TABLE `delivery` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `deliverer_name` varchar(255) DEFAULT NULL,
-  `delivery_start_time` timestamp NULL,
-  `delivery_completion_time` timestamp NULL,
+  `delivery_completion_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `store_id` int(11) DEFAULT NULL,
   `wicOrder_id` bigint(20) DEFAULT NULL,
+  `delivery_start_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK5hp2ax9ktk3kv209xydb2cuuy` (`wicOrder_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,6 +92,7 @@ CREATE TABLE `delivery` (
 
 LOCK TABLES `delivery` WRITE;
 /*!40000 ALTER TABLE `delivery` DISABLE KEYS */;
+INSERT INTO `delivery` VALUES (1,'Chulkee Sung','2018-11-12 23:46:01',1,1,'2018-11-12 16:45:23');
 /*!40000 ALTER TABLE `delivery` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -161,8 +162,8 @@ DROP TABLE IF EXISTS `voucher`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `voucher` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `expiration_date` timestamp NULL,
-  `start_date` timestamp NULL,
+  `expiration_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `start_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `voucher_number` varchar(255) DEFAULT NULL,
   `customer_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -205,7 +206,7 @@ CREATE TABLE `wic_order` (
 
 LOCK TABLES `wic_order` WRITE;
 /*!40000 ALTER TABLE `wic_order` DISABLE KEYS */;
-INSERT INTO `wic_order` VALUES (1,'\0','2018-11-07 21:49:05','1:11&2:12&3:13&4:14&5:15&6:16&7:17&8:18&9:19&10:20&11:21&12:22&13:23&14:24&15:25&16:26&17:27&18:28&19:29&20:30&21:31&22:32&23:33&24:34&25:35&26:36&27:37&28:38&29:39&30:40&31:41&32:42&33:43&34:44&35:45&36:46&37:47&38:48','ORDER_RECEIVED',1);
+INSERT INTO `wic_order` VALUES (1,'\0','2018-11-07 21:49:05','1:11&2:12&3:13&4:14&5:15&6:16&7:17&8:18&9:19&10:20&11:21&12:22&13:23&14:24&15:25&16:26&17:27&18:28&19:29&20:30&21:31&22:32&23:33&24:34&25:35&26:36&27:37&28:38&29:39&30:40&31:41&32:42&33:43&34:44&35:45&36:46&37:47&38:48','DELIVERY_COMPLETED',1);
 /*!40000 ALTER TABLE `wic_order` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -218,4 +219,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-07 14:58:34
+-- Dump completed on 2018-11-12 16:49:21

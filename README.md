@@ -2,9 +2,8 @@
 TODO
 -----
 
-Add delivery start time
-Remove initializing delivery completion time
-Debug packaging and delivery further.
+
+Debug packaging and delivery further: Test customerOrder
 
 
 
