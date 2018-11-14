@@ -7,8 +7,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
- * This object is a representation of WicOrder, Voucher, and Customer to communicate 
- * from a customer.
+ * This object is used to model incoming customer order and save in WicOrder, Voucher, and Customer.
  */
 public class WicOrderRepresentation implements Serializable {
 

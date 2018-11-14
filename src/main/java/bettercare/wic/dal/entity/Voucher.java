@@ -1,5 +1,6 @@
 package bettercare.wic.dal.entity;
 
+import bettercare.wic.model.CustomerModel;
 import bettercare.wic.model.VoucherModel;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -47,6 +48,10 @@ public class Voucher implements Serializable {
         this.startDate = startDate;
         this.expirationDate = expirationDate;
         this.customer = customer;
+    }
+
+    public Voucher (VoucherModel voucherModel, CustomerModel customerModel) {
+        this(voucherModel, new Customer(customerModel));
     }
 
     public Voucher (VoucherModel voucherModel, Customer customer) {

@@ -2,12 +2,20 @@
 TODO
 -----
 
+// TODO detect current time zone, adjust with incoming UTC data, and then trim the dates.
+private void normalizeVoucherEffectiveDates(Voucher voucher) {
 
+@PostMapping("/customerOrder")
+ResponseEntity<PackagingOrderedProductRepresentation> createCustomerOrder
+// TODO response with incoming data when there is an ERROR
+      
 Debug packaging and delivery further: Test customerOrder
 Ensure to generate serialver via serialver -classpath . bettercare.wic.model.OrderedProductsModel for instance.
 
+Add last update date inn wic_order for current state
 
-
+------
+DEBUG: mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
 ------
 INFO
 ------
@@ -32,12 +40,9 @@ PUT POST adds an empty entry even though payload is not valid.
 
 
 To make it deployable to tomcat, Had to Add "WicApplication extends SpringBootServletInitializer" and delete web.xml before deploy.
-
 Use @Transactional in unit test to roll back at the end of the test.
-
 Use @WebMvcTest, MockMvc, @MockBean
-
-mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")//, timezone = "MST") When not set, UTC is used.
 
 Two Field annotations
 @JsonManagedReference (for parent) which must meet its child pair

@@ -2,6 +2,7 @@ package bettercare.wic.dal.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -22,6 +23,7 @@ public class WicOrder implements Serializable {
 	@Column(name="is_emergency")
 	private boolean isEmergency;
 
+	@CreationTimestamp
 	@Column(name="ordered_time")
 	private Timestamp orderedTime;
 
@@ -41,9 +43,8 @@ public class WicOrder implements Serializable {
 	private Delivery delivery;
 
 
-	public WicOrder(boolean isEmergency, Timestamp orderedTime, String products, String status, Voucher voucher) {
+	public WicOrder(boolean isEmergency, String products, String status, Voucher voucher) {
 		this.isEmergency = isEmergency;
-		this.orderedTime = orderedTime;
 		this.products = products;
 		this.status = status;
 		this.isEmergency = isEmergency;

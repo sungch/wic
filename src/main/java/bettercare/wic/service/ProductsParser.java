@@ -1,7 +1,7 @@
 package bettercare.wic.service;
 
-import bettercare.wic.model.PackagingModel;
-import bettercare.wic.model.OrderedProduct;
+import bettercare.wic.model.PackagingOrderedProductRepresentation;
+import bettercare.wic.model.OrderedProductModel;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 import bettercare.wic.dal.WicLogger;
@@ -16,12 +16,12 @@ public class ProductsParser {
     private static final String PROD_SEPARATOR = "&";
     private static final String ITEM_COUNT_SEPARATOR = ":";
 
-    public PackagingModel parseProducts(String products) {
+    public PackagingOrderedProductRepresentation parseProducts(String products) {
 
-        PackagingModel model = new PackagingModel();
+        PackagingOrderedProductRepresentation model = new PackagingOrderedProductRepresentation();
 
-        if(products.indexOf(PROD_SEPARATOR) > 0) {
-            wicLogger.error("PROD_SEPARATOR is missing from this order:" + products, PackagingModel.class);
+        if(!products.contains(PROD_SEPARATOR)) {
+            wicLogger.error("PROD_SEPARATOR is missing from this order:" + products, PackagingOrderedProductRepresentation.class);
             return model;
         }
 
@@ -29,22 +29,22 @@ public class ProductsParser {
 
         for(String order : orders) {
 
-            if(order.indexOf(ITEM_COUNT_SEPARATOR) < 0) {
-                wicLogger.error("ITEM_COUNT_SEPARATOR is missing from this order-item", PackagingModel.class);
+            if(!order.contains(ITEM_COUNT_SEPARATOR)) {
+                wicLogger.error("ITEM_COUNT_SEPARATOR is missing from this order-item", PackagingOrderedProductRepresentation.class);
                 continue;
             }
 
             String[] kv = order.split(ITEM_COUNT_SEPARATOR);
 
-            if(kv == null || kv.length!= 2) {
-                wicLogger.error("Either product id or order counter is not valid:" + order, PackagingModel.class);
+            if(kv.length != 2) {
+                wicLogger.error("Either product id or order counter is not valid:" + order, PackagingOrderedProductRepresentation.class);
                 continue;
             }
 
             long productId = Long.valueOf(kv[0]);
             int orderCount = Integer.valueOf(kv[1]);
-            Product product = entityService.findById(Product.class, Long.valueOf(productId));
-            OrderedProduct orderedProduct = new OrderedProduct(product, orderCount);
+            Product product = entityService.findById(Product.class, productId);
+            OrderedProductModel orderedProduct = new OrderedProductModel(product, orderCount);
 
             model.addOrderedProduct(orderedProduct);
 

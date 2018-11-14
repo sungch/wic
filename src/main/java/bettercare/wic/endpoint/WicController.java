@@ -1,18 +1,22 @@
 package bettercare.wic.endpoint;
 
 import bettercare.wic.dal.entity.*;
+import bettercare.wic.model.PackagingOrderedProductRepresentation;
 import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.EntityService;
+import bettercare.wic.service.ProductsParser;
 import bettercare.wic.service.SaveWicOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 
+@Validated
 @RestController
 public class WicController {
 
@@ -20,17 +24,28 @@ public class WicController {
   private SaveWicOrderService saveWicOrderService;
   @Autowired
   private EntityService entityService;
+  @Autowired
+  private ProductsParser productsParser;
 
 
   // Customer Order
 
   @PostMapping("/customerOrder")
-  ResponseEntity<WicOrderRepresentation> createCustomerOrder(@Valid @RequestBody WicOrderRepresentation model) {
+  ResponseEntity<PackagingOrderedProductRepresentation> createCustomerOrder(@Valid @RequestBody WicOrderRepresentation model) {
     WicOrder wicOrder = saveWicOrderService.saveWicOrder(model);
-    model.setOrderId(wicOrder.getId());
-    model.setOrderedTime(wicOrder.getOrderedTime());
-    model.setStatus(wicOrder.getStatus());
-    return new ResponseEntity<>(model, HttpStatus.CREATED);
+    if(wicOrder != null) {
+      model.setOrderId(wicOrder.getId());
+      model.setOrderedTime(wicOrder.getOrderedTime());
+      model.setStatus(wicOrder.getStatus());
+      try {
+        return new ResponseEntity<>(productsParser.parseProducts(model.getProducts()), HttpStatus.CREATED);
+      }
+      catch(Exception ex) {
+        // TODO
+      }
+    }
+    // TODO response with incoming data when there is an ERROR
+    return getBadResponseEntity(new PackagingOrderedProductRepresentation());
   }
 
   // WicOrder CRUD

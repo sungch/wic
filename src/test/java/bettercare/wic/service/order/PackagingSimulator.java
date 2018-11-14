@@ -2,7 +2,7 @@ package bettercare.wic.service.order;
 
 import bettercare.wic.dal.entity.Delivery;
 import bettercare.wic.dal.entity.WicOrder;
-import bettercare.wic.model.PackagingModel;
+import bettercare.wic.model.PackagingOrderedProductRepresentation;
 import bettercare.wic.service.OrderStatus;
 import bettercare.wic.service.manual.InitSetup;
 import org.junit.Test;
@@ -26,8 +26,8 @@ public class PackagingSimulator extends InitSetup {
         for(WicOrder order : orders) {
 
             // Read product
-            PackagingModel packagingModel = productsParser.parseProducts(order.getProducts());
-            wicLogger.info(packagingModel.toString(), PackagingModel.class);
+            PackagingOrderedProductRepresentation packagingModel = productsParser.parseProducts(order.getProducts());
+            wicLogger.info(packagingModel.toString(), PackagingOrderedProductRepresentation.class);
 
             // Started Packaging based on packagingModel data.
             order.setStatus(OrderStatus.PACKAGING.name());

@@ -11,5 +11,5 @@ import java.util.List;
 @Transactional
 public interface VoucherDao extends JpaRepository<Voucher, Long> {
 
-  public List<Voucher> findByVoucherNumberAndCustomerId(String voucherNumber, long customerId);
+  public List<Voucher> findByVoucherNumber(String voucherNumber);
 }

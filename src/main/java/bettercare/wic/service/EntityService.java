@@ -61,8 +61,8 @@ public class EntityService {
     return wicTransactionManager.findProductByCategory(category);
   }
 
-  public List<Voucher> findVoucherByVoucherNumberAndCustomerId(String voucherNumber, long customerId) {
-    return wicTransactionManager.findVoucherByVoucherNumberAndCustomerId(voucherNumber, customerId);
+  public List<Voucher> findVoucherByVoucherNumber(String voucherNumber) {
+    return wicTransactionManager.findVoucherByVoucherNumber(voucherNumber);
   }
 
   public List<Customer> findCustomerByWicNumberAndPhoneAndAddressAndName(String wicNumber, String phone, String address, String name) {

@@ -35,83 +35,45 @@ public class SaveWicOrderService {
     }
 
     public WicOrder saveWicOrder(WicOrderRepresentation model) {
-
-        String products = model.getProducts();
-        if (isBlank(products)) {
-            wicLogger.error("product content is empty.", Product.class);
-            return null;
-        }
-
-        CustomerModel customerModel = model.getCustomerModel();
-        if(isBlank(customerModel.getWicNumber(), customerModel.getName(), customerModel.getPhone(), customerModel.getAddress())) {
-            wicLogger.error("Customer information is misssing.", Customer.class);
-            return null;
-        }
-        Customer customer = persistCustomerIfNew(new Customer(customerModel));
-
-        VoucherModel voucherModel = model.getVoucherModel();
-        if(isBlank(voucherModel.getVoucherNumber())) {
-            wicLogger.error("Voucher number is blank.", Voucher.class);
-            return null;
-        }
-        Voucher voucher_ = new Voucher(voucherModel, customer);
-        if(isNewVoucher(voucher_, customer)) {
-            normalizeVoucherEffectiveDates(voucher_);
-            if(isVoucherDateValid(voucher_.getStartDate(), voucher_.getExpirationDate())) {
-                Voucher voucher = entityService.saveOrUpdate(Voucher.class, voucher_);
-                WicOrder wicOrder = saveWicOrderData(products, false, new Timestamp(new Date().getTime()), voucher);
-                wicLogger.info("Your order number is " + wicOrder.getId(), Customer.class);
-                return wicOrder;
-            }
-            else {
-                wicLogger.error("Bad Voucher date:", Voucher.class);
-            }
+        Customer customer = persistCustomerIfNew(new Customer(model.getCustomerModel()));
+        Voucher transientVoucher = new Voucher(model.getVoucherModel(), customer);
+        if (isNewVoucher(transientVoucher)) {
+            normalizeVoucherEffectiveDates(transientVoucher);
+            Voucher voucher = entityService.saveOrUpdate(Voucher.class, transientVoucher);
+            WicOrder wicOrder = saveWicOrderData(model.getProducts(), false, voucher);
+            wicLogger.info("Your order number is " + wicOrder.getId(), Customer.class);
+            return wicOrder;
         }
         else {
-            wicLogger.info("The same voucher cannot be used again.", Voucher.class);
+            wicLogger.info("The same voucher cannot be used again:" + transientVoucher.toString(), Voucher.class);
         }
         return null;
     }
 
-    private boolean isBlank(String... data) {
-        for(String d : data) {
-            if(d == null || d.isEmpty()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    // TODO detect current time zone, adjust with incoming UTC data, and then trim the dates.
     private void normalizeVoucherEffectiveDates(Voucher voucher) {
         voucher.setStartDate(timeTrimmer.adjustStartingTime(voucher.getStartDate()));
         voucher.setExpirationDate(timeTrimmer.adjustExpiringTime(voucher.getExpirationDate()));
     }
 
-    private boolean isNewVoucher(Voucher voucher, Customer customer) {
-        voucher.setCustomer(customer);
-        List<Voucher> vouchers = entityService.findVoucherByVoucherNumberAndCustomerId(voucher.getVoucherNumber(), voucher.getCustomer().getId());
+    private boolean isNewVoucher(Voucher voucher) {
+        List<Voucher> vouchers = entityService.findVoucherByVoucherNumber(voucher.getVoucherNumber());
         return vouchers.isEmpty();
     }
 
     private Customer persistCustomerIfNew(Customer customer) {
-        List<Customer> list = entityService.findCustomerByWicNumberAndPhoneAndAddressAndName(
-            customer.getWicNumber(), customer.getPhone(), customer.getAddress(), customer.getName());
+        List<Customer> list = entityService.findCustomerByWicNumberAndPhoneAndAddressAndName(customer.getWicNumber(), customer.getPhone(), customer.getAddress(), customer.getName());
         if (list.isEmpty()) {
             return entityService.saveOrUpdate(Customer.class, customer);
         }
         else {
             wicLogger.log("Same customer already exist. I am using the existing customer: " + customer.toString());
         }
-        return null;
+        return list.get(0);
     }
 
-    private boolean isVoucherDateValid(Timestamp startDate, Timestamp expirationDate) {
-        long today = new Date().getTime();
-        return today >= startDate.getTime() && today <= expirationDate.getTime();
-    }
-
-    private WicOrder saveWicOrderData(String products, boolean isEmergency, Timestamp orderTime, Voucher voucher) {
-        WicOrder wicOrder = new WicOrder(isEmergency, orderTime, products, OrderStatus.ORDER_RECEIVED.name(), voucher);
+    private WicOrder saveWicOrderData(String products, boolean isEmergency, Voucher voucher) {
+        WicOrder wicOrder = new WicOrder(isEmergency, products, OrderStatus.ORDER_RECEIVED.name(), voucher);
         wicLogger.info("Save or update a wicOrder info:" + wicOrder.toString(), WicOrder.class);
         return entityService.saveOrUpdate(WicOrder.class, wicOrder);
     }

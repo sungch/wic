@@ -4,23 +4,25 @@ import bettercare.wic.dal.entity.Product;
 
 import java.io.Serializable;
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 
-@Embeddable
-public class OrderedProduct implements Serializable {
+
+public class OrderedProductModel implements Serializable {
 
     /**
-     * serialver -classpath . bettercare.wic.model.OrderedProductsModel
+     * serialver -classpath . bettercare.wic.model.OrderedProduct
      */
-    // private static final long serialVersionUID = 1425377164454743913L;
+    private static final long serialVersionUID = -2059597609962677987L;
 
+    @Embedded
     private Product product;
     private int count;
 
-    public OrderedProduct() {
+    public OrderedProductModel() {
 
     }
 
-    public OrderedProduct(Product p, int count) {
+    public OrderedProductModel(Product p, int count) {
         this.product = p;
         this.count = count;
     }

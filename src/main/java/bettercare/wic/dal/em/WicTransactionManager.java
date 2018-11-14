@@ -76,8 +76,8 @@ public class WicTransactionManager {
 
   // Voucher
 
-  public List<Voucher> findVoucherByVoucherNumberAndCustomerId(String voucherNumber, long customerId) {
-    return voucherDao.findByVoucherNumberAndCustomerId(voucherNumber, customerId);
+  public List<Voucher> findVoucherByVoucherNumber(String voucherNumber) {
+    return voucherDao.findByVoucherNumber(voucherNumber);
   }
 
 
