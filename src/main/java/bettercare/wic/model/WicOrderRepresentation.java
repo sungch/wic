@@ -98,4 +98,9 @@ public class WicOrderRepresentation implements Serializable {
     public void setVoucherModel(VoucherModel voucherModel) {
         this.voucherModel = voucherModel;
     }
+
+    @Override
+    public String toString() {
+        return products + isEmergency + orderedTime + status + customerModel.toString() + voucherModel.toString();
+    }
 }

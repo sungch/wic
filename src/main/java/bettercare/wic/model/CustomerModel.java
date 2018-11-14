@@ -60,4 +60,9 @@ public class CustomerModel implements Serializable {
   public void setWicNumber(String wicNumber) {
     this.wicNumber = wicNumber;
   }
+
+  @Override
+  public String toString() {
+    return this.address + this.name + this.phone + this.wicNumber;
+  }
 }

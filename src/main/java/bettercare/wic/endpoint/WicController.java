@@ -4,9 +4,7 @@ import bettercare.wic.dal.WicLogger;
 import bettercare.wic.dal.entity.*;
 import bettercare.wic.model.PackagingOrderedProductRepresentation;
 import bettercare.wic.model.WicOrderRepresentation;
-import bettercare.wic.service.EntityService;
-import bettercare.wic.service.ProductsParser;
-import bettercare.wic.service.SaveWicOrderService;
+import bettercare.wic.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,22 +32,18 @@ public class WicController {
   // Customer Order
 
   @PostMapping("/customerOrder")
-  ResponseEntity<PackagingOrderedProductRepresentation> createCustomerOrder(@Valid @RequestBody WicOrderRepresentation model) {
+  ResponseEntity<PackagingOrderedProductRepresentation> createCustomerOrder(@Valid @RequestBody WicOrderRepresentation model)
+          throws InvalidCustomerDataException {
     WicOrder wicOrder = saveWicOrderService.saveWicOrder(model);
     if(wicOrder != null) {
       model.setOrderId(wicOrder.getId());
       model.setOrderedTime(wicOrder.getOrderedTime());
       model.setStatus(wicOrder.getStatus());
-      try {
-        PackagingOrderedProductRepresentation representation = productsParser.parseProducts(model.getProducts());
-        representation.setOrderId(wicOrder.getId());
-        return new ResponseEntity<>(representation, HttpStatus.CREATED);
-      }
-      catch(Exception ex) {
-        wicLogger.error("Error parsing products from customer order", WicController.class);
-      }
+      PackagingOrderedProductRepresentation representation = productsParser.parseProducts(model.getProducts());
+      representation.setOrderId(wicOrder.getId());
+      return new ResponseEntity<>(representation, HttpStatus.CREATED);
     }
-    return getBadResponseEntity(new PackagingOrderedProductRepresentation());
+    throw new InvalidCustomerDataException("There is a problem with the customer data:" + model.toString());
   }
 
   // WicOrder CRUD

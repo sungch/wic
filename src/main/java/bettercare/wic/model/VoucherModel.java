@@ -19,10 +19,12 @@ public class VoucherModel implements Serializable {
      */
     private static final long serialVersionUID = -7031762038088179417L;
 
+    @NotBlank
     @Future
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")//, timezone = "MST") When not set, UTC is used.
     private Timestamp expirationDate;
 
+    @NotBlank
     @Past
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private Timestamp startDate;
@@ -60,5 +62,10 @@ public class VoucherModel implements Serializable {
 
     public void setVoucherNumber(String voucherNumber) {
         this.voucherNumber = voucherNumber;
+    }
+
+    @Override
+    public String toString() {
+        return this.voucherNumber + this.startDate + this.expirationDate;
     }
 }

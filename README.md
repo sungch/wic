@@ -17,9 +17,14 @@ Add last update date inn wic_order for current state
 ------
 DEBUG:
 mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+
 ------
 INFO
 ------
+
+Spring-boot app, ExceptionMapper with @Provider seems more work than spring's way like @ControllerAdvice and @ResponseBody.
+
+
 When POSTing, ID must be 0. It cannot be empty or NULL.
 PUT POST adds an empty entry even though payload is not valid.
 @Past and @Future -> Are they work with LONG or must it be Date field?
@@ -39,8 +44,12 @@ PUT POST adds an empty entry even though payload is not valid.
  * @PathParameter -- path
  */
 
-
+--------------
+Tomcat Deploy
+--------------
 To make it deployable to tomcat, Had to Add "WicApplication extends SpringBootServletInitializer" and delete web.xml before deploy.
+
+
 Use @Transactional in unit test to roll back at the end of the test.
 Use @WebMvcTest, MockMvc, @MockBean
 @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")//, timezone = "MST") When not set, UTC is used.

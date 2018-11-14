@@ -34,7 +34,7 @@ public class SaveWicOrderService {
         super();
     }
 
-    public WicOrder saveWicOrder(WicOrderRepresentation model) {
+    public WicOrder saveWicOrder(WicOrderRepresentation model) throws InvalidVoucherException {
         Customer customer = persistCustomerIfNew(new Customer(model.getCustomerModel()));
         Voucher transientVoucher = new Voucher(model.getVoucherModel(), customer);
         if (isNewVoucher(transientVoucher)) {
@@ -44,10 +44,7 @@ public class SaveWicOrderService {
             wicLogger.info("Your order number is " + wicOrder.getId(), Customer.class);
             return wicOrder;
         }
-        else {
-            wicLogger.info("The same voucher cannot be used again:" + transientVoucher.toString(), Voucher.class);
-        }
-        return null;
+        throw new InvalidVoucherException("There is a problem with the voucher:" + model.getVoucherModel().toString());
     }
 
     // TODO detect current time zone, adjust with incoming UTC data, and then trim the dates.
@@ -67,7 +64,7 @@ public class SaveWicOrderService {
             return entityService.saveOrUpdate(Customer.class, customer);
         }
         else {
-            wicLogger.log("Same customer already exist. I am using the existing customer: " + customer.toString());
+            wicLogger.log("Same customer already exist. returning the existing customer: " + customer.toString());
         }
         return list.get(0);
     }

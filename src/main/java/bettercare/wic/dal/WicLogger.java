@@ -9,12 +9,9 @@ public class WicLogger {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(WicLogger.class);
 
+  // Test only
   public void log(String mesg) {
-    System.out.println("***********************************");
-    System.out.print("*");
     System.out.print(mesg);
-    System.out.println("*");
-    System.out.println("***********************************");
   }
 
   public void info(String mesg, Class problemArea) {
