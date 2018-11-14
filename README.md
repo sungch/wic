@@ -15,7 +15,8 @@ Ensure to generate serialver via serialver -classpath . bettercare.wic.model.Ord
 Add last update date inn wic_order for current state
 
 ------
-DEBUG: mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+DEBUG:
+mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
 ------
 INFO
 ------

@@ -15,6 +15,8 @@ public class PackagingOrderedProductRepresentation implements Serializable {
      * serialver -classpath . bettercare.wic.model.PackagingOrderedProductRepresentation
      */
     private static final long serialVersionUID = 1425377164454743913L;
+
+    private long orderId;
     private List<OrderedProductModel> orderedProducts = new ArrayList<>();
 
 
@@ -32,4 +34,11 @@ public class PackagingOrderedProductRepresentation implements Serializable {
         }
     }
 
+    public long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(long orderId) {
+        this.orderId = orderId;
+    }
 }

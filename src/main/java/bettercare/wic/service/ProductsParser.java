@@ -18,11 +18,11 @@ public class ProductsParser {
 
     public PackagingOrderedProductRepresentation parseProducts(String products) {
 
-        PackagingOrderedProductRepresentation model = new PackagingOrderedProductRepresentation();
+        PackagingOrderedProductRepresentation orderModel = new PackagingOrderedProductRepresentation();
 
         if(!products.contains(PROD_SEPARATOR)) {
             wicLogger.error("PROD_SEPARATOR is missing from this order:" + products, PackagingOrderedProductRepresentation.class);
-            return model;
+            return orderModel;
         }
 
         String[] orders = products.split(PROD_SEPARATOR);
@@ -44,12 +44,15 @@ public class ProductsParser {
             long productId = Long.valueOf(kv[0]);
             int orderCount = Integer.valueOf(kv[1]);
             Product product = entityService.findById(Product.class, productId);
+
+            if(product == null) {
+                wicLogger.error("Ordered product item not found:" + product.toString(), ProductsParser.class);
+                continue;
+            }
             OrderedProductModel orderedProduct = new OrderedProductModel(product, orderCount);
-
-            model.addOrderedProduct(orderedProduct);
-
+            orderModel.addOrderedProduct(orderedProduct);
         }
         
-        return model;
+        return orderModel;
     }
 }

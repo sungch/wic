@@ -1,5 +1,6 @@
 package bettercare.wic.endpoint;
 
+import bettercare.wic.dal.WicLogger;
 import bettercare.wic.dal.entity.*;
 import bettercare.wic.model.PackagingOrderedProductRepresentation;
 import bettercare.wic.model.WicOrderRepresentation;
@@ -26,6 +27,8 @@ public class WicController {
   private EntityService entityService;
   @Autowired
   private ProductsParser productsParser;
+  @Autowired
+  private WicLogger wicLogger;
 
 
   // Customer Order
@@ -38,13 +41,14 @@ public class WicController {
       model.setOrderedTime(wicOrder.getOrderedTime());
       model.setStatus(wicOrder.getStatus());
       try {
-        return new ResponseEntity<>(productsParser.parseProducts(model.getProducts()), HttpStatus.CREATED);
+        PackagingOrderedProductRepresentation representation = productsParser.parseProducts(model.getProducts());
+        representation.setOrderId(wicOrder.getId());
+        return new ResponseEntity<>(representation, HttpStatus.CREATED);
       }
       catch(Exception ex) {
-        // TODO
+        wicLogger.error("Error parsing products from customer order", WicController.class);
       }
     }
-    // TODO response with incoming data when there is an ERROR
     return getBadResponseEntity(new PackagingOrderedProductRepresentation());
   }
 
