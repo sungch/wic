@@ -3,6 +3,7 @@ package bettercare.wic.dal.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -26,6 +27,10 @@ public class WicOrder implements Serializable {
 	@CreationTimestamp
 	@Column(name="ordered_time")
 	private Timestamp orderedTime;
+
+	@UpdateTimestamp
+	@Column(name="status_update_time")
+	private Timestamp statusUpdateTime;
 
 	@NotBlank
 	@Column(name="product_and_quantity")
@@ -108,6 +113,14 @@ public class WicOrder implements Serializable {
 
 	public void setEmergency(boolean emergency) {
 		isEmergency = emergency;
+	}
+
+	public Timestamp getStatusUpdateTime() {
+		return statusUpdateTime;
+	}
+
+	public void setStatusUpdateTime(Timestamp statusUpdateTime) {
+		this.statusUpdateTime = statusUpdateTime;
 	}
 
 	@Override

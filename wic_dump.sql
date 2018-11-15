@@ -190,8 +190,9 @@ DROP TABLE IF EXISTS `wic_order`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `wic_order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `is_emergency` bit(1) DEFAULT NULL,
-  `ordered_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_emergency` varchar(1) DEFAULT 'N',
+  `ordered_time` timestamp NULL,
+  `status_update_time` timestamp NULL,
   `product_and_quantity` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `voucher_id` bigint(20) DEFAULT '0',
@@ -200,16 +201,6 @@ CREATE TABLE `wic_order` (
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `wic_order`
---
-
-LOCK TABLES `wic_order` WRITE;
-/*!40000 ALTER TABLE `wic_order` DISABLE KEYS */;
-INSERT INTO `wic_order` VALUES (1,'\0','2018-11-07 21:49:05','1:11&2:12&3:13&4:14&5:15&6:16&7:17&8:18&9:19&10:20&11:21&12:22&13:23&14:24&15:25&16:26&17:27&18:28&19:29&20:30&21:31&22:32&23:33&24:34&25:35&26:36&27:37&28:38&29:39&30:40&31:41&32:42&33:43&34:44&35:45&36:46&37:47&38:48','DELIVERY_COMPLETED',1);
-/*!40000 ALTER TABLE `wic_order` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

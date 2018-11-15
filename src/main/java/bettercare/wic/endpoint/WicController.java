@@ -1,6 +1,6 @@
 package bettercare.wic.endpoint;
 
-import bettercare.wic.dal.WicLogger;
+
 import bettercare.wic.dal.entity.*;
 import bettercare.wic.exceptions.InvalidCustomerDataException;
 import bettercare.wic.exceptions.InvalidProductDataException;
@@ -27,8 +27,6 @@ public class WicController {
   private EntityService entityService;
   @Autowired
   private ProductsParser productsParser;
-  @Autowired
-  private WicLogger wicLogger;
 
 
   // Customer Order
@@ -39,7 +37,6 @@ public class WicController {
     WicOrder wicOrder = saveWicOrderService.saveWicOrder(model);
     if(wicOrder != null) {
       model.setOrderId(wicOrder.getId());
-      model.setOrderedTime(wicOrder.getOrderedTime());
       model.setStatus(wicOrder.getStatus());
       PackagingOrderedProductRepresentation representation = productsParser.parseProducts(model.getProducts());
       representation.setOrderId(wicOrder.getId());

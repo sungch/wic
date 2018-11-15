@@ -4,7 +4,6 @@ package bettercare.wic.model;
 import javax.persistence.Embedded;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
  * This object is used to model incoming customer order and save in WicOrder, Voucher, and Customer.
@@ -17,8 +16,8 @@ public class WicOrderRepresentation implements Serializable {
      */
     private static final long serialVersionUID = -1437982395144640698L;
     private long orderId;
-    private boolean isEmergency;
-    private Timestamp orderedTime;
+    private boolean isEmergency = false;
+
     private String status;
 
     @NotBlank
@@ -32,11 +31,10 @@ public class WicOrderRepresentation implements Serializable {
 
     public WicOrderRepresentation() {}
 
-    public WicOrderRepresentation(long orderId, boolean isEmergency, long orderedTime, String products, String status,
+    public WicOrderRepresentation(long orderId, boolean isEmergency, String products, String status,
                                   CustomerModel customerModel, VoucherModel voucherModel) {
         this.orderId = orderId;
         this.isEmergency = isEmergency;
-        this.orderedTime = new Timestamp(orderedTime);
         this.products = products;
         this.status = status;
         this.customerModel = customerModel;
@@ -57,14 +55,6 @@ public class WicOrderRepresentation implements Serializable {
 
     public void setEmergency(boolean emergency) {
         isEmergency = emergency;
-    }
-
-    public Timestamp getOrderedTime() {
-        return orderedTime;
-    }
-
-    public void setOrderedTime(Timestamp orderedTime) {
-        this.orderedTime = orderedTime;
     }
 
     public String getProducts() {
@@ -101,6 +91,6 @@ public class WicOrderRepresentation implements Serializable {
 
     @Override
     public String toString() {
-        return products + isEmergency + orderedTime + status + customerModel.toString() + voucherModel.toString();
+        return products + isEmergency + status + customerModel.toString() + voucherModel.toString();
     }
 }

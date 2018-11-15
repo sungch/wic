@@ -1,7 +1,6 @@
 ----
 TODO
 -----
-https://www.baeldung.com/spring-boot-actuators
 
 // TODO detect current time zone, adjust with incoming UTC data, and then trim the dates.
 private void normalizeVoucherEffectiveDates(Voucher voucher) {
@@ -10,11 +9,6 @@ private void normalizeVoucherEffectiveDates(Voucher voucher) {
 ResponseEntity<PackagingOrderedProductRepresentation> createCustomerOrder
 // TODO response with incoming data when there is an ERROR
       
-Debug packaging and delivery further: Test customerOrder
-Ensure to generate serialver via serialver -classpath . bettercare.wic.model.OrderedProductsModel for instance.
-
-Add last update date inn wic_order for current state
-
 ------
 DEBUG:
 mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
@@ -22,6 +16,14 @@ mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp
 ------
 INFO
 ------
+
+Add last update date inn wic_order for current state
+
+
+Debug packaging and delivery further: Test customerOrder
+Ensure to generate serialver via serialver -classpath . bettercare.wic.model.OrderedProductsModel for instance.
+
+https://www.baeldung.com/spring-boot-actuators
 
 Spring-boot app, ExceptionMapper with @Provider seems more work than spring's way like @ControllerAdvice and @ResponseBody.
 

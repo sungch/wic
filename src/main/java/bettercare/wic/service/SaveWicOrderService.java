@@ -36,7 +36,7 @@ public class SaveWicOrderService {
         if (isNewVoucher(transientVoucher)) {
             normalizeVoucherEffectiveDates(transientVoucher);
             Voucher voucher = entityService.saveOrUpdate(Voucher.class, transientVoucher);
-            WicOrder wicOrder = saveWicOrderData(model.getProducts(), false, voucher);
+            WicOrder wicOrder = saveWicOrderData(model.getProducts(), model.isEmergency(), voucher);
             wicLogger.info("Your order number is " + wicOrder.getId(), Customer.class);
             return wicOrder;
         }
