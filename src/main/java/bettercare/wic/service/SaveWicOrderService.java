@@ -2,17 +2,13 @@ package bettercare.wic.service;
 
 import bettercare.wic.dal.WicLogger;
 import bettercare.wic.dal.entity.Customer;
-import bettercare.wic.dal.entity.Product;
 import bettercare.wic.dal.entity.Voucher;
 import bettercare.wic.dal.entity.WicOrder;
-import bettercare.wic.model.CustomerModel;
-import bettercare.wic.model.VoucherModel;
+import bettercare.wic.exceptions.InvalidVoucherException;
 import bettercare.wic.model.WicOrderRepresentation;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -64,7 +60,7 @@ public class SaveWicOrderService {
             return entityService.saveOrUpdate(Customer.class, customer);
         }
         else {
-            wicLogger.log("Same customer already exist. returning the existing customer: " + customer.toString());
+            wicLogger.info("Same customer already exist. returning the existing customer: " + customer.toString(), this.getClass());
         }
         return list.get(0);
     }

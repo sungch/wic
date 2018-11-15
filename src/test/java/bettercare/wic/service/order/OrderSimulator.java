@@ -2,7 +2,7 @@ package bettercare.wic.service.order;
 
 import bettercare.wic.dal.entity.WicOrder;
 import bettercare.wic.model.WicOrderRepresentation;
-import bettercare.wic.service.InvalidVoucherException;
+import bettercare.wic.exceptions.InvalidVoucherException;
 import bettercare.wic.service.OrderStatus;
 import bettercare.wic.service.manual.InitSetup;
 import org.junit.Assert;

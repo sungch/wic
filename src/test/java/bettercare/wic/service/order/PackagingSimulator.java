@@ -2,6 +2,7 @@ package bettercare.wic.service.order;
 
 import bettercare.wic.dal.entity.Delivery;
 import bettercare.wic.dal.entity.WicOrder;
+import bettercare.wic.exceptions.InvalidProductDataException;
 import bettercare.wic.model.PackagingOrderedProductRepresentation;
 import bettercare.wic.service.OrderStatus;
 import bettercare.wic.service.manual.InitSetup;
@@ -21,7 +22,7 @@ import java.util.List;
 public class PackagingSimulator extends InitSetup {
 
     @Test
-    public void packaging() throws InterruptedException {
+    public void packaging() throws InterruptedException, InvalidProductDataException {
         List<WicOrder> orders = entityService.findOrderByStatus(OrderStatus.ORDER_RECEIVED.name());
         for(WicOrder order : orders) {
 

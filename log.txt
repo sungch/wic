@@ -150,7 +150,7 @@
 [INFO] [talledLocalContainer]   class bettercare.wic.endpoint.OrderEndpointImpl
 [INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM com.sun.jersey.api.core.ScanningResourceConfig logClasses
 [INFO] [talledLocalContainer] INFO: Provider classes found:
-[INFO] [talledLocalContainer]   class bettercare.wic.service.DefaultExceptionMapper
+[INFO] [talledLocalContainer]   class bettercare.wic.exceptions.DefaultExceptionMapper
 [INFO] [talledLocalContainer]   class bettercare.wic.service.marshaller.JasonMarshallerForWicOrderRepresentation
 [INFO] [talledLocalContainer] Oct 23, 2018 11:58:57 AM com.sun.jersey.spi.spring.container.servlet.SpringServlet getContext
 [INFO] [talledLocalContainer] INFO: Using default applicationContext

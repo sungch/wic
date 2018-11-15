@@ -1,10 +1,8 @@
-package bettercare.wic.service;
+package bettercare.wic.exceptions;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.sun.jersey.api.NotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,8 +18,6 @@ import javax.ws.rs.core.Response;
 @ControllerAdvice
 @ResponseBody
 public class DefaultExceptionMapper {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultExceptionMapper.class);
 
     private int statusCode;
     private String message;
@@ -42,8 +38,6 @@ public class DefaultExceptionMapper {
                 .entity(this.message)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
                 .header(HttpHeaders.CONTENT_ENCODING, "identity");
-
-        LOGGER.warn("Responded as an error with body:" + this.message);
 
         return builder.build();
     }

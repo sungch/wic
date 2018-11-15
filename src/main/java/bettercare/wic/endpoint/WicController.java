@@ -2,6 +2,8 @@ package bettercare.wic.endpoint;
 
 import bettercare.wic.dal.WicLogger;
 import bettercare.wic.dal.entity.*;
+import bettercare.wic.exceptions.InvalidCustomerDataException;
+import bettercare.wic.exceptions.InvalidProductDataException;
 import bettercare.wic.model.PackagingOrderedProductRepresentation;
 import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.*;
@@ -33,7 +35,7 @@ public class WicController {
 
   @PostMapping("/customerOrder")
   ResponseEntity<PackagingOrderedProductRepresentation> createCustomerOrder(@Valid @RequestBody WicOrderRepresentation model)
-          throws InvalidCustomerDataException {
+      throws InvalidCustomerDataException, InvalidProductDataException {
     WicOrder wicOrder = saveWicOrderService.saveWicOrder(model);
     if(wicOrder != null) {
       model.setOrderId(wicOrder.getId());

@@ -1,9 +1,10 @@
-package bettercare.wic.service;
+package bettercare.wic.exceptions;
+
 
 public class InvalidVoucherException extends InvalidCustomerDataException {
 
     /**
-     * serialver -classpath . bettercare.wic.service.InvalidVoucherException
+     * serialver -classpath . bettercare.wic.exceptions.InvalidVoucherException
      */
     private static final long serialVersionUID = 1261929128968811462L;
 
