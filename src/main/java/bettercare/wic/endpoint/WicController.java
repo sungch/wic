@@ -7,6 +7,7 @@ import bettercare.wic.exceptions.InvalidProductDataException;
 import bettercare.wic.model.PackagingOrderedProductRepresentation;
 import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.*;
+import com.sun.jersey.api.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,9 +65,14 @@ public class WicController {
 
   @GetMapping("/wicOrders/{id}")
   ResponseEntity<WicOrder> readWicOrder(@PathVariable long id) {
-    return new ResponseEntity<>(entityService.findById(WicOrder.class, id), HttpStatus.OK);
+    WicOrder wicOrder = entityService.findById(WicOrder.class, id);
+    if(wicOrder != null) {
+      return new ResponseEntity<>(wicOrder, HttpStatus.OK);
+    }
+    throw new NotFoundException("WicOrder of id " + id + " + not found.");
   }
 
+  // Called by customerOrder
   @PostMapping("/wicOrder")
   ResponseEntity<WicOrder> createWicOrder(@Valid @RequestBody WicOrder wicOrder) {
     if(wicOrder.getId() == 0) {
@@ -83,9 +89,12 @@ public class WicController {
     return getBadResponseEntity(wicOrder);
   }
 
-  @DeleteMapping("/wicOrder/{id}")
-  void deleteWicOrder(@PathVariable long orderId) {
-    entityService.deleteById(WicOrder.class, orderId);
+  @DeleteMapping("/wicOrders/{id}")
+  void deleteWicOrder(@PathVariable long id) {
+    ResponseEntity<WicOrder> wicOrder = readWicOrder(id);
+    if(wicOrder != null) {
+      entityService.deleteById(WicOrder.class, id);
+    }
   }
 
 
@@ -117,7 +126,7 @@ public class WicController {
     return getBadResponseEntity(category);
   }
 
-  @DeleteMapping("/category/{id}")
+  @DeleteMapping("/categories/{id}")
   void deleteCategory(@PathVariable long id) {
     entityService.deleteById(Category.class, id);
   }
@@ -157,7 +166,7 @@ public class WicController {
     return getBadResponseEntity(product);
   }
 
-  @DeleteMapping("/product/{id}")
+  @DeleteMapping("/products/{id}")
   void deleteProduct(@PathVariable long id) {
     entityService.deleteById(Product.class, id);
   }
@@ -191,7 +200,7 @@ public class WicController {
     return getBadResponseEntity(customer);
   }
 
-  @DeleteMapping("/customer/{id}")
+  @DeleteMapping("/customers/{id}")
   void deleteCustomer(@PathVariable long id) {
     entityService.deleteById(Customer.class, id);
   }
@@ -225,7 +234,7 @@ public class WicController {
     return getBadResponseEntity(delivery);
   }
 
-  @DeleteMapping("/delivery/{id}")
+  @DeleteMapping("/deliveries/{id}")
   void deleteDelivery(@PathVariable long id) {
     entityService.deleteById(Delivery.class, id);
   }
@@ -259,7 +268,7 @@ public class WicController {
     return getBadResponseEntity(missingProduct);
   }
 
-  @DeleteMapping("/missingProduct/{id}")
+  @DeleteMapping("/missingProducts/{id}")
   void deleteMissingProduct(@PathVariable long id) {
     entityService.deleteById(MissingProduct.class, id);
   }
@@ -293,7 +302,7 @@ public class WicController {
     return getBadResponseEntity(voucher);
   }
 
-  @DeleteMapping("/voucher/{id}")
+  @DeleteMapping("/vouchers/{id}")
   void deleteVoucher(@PathVariable long id) {
     entityService.deleteById(Voucher.class, id);
   }
