@@ -4,10 +4,6 @@ TODO
 
 // TODO detect current time zone, adjust with incoming UTC data, and then trim the dates.
 private void normalizeVoucherEffectiveDates(Voucher voucher) {
-
-@PostMapping("/customerOrder")
-ResponseEntity<PackagingOrderedProductRepresentation> createCustomerOrder
-// TODO response with incoming data when there is an ERROR
       
 ------
 DEBUG:

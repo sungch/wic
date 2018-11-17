@@ -35,7 +35,7 @@ public class Product implements Serializable {
 
   @NotBlank
   @Column(name = "is_handling")
-  private String isHandling;
+  private boolean isHandling;
 
   @JsonBackReference
   @ManyToOne(fetch = FetchType.LAZY)
@@ -93,12 +93,12 @@ public class Product implements Serializable {
     this.category = category;
   }
 
-  public String getIsHandling() {
+  public boolean isHandling() {
     return isHandling;
   }
 
-  public void setIsHandling(String isHandling) {
-    this.isHandling = isHandling;
+  public void setHandling(boolean handling) {
+    isHandling = handling;
   }
 
   @Override

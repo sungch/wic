@@ -16,5 +16,5 @@ public interface ProductDao extends JpaRepository<Product, Long> {
 
   public List<Product> findByCategory(Category category);
 
-  public List<Product> findByCategoryAndNameAndIsHandling(Category category, String productName, String isHandling);
+  public List<Product> findByCategoryAndNameAndIsHandling(Category category, String productName, boolean isHandling);
 }

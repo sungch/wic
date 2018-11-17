@@ -69,7 +69,7 @@ public class EntityService {
     return wicTransactionManager.findCustomerByWicNumberAndPhoneAndAddressAndName(wicNumber, phone, address, name);
   }
 
-  public List<Product> findProductByCategoryAndNameAndIsHandling(Category category, String productName, String isHandling) {
+  public List<Product> findProductByCategoryAndNameAndIsHandling(Category category, String productName, boolean isHandling) {
     return wicTransactionManager.findProductByCategoryAndNameAndIsHandling(category, productName, isHandling);
   }
 
