@@ -3,6 +3,7 @@ package bettercare.wic.service;
 import bettercare.wic.dal.em.WicEntityManager;
 import bettercare.wic.dal.em.WicTransactionManager;
 import bettercare.wic.dal.entity.*;
+import org.springframework.http.ResponseEntity;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -37,6 +38,10 @@ public class EntityService {
 
   public <T> void deleteById(Class<T> T, long id) {
     wicTransactionManager.deleteById(T, id);
+  }
+
+  public <T> void delete(Class<T> clz, T entity) {
+    wicTransactionManager.delete(clz, entity);
   }
 
 

@@ -117,6 +117,15 @@ public class Voucher implements Serializable {
 		this.wicOrder = wicOrder;
 	}
 
+	@PreRemove
+    public void disConnctVoucher() {
+        this.getWicOrder().disconnectWicOrder();
+        this.setWicOrder(null);
+
+        this.getCustomer().preRemoveVoucher(this);
+        this.setCustomer(null);
+    }
+
     @Override
     public String toString() {
         return String.format("id:%s start:%s expire:%s voucherId:%s", this.getId(), this.getStartDate(), this.getExpirationDate(), this.getVoucherNumber());

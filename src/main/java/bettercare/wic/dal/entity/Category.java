@@ -69,10 +69,14 @@ public class  Category implements Serializable {
 		return product;
 	}
 
-	public Product removeProduct(Product product) {
+	public void preRemoveProduct(Product product) { // upon request from child, remove trhe child.
 		getProducts().remove(product);
 		product.setCategory(null);
-		return product;
+	}
+
+	@PreRemove
+	private void preRemoveProducts() {
+		this.getProducts().forEach(this::preRemoveProduct);
 	}
 
 	@Override
@@ -113,5 +117,4 @@ public class  Category implements Serializable {
 		}
 		return that.equals(me);
 	}
-
 }

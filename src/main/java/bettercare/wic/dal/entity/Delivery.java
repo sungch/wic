@@ -61,6 +61,11 @@ public class Delivery implements Serializable {
     this.delivererName = delivererName;
   }
 
+  @PreRemove
+  public void preRemoveDelivery() {
+    this.getWicOrder().preRemoveDelivery(this);
+  }
+
   public Timestamp getDeliveryStartTime() {
     return deliveryStartTime;
   }

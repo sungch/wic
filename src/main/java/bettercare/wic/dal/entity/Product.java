@@ -146,4 +146,9 @@ public class Product implements Serializable {
     return that.equals(me);
   }
 
+  @PreRemove
+  public void preRemoveCategory() {
+    this.getCategory().preRemoveProduct(this); // ask parent to remove me
+    this.setCategory(null);
+  }
 }

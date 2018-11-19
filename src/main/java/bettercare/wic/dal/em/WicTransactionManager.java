@@ -42,6 +42,11 @@ public class WicTransactionManager {
     getDao(clz).deleteById(id);
   }
 
+  public <T> void delete(Class<T> clz, T entity) {
+    getDao(clz).delete(entity);
+  }
+
+
   // Category
 
   public List<Category> findCategoryByName(String name) {
@@ -125,5 +130,4 @@ public class WicTransactionManager {
     }
     return null;
   }
-
 }
