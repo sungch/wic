@@ -21,12 +21,12 @@ public class VoucherModel implements Serializable {
 
     @NotBlank
     @Future
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")//, timezone = "MST") When not set, UTC is used.
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")//, timezone = "MST") When not set, UTC is used.
     private Timestamp expirationDate;
 
     @NotBlank
     @Past
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp startDate;
 
     @NotBlank

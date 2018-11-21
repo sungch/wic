@@ -1,6 +1,7 @@
 package bettercare.wic.dal.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -10,6 +11,16 @@ import java.sql.Timestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+/**
+ * For a certain restriction which I did not find out yet,
+ * I cannot delete middle object loike wicOrder which it is a child of voucher and a parent of delivery.
+ * WHY??
+ *
+ * I can delete customer->voucher->wicOrder->delivery.
+ * I can delete voucher->wicOrder->delivery.
+ * I can delete delivery.
+ *
+ */
 
 @Entity
 @Table(name="wic_order")
@@ -24,10 +35,12 @@ public class WicOrder implements Serializable {
 	@Column(name="is_emergency")
 	private boolean isEmergency;
 
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")//, timezone = "MST") When not set, UTC is used.
 	@CreationTimestamp
 	@Column(name="ordered_time")
 	private Timestamp orderedTime;
 
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")//, timezone = "MST") When not set, UTC is used.
 	@UpdateTimestamp
 	@Column(name="status_update_time")
 	private Timestamp statusUpdateTime;

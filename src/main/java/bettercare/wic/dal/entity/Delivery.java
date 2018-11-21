@@ -1,6 +1,7 @@
 package bettercare.wic.dal.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -23,9 +24,11 @@ public class Delivery implements Serializable {
   @Column(name = "deliverer_name")
   private String delivererName;
 
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @Column(name = "delivery_start_time")
   private Timestamp deliveryStartTime;
 
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @Column(name = "delivery_completion_time")
   private Timestamp deliveryCompletionTime;
 

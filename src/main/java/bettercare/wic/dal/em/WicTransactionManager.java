@@ -67,10 +67,9 @@ public class WicTransactionManager {
     return productDao.findByIsHandling(isHandling);
   }
 
-  public List<Product> findProductByCategory(Category category) {
-    return productDao.findByCategory(category);
+  public List<Product> findProductByCategoryId(long id) {
+    return productDao.findByCategoryId(id);
   }
-
 
   // WicOrder
 

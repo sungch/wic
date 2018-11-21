@@ -18,7 +18,7 @@ public class ProductStocker extends InitSetup {
       for (int i = start; i < end; i++) {
         addProducsOnEachCategoryIfNew(category, i, true);
       }
-      List<Product> products = entityService.findProductsByCategory(category);
+      List<Product> products = entityService.findProductsByCategoryId(category.getId());
       wicLogger.log("Created products:" + products.size());
       Assert.assertFalse(products.isEmpty());
     }

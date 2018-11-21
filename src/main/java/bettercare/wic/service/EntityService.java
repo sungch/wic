@@ -62,8 +62,8 @@ public class EntityService {
     return wicTransactionManager.findProductByIsHandling(isHandling);
   }
 
-  public List<Product> findProductsByCategory(Category category) {
-    return wicTransactionManager.findProductByCategory(category);
+  public List<Product> findProductsByCategoryId(long id) {
+    return wicTransactionManager.findProductByCategoryId(id);
   }
 
   public List<Voucher> findVoucherByVoucherNumber(String voucherNumber) {

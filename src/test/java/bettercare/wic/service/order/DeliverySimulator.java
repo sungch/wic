@@ -32,11 +32,6 @@ public class DeliverySimulator extends InitSetup {
         List<WicOrder> orders = entityService.findOrderByStatus(OrderStatus.PACKAGING_COMPLETED.name());
         for(WicOrder order : orders) {
 
-            // print address
-            Voucher voucher = order.getVoucher();
-            Customer customer = voucher.getCustomer();
-            wicLogger.info("\nDelivery Address;" + customer.toString(), DeliverySimulator.class);
-
             // Saving deliverer name, delievery start time, status to delivering.
             // User may check the order status. Update statue before delivery starts
             Delivery delivery = order.getDelivery();
@@ -44,6 +39,11 @@ public class DeliverySimulator extends InitSetup {
             delivery.setDeliveryStartTime(new Timestamp(System.currentTimeMillis()));
             order.setStatus(OrderStatus.DELIVERY_ON_THE_WAY.name());
             entityService.saveOrUpdate(WicOrder.class, order);
+
+            // print address
+            Voucher voucher = order.getVoucher();
+            Customer customer = voucher.getCustomer();
+            wicLogger.info("\nDelivery Address;" + customer.toString(), DeliverySimulator.class);
 
             // Start Delivery. Dellivery takes 5 secods
             WicOrder order2 = entityService.findById(WicOrder.class, order.getId());

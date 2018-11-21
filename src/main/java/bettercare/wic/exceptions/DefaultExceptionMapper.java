@@ -26,7 +26,7 @@ public class DefaultExceptionMapper {
     public Response toResponse(Exception ex) {
 
         this.statusCode = Response.Status.INTERNAL_SERVER_ERROR.getStatusCode();
-        this.message = ex.getMessage();
+        this.message = ex.getMessage() == null ? "" : ex.getMessage();
 
         if(ex.getCause() != null) {
             this.message += ex.getCause().getMessage();
@@ -63,6 +63,10 @@ public class DefaultExceptionMapper {
         if(ex instanceof InvalidVoucherException || ex instanceof InvalidCustomerDataException) {
             this.statusCode = Response.Status.BAD_REQUEST.getStatusCode();
 
+        }
+
+        if(ex instanceof FailedToDeleteException) {
+            this.statusCode = Response.Status.NOT_FOUND.getStatusCode();
         }
     }
 }

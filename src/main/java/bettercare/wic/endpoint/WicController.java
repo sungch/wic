@@ -3,7 +3,7 @@ package bettercare.wic.endpoint;
 
 import bettercare.wic.dal.entity.*;
 import bettercare.wic.exceptions.InvalidCustomerDataException;
-import bettercare.wic.exceptions.InvalidProductDataException;
+import bettercare.wic.exceptions.FailedToDeleteException;
 import bettercare.wic.model.PackagingOrderedProductRepresentation;
 import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.*;
@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 
@@ -33,7 +34,7 @@ public class WicController {
     // Customer Order
 
     @PostMapping("/customerOrder")
-    ResponseEntity<PackagingOrderedProductRepresentation> createCustomerOrder(@Valid @RequestBody WicOrderRepresentation model) throws InvalidCustomerDataException, InvalidProductDataException {
+    ResponseEntity<PackagingOrderedProductRepresentation> createCustomerOrder(@Valid @RequestBody WicOrderRepresentation model) throws InvalidCustomerDataException {
         WicOrder wicOrder = saveWicOrderService.saveWicOrder(model);
         if (wicOrder != null) {
             model.setOrderId(wicOrder.getId());
@@ -43,7 +44,7 @@ public class WicController {
                 representation = productsParser.parseProducts(model.getProducts());
             }
             catch (Exception ex) {
-                deleteWicOrder(wicOrder.getId());
+                entityService.deleteById(WicOrder.class, wicOrder.getId());
                 throw new InvalidCustomerDataException("There is a problem with the customer data:" + model.toString());
             }
             representation.setOrderId(wicOrder.getId());
@@ -72,10 +73,10 @@ public class WicController {
     @GetMapping("/wicOrders/{id}")
     ResponseEntity<WicOrder> readWicOrder(@PathVariable long id) {
         WicOrder wicOrder = entityService.findById(WicOrder.class, id);
-        if (wicOrder != null) {
+        if(wicOrder != null) {
             return new ResponseEntity<>(wicOrder, HttpStatus.OK);
         }
-        throw new NotFoundException("WicOrder of id " + id + " + not found.");
+        throw new NotFoundException(URI.create("/wicOrders/" + id));
     }
 
     // Called by customerOrder
@@ -96,10 +97,13 @@ public class WicController {
     }
 
     @DeleteMapping("/wicOrders/{id}")
-    void deleteWicOrder(@PathVariable long id) {
+    void deleteWicOrder(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<WicOrder> responseEntity = readWicOrder(id);
         if(isResponseEntityValid(responseEntity)) {
             entityService.deleteById(WicOrder.class, id);
+        }
+        else {
+            throw new FailedToDeleteException(composeDeleteFailureMessage(WicOrder.class, id));
         }
     }
 
@@ -113,7 +117,11 @@ public class WicController {
 
     @GetMapping("/categories/{id}")
     ResponseEntity<Category> readCategory(@PathVariable long id) {
-        return new ResponseEntity<>(entityService.findById(Category.class, id), HttpStatus.OK);
+        Category category = entityService.findById(Category.class, id);
+        if(category != null) {
+            return new ResponseEntity<>(category, HttpStatus.OK);
+        }
+        throw new NotFoundException(URI.create("/categories/" + id));
     }
 
     @PostMapping("/category")
@@ -133,10 +141,13 @@ public class WicController {
     }
 
     @DeleteMapping("/categories/{id}")
-    void deleteCategory(@PathVariable long id) {
+    void deleteCategory(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<Category> responseEntity = readCategory(id);
         if(isResponseEntityValid(responseEntity)) {
             entityService.deleteById(Category.class, id);
+        }
+        else {
+            throw new FailedToDeleteException(composeDeleteFailureMessage(Category.class, id));
         }
     }
 
@@ -150,13 +161,16 @@ public class WicController {
 
     @GetMapping("/products/{id}")
     ResponseEntity<Product> readProduct(@PathVariable long id) {
-        return new ResponseEntity<>(entityService.findById(Product.class, id), HttpStatus.OK);
+        Product product = entityService.findById(Product.class, id);
+        if(product != null) {
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        }
+        throw new NotFoundException(URI.create("/products/" + id));
     }
 
-    @GetMapping("/products/categories/{id}")
-    ResponseEntity<List<Product>> readProductByCategoryId(@PathVariable long categoryId) {
-        Category category = entityService.findCategoryById(categoryId);
-        return new ResponseEntity<>(entityService.findProductsByCategory(category), HttpStatus.OK);
+    @GetMapping("/products/category/{id}")
+    ResponseEntity<List<Product>> readProductsByCatgoryId(@PathVariable long id) {
+        return new ResponseEntity<>(entityService.findProductsByCategoryId(id), HttpStatus.OK);
     }
 
     @PostMapping("/product")
@@ -176,15 +190,14 @@ public class WicController {
     }
 
     @DeleteMapping("/products/{id}")
-    void deleteProduct(@PathVariable long id) {
+    void deleteProduct(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<Product> responseEntity = readProduct(id);
         if(isResponseEntityValid(responseEntity)) {
             entityService.deleteById(Product.class, id);
         }
-    }
-
-    private <T> boolean isResponseEntityValid(ResponseEntity<T> responseEntity) {
-        return responseEntity != null && responseEntity.hasBody();
+        else {
+            throw new FailedToDeleteException(composeDeleteFailureMessage(Product.class, id));
+        }
     }
 
 
@@ -197,7 +210,11 @@ public class WicController {
 
     @GetMapping("/customers/{id}")
     ResponseEntity<Customer> readCustomer(@PathVariable long id) {
-        return new ResponseEntity<>(entityService.findById(Customer.class, id), HttpStatus.OK);
+        Customer customer = entityService.findById(Customer.class, id);
+        if(customer != null) {
+            return new ResponseEntity<>(customer, HttpStatus.OK);
+        }
+        throw new NotFoundException(URI.create("/customers/" + id));
     }
 
     @PostMapping("/customer")
@@ -217,10 +234,13 @@ public class WicController {
     }
 
     @DeleteMapping("/customers/{id}")
-    void deleteCustomer(@PathVariable long id) {
+    void deleteCustomer(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<Customer> responseEntity = readCustomer(id);
         if(isResponseEntityValid(responseEntity)) {
             entityService.deleteById(Customer.class, id);
+        }
+        else {
+            throw new FailedToDeleteException(composeDeleteFailureMessage(Customer.class, id));
         }
     }
 
@@ -234,7 +254,11 @@ public class WicController {
 
     @GetMapping("/deliveries/{id}")
     ResponseEntity<Delivery> readDelivery(@PathVariable long id) {
-        return new ResponseEntity<>(entityService.findById(Delivery.class, id), HttpStatus.OK);
+        Delivery delivery = entityService.findById(Delivery.class, id);
+        if(delivery != null) {
+            return new ResponseEntity<>(delivery, HttpStatus.OK);
+        }
+        throw new NotFoundException(URI.create("/deliveries/" + id));
     }
 
     @PostMapping("/delivery")
@@ -254,10 +278,13 @@ public class WicController {
     }
 
     @DeleteMapping("/deliveries/{id}")
-    void deleteDelivery(@PathVariable long id) {
+    void deleteDelivery(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<Delivery> responseEntity = readDelivery(id);
         if(isResponseEntityValid(responseEntity)) {
             entityService.deleteById(Delivery.class, id);
+        }
+        else {
+            throw new FailedToDeleteException(composeDeleteFailureMessage(Delivery.class, id));
         }
     }
 
@@ -271,7 +298,11 @@ public class WicController {
 
     @GetMapping("/missingProducts/{id}")
     ResponseEntity<MissingProduct> readMissingProduct(@PathVariable long id) {
-        return new ResponseEntity<>(entityService.findById(MissingProduct.class, id), HttpStatus.OK);
+        MissingProduct missingProduct = entityService.findById(MissingProduct.class, id);
+        if(missingProduct != null) {
+            return new ResponseEntity<>(missingProduct, HttpStatus.OK);
+        }
+        throw new NotFoundException(URI.create("/missingProducts/" + id));
     }
 
     @PostMapping("/missingProduct")
@@ -291,10 +322,13 @@ public class WicController {
     }
 
     @DeleteMapping("/missingProducts/{id}")
-    void deleteMissingProduct(@PathVariable long id) {
+    void deleteMissingProduct(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<MissingProduct> responseEntity = readMissingProduct(id);
         if(isResponseEntityValid(responseEntity)) {
             entityService.deleteById(MissingProduct.class, id);
+        }
+        else {
+            throw new FailedToDeleteException(composeDeleteFailureMessage(MissingProduct.class, id));
         }
     }
 
@@ -308,7 +342,11 @@ public class WicController {
 
     @GetMapping("/vouchers/{id}")
     ResponseEntity<Voucher> readVoucher(@PathVariable long id) {
-        return new ResponseEntity<>(entityService.findById(Voucher.class, id), HttpStatus.OK);
+        Voucher voucher = entityService.findById(Voucher.class, id);
+        if(voucher != null) {
+            return new ResponseEntity<>(voucher, HttpStatus.OK);
+        }
+        throw new NotFoundException(URI.create("/vouchers/" + id));
     }
 
     @PostMapping("/voucher")
@@ -328,15 +366,28 @@ public class WicController {
     }
 
     @DeleteMapping("/vouchers/{id}")
-    void deleteVoucher(@PathVariable long id) {
+    void deleteVoucher(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<Voucher> responseEntity = readVoucher(id);
         if(isResponseEntityValid(responseEntity)) {
             entityService.deleteById(Voucher.class, id);
+        }
+        else {
+            throw new FailedToDeleteException(composeDeleteFailureMessage(Voucher.class, id));
         }
     }
 
     private <T> ResponseEntity<T> getBadResponseEntity(T obj) {
         return new ResponseEntity<>(obj, HttpStatus.BAD_REQUEST);
     }
+
+    private <T> String composeDeleteFailureMessage(Class<T> clz, long id) {
+        return String.format("Failed to find %s by id:%d for deletion.", clz.getName(), id);
+
+    }
+
+    private <T> boolean isResponseEntityValid(ResponseEntity<T> responseEntity) {
+        return responseEntity != null && responseEntity.hasBody();
+    }
+
 
 }

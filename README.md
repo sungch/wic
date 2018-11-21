@@ -2,9 +2,12 @@
 TODO
 -----
 
-// TODO detect current time zone, adjust with incoming UTC data, and then trim the dates.
+// TODO 
+detect current time zone, adjust with incoming UTC data, and then trim the dates.
 private void normalizeVoucherEffectiveDates(Voucher voucher) {
-      
+
+// TODO
+Why I cannot delete wicOrder->delivery?      
 ------
 DEBUG:
 mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
@@ -13,6 +16,17 @@ mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp
 INFO
 ------
 
+/**
+ * For a certain restriction which I did not find out yet,
+ * I cannot delete middle object loike wicOrder which it is a child of voucher and a parent of delivery.
+ * WHY??
+ *
+ * I can delete customer->voucher->wicOrder->delivery.
+ * I can delete voucher->wicOrder->delivery.
+ * I can delete delivery.
+ *
+ */
+ 
 Add last update date inn wic_order for current state
 
 
