@@ -27,7 +27,7 @@ CREATE TABLE `category` (
   `image_url` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT==2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -191,8 +191,8 @@ DROP TABLE IF EXISTS `wic_order`;
 CREATE TABLE `wic_order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `is_emergency` varchar(1) DEFAULT '0',
-  `ordered_time` timestamp DEFAULT NULL,
-  `status_update_time` timestamp DEFAULT NULL,
+  `ordered_time` timestamp NULL DEFAULT NULL,
+  `status_update_time` timestamp NULL DEFAULT NULL,
   `product_and_quantity` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `voucher_id` bigint(20) DEFAULT '0',
@@ -219,4 +219,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-20 17:22:27
+-- Dump completed on 2018-11-21  8:44:55
