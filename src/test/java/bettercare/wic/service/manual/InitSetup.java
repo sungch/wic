@@ -55,7 +55,7 @@ public class InitSetup {
   protected String productImageName = "img001"; // to update product image name
   protected String categoryImageName = "img000"; // to update product image name
 
-  protected long startProductId = 1; // Use this to create order and product
+  protected long startProductId = 39; // Use this to create order and product
   protected int numOfProductsToCreatePerCategory = 2;
   protected long quantity = 10;
 

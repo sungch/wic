@@ -33,7 +33,7 @@ public class Delivery implements Serializable {
   private int storeId;
 
   @JsonBackReference
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "wicOrder_id")
   private WicOrder wicOrder;
 
@@ -59,11 +59,6 @@ public class Delivery implements Serializable {
 
   public void setDelivererName(String delivererName) {
     this.delivererName = delivererName;
-  }
-
-  @PreRemove
-  public void preRemoveDelivery() {
-    this.getWicOrder().preRemoveDelivery(this);
   }
 
   public Timestamp getDeliveryStartTime() {
@@ -94,7 +89,7 @@ public class Delivery implements Serializable {
     return wicOrder;
   }
 
-  public void setWicOOrder(WicOrder wicOOrderId) {
+  public void setWicOrder(WicOrder wicOOrderId) {
     this.wicOrder = wicOOrderId;
   }
 

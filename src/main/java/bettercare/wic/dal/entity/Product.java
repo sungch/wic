@@ -26,14 +26,12 @@ public class Product implements Serializable {
   @NotBlank
   private String description;
 
-  @NotBlank
   @Column(name = "image_url")
   private String imageUrl;
 
   @NotBlank
   private String name;
 
-  @NotBlank
   @Column(name = "is_handling")
   private boolean isHandling;
 
@@ -146,9 +144,4 @@ public class Product implements Serializable {
     return that.equals(me);
   }
 
-  @PreRemove
-  public void preRemoveCategory() {
-    this.getCategory().preRemoveProduct(this); // ask parent to remove me
-    this.setCategory(null);
-  }
 }

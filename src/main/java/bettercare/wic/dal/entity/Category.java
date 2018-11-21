@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,7 +27,7 @@ public class  Category implements Serializable {
 
 	@OneToMany(mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonManagedReference
-	private List<Product> products;
+	private List<Product> products = new ArrayList<>();
 
 	public Category() {
 	}
@@ -60,23 +61,16 @@ public class  Category implements Serializable {
 	}
 
 	public void setProducts(List<Product> products) {
-		this.products = products;
+		this.products.clear();
+		if(products != null && !products.isEmpty()) {
+			this.products.addAll(products);
+		}
 	}
 
 	public Product addProduct(Product product) {
-		getProducts().add(product);
+		this.getProducts().add(product);
 		product.setCategory(this);
 		return product;
-	}
-
-	public void preRemoveProduct(Product product) { // upon request from child, remove trhe child.
-		getProducts().remove(product);
-		product.setCategory(null);
-	}
-
-	@PreRemove
-	private void preRemoveProducts() {
-		this.getProducts().forEach(this::preRemoveProduct);
 	}
 
 	@Override

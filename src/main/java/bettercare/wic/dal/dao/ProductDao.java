@@ -12,7 +12,7 @@ import java.util.List;
 @Transactional
 public interface ProductDao extends JpaRepository<Product, Long> {
 
-  public List<Product> findByIsHandling(String isHandling);
+  public List<Product> findByIsHandling(boolean isHandling);
 
   public List<Product> findByCategory(Category category);
 

@@ -38,7 +38,7 @@ public class WicOrder implements Serializable {
 
 	private String status;
 
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER) // EAGER to pass unit test
 	@JsonBackReference
 	@JoinColumn(name = "voucher_id")
 	private Voucher voucher;
@@ -99,28 +99,12 @@ public class WicOrder implements Serializable {
 		this.voucher = voucher;
 	}
 
-	@PreRemove
-	public void disconnectWicOrder() {
-		if(this.getVoucher() != null) {
-			this.getVoucher().setWicOrder(null);
-			this.setVoucher(null);
-		}
-		preRemoveDelivery(this.getDelivery());
-		this.setDelivery(null);
-	}
-
 	public Delivery getDelivery() {
 		return delivery;
 	}
 
 	public void setDelivery(Delivery delivery) {
 		this.delivery = delivery;
-	}
-
-	public void preRemoveDelivery(Delivery delivery) {
-		if(delivery != null) {
-			delivery.setWicOOrder(null);
-		}
 	}
 
 	public boolean isEmergency() {

@@ -4,6 +4,7 @@ import bettercare.wic.model.CustomerModel;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -34,8 +35,8 @@ public class Customer implements Serializable {
     @Column(name = "wic_number")
     private String wicNumber;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "customer", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Voucher> vouchers;
 
 
@@ -94,26 +95,21 @@ public class Customer implements Serializable {
     }
 
     public List<Voucher> getVouchers() {
-        return this.vouchers;
+        return this.vouchers == null ? new ArrayList<>() : this.vouchers;
     }
 
     public void setVouchers(List<Voucher> vouchers) {
-        this.vouchers = vouchers;
+        this.getVouchers().clear();
+        if(vouchers != null && !vouchers.isEmpty()) {
+            this.getVouchers().addAll(vouchers);
+        }
+
     }
 
     public Voucher addVoucher(Voucher voucher) {
-        getVouchers().add(voucher);
+        this.getVouchers().add(voucher);
         voucher.setCustomer(this);
         return voucher;
-    }
-
-    public void preRemoveVoucher(Voucher voucher) {
-        getVouchers().remove(voucher);
-    }
-
-    @PreRemove
-    public void preRemoveVoucher() {
-        this.getVouchers().forEach(this::preRemoveVoucher);
     }
 
     @Override

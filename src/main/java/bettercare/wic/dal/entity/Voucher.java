@@ -39,9 +39,13 @@ public class Voucher implements Serializable {
     private String voucherNumber;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @JsonManagedReference
+    @OneToOne(mappedBy = "voucher", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private WicOrder wicOrder;
 
     public Voucher(Timestamp startDate, Timestamp expirationDate, String voucherNumber, Customer customer) {
         this.voucherNumber = voucherNumber;
@@ -60,11 +64,6 @@ public class Voucher implements Serializable {
         this.expirationDate = voucherModel.getExpirationDate();
         this.customer = customer;
     }
-
-    @JsonManagedReference
-    @OneToOne(mappedBy = "voucher", cascade = CascadeType.ALL, orphanRemoval = true)
-    private WicOrder wicOrder;
-
 
     public Voucher() {
     }
@@ -116,15 +115,6 @@ public class Voucher implements Serializable {
 	public void setWicOrder(WicOrder wicOrder) {
 		this.wicOrder = wicOrder;
 	}
-
-	@PreRemove
-    public void disConnctVoucher() {
-        this.getWicOrder().disconnectWicOrder();
-        this.setWicOrder(null);
-
-        this.getCustomer().preRemoveVoucher(this);
-        this.setCustomer(null);
-    }
 
     @Override
     public String toString() {

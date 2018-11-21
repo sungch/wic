@@ -58,7 +58,7 @@ public class EntityService {
     return wicTransactionManager.findWicOrderByStatus(status);
   }
 
-  public List findProductByIsHandling(String isHandling) {
+  public List findProductByIsHandling(boolean isHandling) {
     return wicTransactionManager.findProductByIsHandling(isHandling);
   }
 

@@ -63,7 +63,7 @@ public class WicTransactionManager {
     return productDao.findByCategoryAndNameAndIsHandling(category, productName, isHandling);
   }
 
-  public List<Product> findProductByIsHandling(String isHandling) {
+  public List<Product> findProductByIsHandling(boolean isHandling) {
     return productDao.findByIsHandling(isHandling);
   }
 
