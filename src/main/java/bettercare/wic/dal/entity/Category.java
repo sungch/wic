@@ -61,16 +61,17 @@ public class  Category implements Serializable {
 	}
 
 	public void setProducts(List<Product> products) {
-		this.products.clear();
-		if(products != null && !products.isEmpty()) {
-			this.products.addAll(products);
+		this.getProducts().clear();
+		if(!products.isEmpty()) {
+			this.getProducts().addAll(products);
 		}
 	}
 
-	public Product addProduct(Product product) {
-		this.getProducts().add(product);
-		product.setCategory(this);
-		return product;
+	public void addProduct(Product product) {
+		if(product != null) {
+			this.getProducts().add(product);
+			product.setCategory(this);
+		}
 	}
 
 	@Override

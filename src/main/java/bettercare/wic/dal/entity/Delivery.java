@@ -36,7 +36,7 @@ public class Delivery implements Serializable {
   private int storeId;
 
   @JsonBackReference
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "wicOrder_id")
   private WicOrder wicOrder;
 

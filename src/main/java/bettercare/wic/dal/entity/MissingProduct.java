@@ -1,14 +1,11 @@
 package bettercare.wic.dal.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
-
-/**
- * The persistent class for the missing_product database table.
- * 
- */
 @Entity
 @Table(name="missing_product")
 @NamedQuery(name="MissingProduct.findAll", query="SELECT m FROM MissingProduct m")
@@ -18,20 +15,23 @@ public class MissingProduct implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
-
 	private int quantity;
-
-	@Column(name = "wicOrder_id")
-	private long wicOrderId;
 
 	@Column(name = "product_id")
 	private long productId;
 
+	@JsonBackReference
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "wicOrder_id")
+	private WicOrder wicOrder;
+
+
+
 	public MissingProduct() {
 	}
 
-	public MissingProduct(long wicOrderId, long productId, int quantity) {
-		this.wicOrderId = wicOrderId;
+	public MissingProduct(WicOrder wicOrder, long productId, int quantity) {
+		this.wicOrder = wicOrder;
 		this.productId = productId;
 		this.quantity = quantity;
 	}
@@ -52,12 +52,12 @@ public class MissingProduct implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public long getWicOrderId() {
-		return this.wicOrderId;
+	public WicOrder getWicOrder() {
+		return this.wicOrder;
 	}
 
-	public void setWicOrder(long wicOrderId) {
-		this.wicOrderId = wicOrderId;
+	public void setWicOrder(WicOrder wicOrder) {
+		this.wicOrder = wicOrder;
 	}
 
 	public long getProductId() {
@@ -70,7 +70,7 @@ public class MissingProduct implements Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("id:%s missingProductId:%s quantity:%s", this.getId() + this.getQuantity());
+		return String.format("missingProductId:%s quantity:%s", this.getId(), this.getQuantity());
 	}
 
 	@Override

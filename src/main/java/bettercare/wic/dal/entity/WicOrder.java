@@ -8,6 +8,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
@@ -60,6 +62,9 @@ public class WicOrder implements Serializable {
 	@OneToOne(mappedBy = "wicOrder", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Delivery delivery;
 
+	@JsonManagedReference
+	@OneToMany(mappedBy = "wicOrder", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<MissingProduct> missingProducts = new ArrayList<>();
 
 	public WicOrder(boolean isEmergency, String products, String status, Voucher voucher) {
 		this.isEmergency = isEmergency;
@@ -134,6 +139,24 @@ public class WicOrder implements Serializable {
 
 	public void setStatusUpdateTime(Timestamp statusUpdateTime) {
 		this.statusUpdateTime = statusUpdateTime;
+	}
+
+	public List<MissingProduct> getMissingProducts() {
+		return missingProducts;
+	}
+
+	public void setMissingProducts(List<MissingProduct> missingProducts) {
+		this.getMissingProducts().clear();
+		if(missingProducts != null && !missingProducts.isEmpty()) {
+			this.getMissingProducts().addAll(missingProducts);
+		}
+	}
+
+	public void addMissingProducts(MissingProduct missingProduct) {
+		if(missingProduct != null) {
+			missingProduct.setWicOrder(this);
+			this.missingProducts.add(missingProduct);
+		}
 	}
 
 	@Override

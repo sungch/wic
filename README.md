@@ -2,12 +2,9 @@
 TODO
 -----
 
-// TODO 
-detect current time zone, adjust with incoming UTC data, and then trim the dates.
-private void normalizeVoucherEffectiveDates(Voucher voucher) {
+1. detect current time zone, adjust with incoming UTC data, and then trim the dates. private void normalizeVoucherEffectiveDates(Voucher voucher) {
+2. I can delete head or tail in 1:m relationship, but when deleting at middle layer object like wicOrder in relationship, @PreRemove method seems needed to cut relationship with parent and grand-parent.
 
-// TODO
-Why I cannot delete wicOrder->delivery?      
 ------
 DEBUG:
 mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
@@ -15,6 +12,8 @@ mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp
 ------
 INFO
 ------
+
+When one-to-many, parents fetch lazy but child fetch eager.
 
 /**
  * For a certain restriction which I did not find out yet,

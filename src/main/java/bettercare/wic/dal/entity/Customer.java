@@ -37,7 +37,7 @@ public class Customer implements Serializable {
 
     @OneToMany(mappedBy = "customer", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<Voucher> vouchers;
+    private List<Voucher> vouchers = new ArrayList<>();
 
 
     public Customer(String wicNumber, String name, String phone, String address) {
@@ -95,7 +95,7 @@ public class Customer implements Serializable {
     }
 
     public List<Voucher> getVouchers() {
-        return this.vouchers == null ? new ArrayList<>() : this.vouchers;
+        return this.vouchers;
     }
 
     public void setVouchers(List<Voucher> vouchers) {
@@ -106,10 +106,11 @@ public class Customer implements Serializable {
 
     }
 
-    public Voucher addVoucher(Voucher voucher) {
-        this.getVouchers().add(voucher);
-        voucher.setCustomer(this);
-        return voucher;
+    public void addVoucher(Voucher voucher) {
+        if(voucher != null) {
+            this.getVouchers().add(voucher);
+            voucher.setCustomer(this);
+        }
     }
 
     @Override
