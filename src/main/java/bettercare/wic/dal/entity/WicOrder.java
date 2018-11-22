@@ -159,6 +159,24 @@ public class WicOrder implements Serializable {
 		}
 	}
 
+	/**
+	 * I can delete top or tail.
+	 * But to remove middle, I need to clean parent in this method and
+	 * The purpose of this method is to delete this from voucher and delete customer from voucher.
+	 *
+	 * This works. but make sure there is no side effect.
+	 */
+	@PreRemove
+	public void preRemove() {
+		this.setVoucher(null);
+		if(this.getDelivery() != null) {
+			this.setDelivery(null);
+		}
+		if(this.getMissingProducts() != null && !this.getMissingProducts().isEmpty()) {
+			this.getMissingProducts().clear();
+		}
+	}
+
 	@Override
 	public String toString() {
 		return String.format("id:%s isEmergency:%s orderTime:%s orderContents:%s status:%s customerId:%s voucherId:%s",

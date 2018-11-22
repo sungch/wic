@@ -3,7 +3,8 @@ TODO
 -----
 
 1. detect current time zone, adjust with incoming UTC data, and then trim the dates. private void normalizeVoucherEffectiveDates(Voucher voucher) {
-2. I can delete head or tail in 1:m relationship, but when deleting at middle layer object like wicOrder in relationship, @PreRemove method seems needed to cut relationship with parent and grand-parent.
+2. I can delete head or tail in 1:m relationship, but when deleting at middle layer object like wicOrder in relationship,
+   @PreRemove method seems needed to cut relationship with parent and grand-parent.
 
 ------
 DEBUG:
