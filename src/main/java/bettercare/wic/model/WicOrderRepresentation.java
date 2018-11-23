@@ -16,7 +16,7 @@ public class WicOrderRepresentation implements Serializable {
      */
     private static final long serialVersionUID = -1437982395144640698L;
     private long orderId;
-    private boolean isEmergency = false;
+    private boolean hasMissingProduct = false;
 
     private String status;
 
@@ -31,10 +31,10 @@ public class WicOrderRepresentation implements Serializable {
 
     public WicOrderRepresentation() {}
 
-    public WicOrderRepresentation(long orderId, boolean isEmergency, String products, String status,
+    public WicOrderRepresentation(long orderId, boolean hasMissingProduct, String products, String status,
                                   CustomerModel customerModel, VoucherModel voucherModel) {
         this.orderId = orderId;
-        this.isEmergency = isEmergency;
+        this.hasMissingProduct = hasMissingProduct;
         this.products = products;
         this.status = status;
         this.customerModel = customerModel;
@@ -47,14 +47,6 @@ public class WicOrderRepresentation implements Serializable {
 
     public void setOrderId(long orderId) {
         this.orderId = orderId;
-    }
-
-    public boolean isEmergency() {
-        return isEmergency;
-    }
-
-    public void setEmergency(boolean emergency) {
-        isEmergency = emergency;
     }
 
     public String getProducts() {
@@ -89,8 +81,16 @@ public class WicOrderRepresentation implements Serializable {
         this.voucherModel = voucherModel;
     }
 
+    public boolean isHasMissingProduct() {
+        return hasMissingProduct;
+    }
+
+    public void setHasMissingProduct(boolean hasMissingProduct) {
+        this.hasMissingProduct = hasMissingProduct;
+    }
+
     @Override
     public String toString() {
-        return products + isEmergency + status + customerModel.toString() + voucherModel.toString();
+        return products + hasMissingProduct + status + customerModel.toString() + voucherModel.toString();
     }
 }

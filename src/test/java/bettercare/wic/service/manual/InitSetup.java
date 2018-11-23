@@ -11,6 +11,7 @@ import bettercare.wic.dal.WicLogger;
 import bettercare.wic.service.EntityService;
 import bettercare.wic.service.ProductsParser;
 
+import bettercare.wic.service.WicTimeUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = WicApplication.class)
 public class InitSetup {
@@ -33,6 +35,7 @@ public class InitSetup {
   @Resource protected WicLogger wicLogger;
   @Resource protected SaveWicOrderService saveWicOrderService;
   @Resource protected ProductsParser productsParser;
+  @Resource private WicTimeUtils wicTimeUtils;
 
   // Use this property ONLY to create categories.
   protected static final String[] categoryNames = {"Infant Cereal", "Baby Food", "Baby Food Meat", "Infant Formula",

@@ -2,17 +2,28 @@
 TODO
 -----
 
-1. detect current time zone, adjust with incoming UTC data, and then trim the dates. private void normalizeVoucherEffectiveDates(Voucher voucher) {
-2. I can delete head or tail in 1:m relationship, but when deleting at middle layer object like wicOrder in relationship,
-   @PreRemove method seems needed to cut relationship with parent and grand-parent.
-
 ------
 DEBUG:
 mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
 
 ------
-INFO
+Learned
 ------
+
+Convertion to UTC in the code is dropped. Instead, added &useTimezone=true&serverTimezone=UTC in jdbc connection url.
+Timestamp startTs = wicTimeUtils.toUtcTime(voucher.getStartDate(), TimeZone.getDefault());
+Timestamp expireTs =  wicTimeUtils.toUtcTime(voucher.getExpirationDate(), TimeZone.getDefault());
+
+detect current time zone, adjust with incoming UTC data, and then trim the dates. private void normalizeVoucherEffectiveDates(Voucher voucher) {
+Timestamp saving: Save into database in UTC; Convert to local timezone in front-end java script.
+
+1. Voucher start/expiration time: save in UTC, front-end convert to local timezone.
+2. Delivery startTime, updateTime: saved in UTC by annotation. front-end convert to local timezone.
+
+3. WicOrder startTime, completionTime: Done as annotation level becasue this is automatic save -- do not worry.
+
+I can delete head or tail in 1:m relationship, but when deleting at middle layer object like wicOrder in relationship,
+   @PreRemove method seems needed to cut relationship with parent and grand-parent.
 
 When one-to-many, parents fetch lazy but child fetch eager.
 

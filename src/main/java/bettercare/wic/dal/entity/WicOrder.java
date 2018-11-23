@@ -13,17 +13,6 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
-/**
- * For a certain restriction which I did not find out yet,
- * I cannot delete middle object loike wicOrder which it is a child of voucher and a parent of delivery.
- * WHY??
- *
- * I can delete customer->voucher->wicOrder->delivery.
- * I can delete voucher->wicOrder->delivery.
- * I can delete delivery.
- *
- */
-
 @Entity
 @Table(name="wic_order")
 @NamedQuery(name="WicOrder.findAll", query="SELECT o FROM WicOrder o")
@@ -34,18 +23,18 @@ public class WicOrder implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 
-	@Column(name="is_emergency")
-	private boolean isEmergency;
+	@Column(name="has_missing_product")
+	private boolean hasMissingProduct;
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")//, timezone = "MST") When not set, UTC is used.
-	@CreationTimestamp
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@CreationTimestamp()
 	@Column(name="ordered_time")
 	private Timestamp orderedTime;
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")//, timezone = "MST") When not set, UTC is used.
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@UpdateTimestamp
-	@Column(name="status_update_time")
-	private Timestamp statusUpdateTime;
+	@Column(name="update_time")
+	private Timestamp updateTime;
 
 	@NotBlank
 	@Column(name="product_and_quantity")
@@ -66,11 +55,11 @@ public class WicOrder implements Serializable {
 	@OneToMany(mappedBy = "wicOrder", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<MissingProduct> missingProducts = new ArrayList<>();
 
-	public WicOrder(boolean isEmergency, String products, String status, Voucher voucher) {
-		this.isEmergency = isEmergency;
+	public WicOrder(boolean hasMissingProduct, String products, String status, Voucher voucher) {
+		this.hasMissingProduct = hasMissingProduct;
 		this.products = products;
 		this.status = status;
-		this.isEmergency = isEmergency;
+		this.hasMissingProduct = hasMissingProduct;
 		this.voucher = voucher;
 	}
 
@@ -125,20 +114,20 @@ public class WicOrder implements Serializable {
 		this.delivery = delivery;
 	}
 
-	public boolean isEmergency() {
-		return isEmergency;
+    public boolean isHasMissingProduct() {
+        return !this.getMissingProducts().isEmpty();
+    }
+
+    public void setHasMissingProduct(boolean hasMissingProduct) {
+        this.hasMissingProduct = hasMissingProduct;
+    }
+
+    public Timestamp getUpdateTime() {
+		return updateTime;
 	}
 
-	public void setEmergency(boolean emergency) {
-		isEmergency = emergency;
-	}
-
-	public Timestamp getStatusUpdateTime() {
-		return statusUpdateTime;
-	}
-
-	public void setStatusUpdateTime(Timestamp statusUpdateTime) {
-		this.statusUpdateTime = statusUpdateTime;
+	public void setUpdateTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
 	}
 
 	public List<MissingProduct> getMissingProducts() {
@@ -150,6 +139,7 @@ public class WicOrder implements Serializable {
 		if(missingProducts != null && !missingProducts.isEmpty()) {
 			this.getMissingProducts().addAll(missingProducts);
 		}
+		this.setHasMissingProduct(this.getMissingProducts() != null && !this.getMissingProducts().isEmpty());
 	}
 
 	public void addMissingProducts(MissingProduct missingProduct) {
@@ -157,6 +147,7 @@ public class WicOrder implements Serializable {
 			missingProduct.setWicOrder(this);
 			this.missingProducts.add(missingProduct);
 		}
+        this.setHasMissingProduct(this.getMissingProducts() != null && !this.getMissingProducts().isEmpty());
 	}
 
 	/**
@@ -179,8 +170,8 @@ public class WicOrder implements Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("id:%s isEmergency:%s orderTime:%s orderContents:%s status:%s customerId:%s voucherId:%s",
-							 this.getId(), this.isEmergency(),
+		return String.format("id:%s hasMissingProduct:%s orderTime:%s orderContents:%s status:%s customerId:%s voucherId:%s",
+							 this.getId(), this.isHasMissingProduct(),
 							 this.getOrderedTime(), this.getProducts(), this.getStatus(),
 							 this.getVoucher().getCustomer().toString(), this.getVoucher().toString());
 	}
@@ -188,7 +179,7 @@ public class WicOrder implements Serializable {
 	@Override
 	public int hashCode() {
 		return (int) (Long.valueOf(this.getId()).hashCode() +
-						(this.isEmergency() ? 1 : 0) +
+						(this.isHasMissingProduct() ? 1 : 0) +
 						this.getOrderedTime().getTime() +
 						getStringHash(getProducts()) +
 						getStringHash(this.getStatus()));

@@ -133,7 +133,7 @@ CREATE TABLE `product` (
   `barcode` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `image_url` varchar(255) DEFAULT NULL,
-  `is_handling` bit(1) DEFAULT NULL,
+  `is_handling` bit(1) DEFAULT true,
   `name` varchar(255) DEFAULT NULL,
   `category_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -188,11 +188,11 @@ DROP TABLE IF EXISTS `wic_order`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `wic_order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `is_emergency` bit(1) DEFAULT NULL,
+  `has_missing_product` bit(1) DEFAULT false,
   `ordered_time` datetime DEFAULT NULL,
   `product_and_quantity` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
-  `status_update_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
   `voucher_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKmid1t382gd9qsqdh9rivboocc` (`voucher_id`)

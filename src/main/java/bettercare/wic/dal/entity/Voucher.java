@@ -3,6 +3,7 @@ package bettercare.wic.dal.entity;
 import bettercare.wic.model.CustomerModel;
 import bettercare.wic.model.VoucherModel;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;

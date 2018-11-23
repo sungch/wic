@@ -5,7 +5,7 @@ import bettercare.wic.dal.em.WicTransactionManager;
 import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.EntityService;
 import bettercare.wic.service.SaveWicOrderService;
-import bettercare.wic.service.TimeTrimmer;
+import bettercare.wic.service.WicTimeUtils;
 import bettercare.wic.dal.WicLogger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,8 +20,8 @@ public class ServiceConfiguration {
   }
 
   @Bean
-  public TimeTrimmer timeTrimmer() {
-    return new TimeTrimmer();
+  public WicTimeUtils wicTimeUtils() {
+    return new WicTimeUtils();
   }
 
   @Bean

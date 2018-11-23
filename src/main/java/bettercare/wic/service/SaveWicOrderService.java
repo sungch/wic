@@ -19,7 +19,7 @@ public class SaveWicOrderService {
     @Resource
     private WicLogger wicLogger;
     @Resource
-    private TimeTrimmer timeTrimmer;
+    private WicTimeUtils wicTimeUtils;
 
     @Override
     public int hashCode() {
@@ -34,19 +34,18 @@ public class SaveWicOrderService {
         Customer customer = persistCustomerIfNew(new Customer(model.getCustomerModel()));
         Voucher transientVoucher = new Voucher(model.getVoucherModel(), customer);
         if (isNewVoucher(transientVoucher)) {
-            normalizeVoucherEffectiveDates(transientVoucher);
+            truncateTime(transientVoucher);
             Voucher voucher = entityService.saveOrUpdate(Voucher.class, transientVoucher);
-            WicOrder wicOrder = saveWicOrderData(model.getProducts(), model.isEmergency(), voucher);
+            WicOrder wicOrder = saveWicOrderData(model.getProducts(), model.isHasMissingProduct(), voucher);
             wicLogger.info("Your order number is " + wicOrder.getId(), Customer.class);
             return wicOrder;
         }
         throw new InvalidVoucherException("There is a problem with the voucher:" + model.getVoucherModel().toString());
     }
 
-    // TODO detect current time zone, adjust with incoming UTC data, and then trim the dates.
-    private void normalizeVoucherEffectiveDates(Voucher voucher) {
-        voucher.setStartDate(timeTrimmer.adjustStartingTime(voucher.getStartDate()));
-        voucher.setExpirationDate(timeTrimmer.adjustExpiringTime(voucher.getExpirationDate()));
+    private void truncateTime(Voucher voucher) {
+        voucher.setStartDate(wicTimeUtils.truncateHours(voucher.getStartDate()));
+        voucher.setExpirationDate(wicTimeUtils.addFullHours(voucher.getExpirationDate()));
     }
 
     private boolean isNewVoucher(Voucher voucher) {
@@ -65,8 +64,8 @@ public class SaveWicOrderService {
         return list.get(0);
     }
 
-    private WicOrder saveWicOrderData(String products, boolean isEmergency, Voucher voucher) {
-        WicOrder wicOrder = new WicOrder(isEmergency, products, OrderStatus.ORDER_RECEIVED.name(), voucher);
+    private WicOrder saveWicOrderData(String products, boolean hasMissingProduct, Voucher voucher) {
+        WicOrder wicOrder = new WicOrder(hasMissingProduct, products, OrderStatus.ORDER_RECEIVED.name(), voucher);
         wicLogger.info("Save or update a wicOrder info:" + wicOrder.toString(), WicOrder.class);
         return entityService.saveOrUpdate(WicOrder.class, wicOrder);
     }

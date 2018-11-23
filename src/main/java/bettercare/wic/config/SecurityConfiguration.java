@@ -1,13 +1,5 @@
 package bettercare.wic.config;
 
-import bettercare.wic.dal.WicLogger;
-import bettercare.wic.dal.em.WicEntityManager;
-import bettercare.wic.dal.em.WicTransactionManager;
-import bettercare.wic.model.WicOrderRepresentation;
-import bettercare.wic.service.EntityService;
-import bettercare.wic.service.SaveWicOrderService;
-import bettercare.wic.service.TimeTrimmer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
