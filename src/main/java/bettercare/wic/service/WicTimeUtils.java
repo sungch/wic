@@ -41,5 +41,4 @@ public class WicTimeUtils {
   public Timestamp toLocalTime(Timestamp ts) {
     return toLocalTime(ts, TimeZone.getDefault());
   }
-
 }
