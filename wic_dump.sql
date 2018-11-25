@@ -77,8 +77,8 @@ DROP TABLE IF EXISTS `delivery`;
 CREATE TABLE `delivery` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `deliverer_name` varchar(255) DEFAULT NULL,
-  `delivery_completion_time` datetime DEFAULT NULL,
-  `delivery_start_time` datetime DEFAULT NULL,
+  `delivery_completion_time` TIMESTAMP DEFAULT NULL,
+  `delivery_start_time` TIMESTAMP DEFAULT NULL,
   `store_id` int(11) DEFAULT NULL,
   `wicOrder_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -160,8 +160,8 @@ DROP TABLE IF EXISTS `voucher`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `voucher` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `expiration_date` datetime DEFAULT NULL,
-  `start_date` datetime DEFAULT NULL,
+  `expiration_date` TIMESTAMP DEFAULT NULL,
+  `start_date` TIMESTAMP DEFAULT NULL,
   `voucher_number` varchar(255) DEFAULT NULL,
   `customer_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -188,11 +188,10 @@ DROP TABLE IF EXISTS `wic_order`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `wic_order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `has_missing_product` bit(1) DEFAULT false,
-  `ordered_time` datetime DEFAULT NULL,
+  `ordered_time` TIMESTAMP DEFAULT NULL,
   `product_and_quantity` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
-  `update_time` datetime DEFAULT NULL,
+  `update_time` TIMESTAMP DEFAULT NULL,
   `voucher_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKmid1t382gd9qsqdh9rivboocc` (`voucher_id`)

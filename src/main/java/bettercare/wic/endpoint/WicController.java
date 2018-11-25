@@ -18,6 +18,8 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
+// NOTE:
+// Client must send date value in UTC time. JVM assume that incoming date is in UTC format.
 
 @Validated
 @RestController

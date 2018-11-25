@@ -24,10 +24,18 @@ public class Delivery implements Serializable {
   @Column(name = "deliverer_name")
   private String delivererName;
 
+  /**
+   * At run time, Time in this property is assumed to be an UTC time.
+   * Make sur htat client sends date value in UTC.
+   */
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @Column(name = "delivery_start_time")
   private Timestamp deliveryStartTime;
 
+  /**
+   * At run time, Time in this property is assumed to be an UTC time.
+   * Make sur htat client sends date value in UTC.
+   */
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @Column(name = "delivery_completion_time")
   private Timestamp deliveryCompletionTime;

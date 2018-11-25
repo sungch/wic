@@ -6,6 +6,7 @@ import bettercare.wic.dal.entity.Voucher;
 import bettercare.wic.dal.entity.WicOrder;
 import bettercare.wic.exceptions.InvalidVoucherException;
 import bettercare.wic.model.WicOrderRepresentation;
+import bettercare.wic.utils.WicTimeUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -36,7 +37,7 @@ public class SaveWicOrderService {
         if (isNewVoucher(transientVoucher)) {
             truncateTime(transientVoucher);
             Voucher voucher = entityService.saveOrUpdate(Voucher.class, transientVoucher);
-            WicOrder wicOrder = saveWicOrderData(model.getProducts(), model.isHasMissingProduct(), voucher);
+            WicOrder wicOrder = saveWicOrderData(model.getProducts(), voucher);
             wicLogger.info("Your order number is " + wicOrder.getId(), Customer.class);
             return wicOrder;
         }
@@ -64,8 +65,8 @@ public class SaveWicOrderService {
         return list.get(0);
     }
 
-    private WicOrder saveWicOrderData(String products, boolean hasMissingProduct, Voucher voucher) {
-        WicOrder wicOrder = new WicOrder(hasMissingProduct, products, OrderStatus.ORDER_RECEIVED.name(), voucher);
+    private WicOrder saveWicOrderData(String products, Voucher voucher) {
+        WicOrder wicOrder = new WicOrder(products, OrderStatus.ORDER_RECEIVED.name(), voucher);
         wicLogger.info("Save or update a wicOrder info:" + wicOrder.toString(), WicOrder.class);
         return entityService.saveOrUpdate(WicOrder.class, wicOrder);
     }

@@ -23,9 +23,6 @@ public class WicOrder implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 
-	@Column(name="has_missing_product")
-	private boolean hasMissingProduct;
-
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@CreationTimestamp()
 	@Column(name="ordered_time")
@@ -55,11 +52,9 @@ public class WicOrder implements Serializable {
 	@OneToMany(mappedBy = "wicOrder", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<MissingProduct> missingProducts = new ArrayList<>();
 
-	public WicOrder(boolean hasMissingProduct, String products, String status, Voucher voucher) {
-		this.hasMissingProduct = hasMissingProduct;
+	public WicOrder(String products, String status, Voucher voucher) {
 		this.products = products;
 		this.status = status;
-		this.hasMissingProduct = hasMissingProduct;
 		this.voucher = voucher;
 	}
 
@@ -114,14 +109,6 @@ public class WicOrder implements Serializable {
 		this.delivery = delivery;
 	}
 
-    public boolean isHasMissingProduct() {
-        return !this.getMissingProducts().isEmpty();
-    }
-
-    public void setHasMissingProduct(boolean hasMissingProduct) {
-        this.hasMissingProduct = hasMissingProduct;
-    }
-
     public Timestamp getUpdateTime() {
 		return updateTime;
 	}
@@ -139,7 +126,6 @@ public class WicOrder implements Serializable {
 		if(missingProducts != null && !missingProducts.isEmpty()) {
 			this.getMissingProducts().addAll(missingProducts);
 		}
-		this.setHasMissingProduct(this.getMissingProducts() != null && !this.getMissingProducts().isEmpty());
 	}
 
 	public void addMissingProducts(MissingProduct missingProduct) {
@@ -147,16 +133,8 @@ public class WicOrder implements Serializable {
 			missingProduct.setWicOrder(this);
 			this.missingProducts.add(missingProduct);
 		}
-        this.setHasMissingProduct(this.getMissingProducts() != null && !this.getMissingProducts().isEmpty());
 	}
 
-	/**
-	 * I can delete top or tail.
-	 * But to remove middle, I need to clean parent in this method and
-	 * The purpose of this method is to delete this from voucher and delete customer from voucher.
-	 *
-	 * This works. but make sure there is no side effect.
-	 */
 	@PreRemove
 	public void preRemove() {
 		this.setVoucher(null);
@@ -168,18 +146,20 @@ public class WicOrder implements Serializable {
 		}
 	}
 
+	public boolean hasMissingProducts() {
+		return !this.getMissingProducts().isEmpty();
+	}
+
 	@Override
 	public String toString() {
 		return String.format("id:%s hasMissingProduct:%s orderTime:%s orderContents:%s status:%s customerId:%s voucherId:%s",
-							 this.getId(), this.isHasMissingProduct(),
-							 this.getOrderedTime(), this.getProducts(), this.getStatus(),
+							 this.getId(), this.hasMissingProducts(), this.getOrderedTime(), this.getProducts(), this.getStatus(),
 							 this.getVoucher().getCustomer().toString(), this.getVoucher().toString());
 	}
 
 	@Override
 	public int hashCode() {
 		return (int) (Long.valueOf(this.getId()).hashCode() +
-						(this.isHasMissingProduct() ? 1 : 0) +
 						this.getOrderedTime().getTime() +
 						getStringHash(getProducts()) +
 						getStringHash(this.getStatus()));

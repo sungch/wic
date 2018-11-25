@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
@@ -27,11 +28,21 @@ public class Voucher implements Serializable {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
 
+    /**
+     * At run time, Time in this property is assumed to be an UTC time.
+     * Make sur htat client sends date value in UTC.
+     */
     @Future
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "expiration_date")
     private Timestamp expirationDate;
 
+    /**
+     * At run time, Time in this property is assumed to be an UTC time.
+     * Make sur htat client sends date value in UTC.
+     */
     @Past
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "start_date")
     private Timestamp startDate;
 
@@ -86,6 +97,7 @@ public class Voucher implements Serializable {
     }
 
     public Timestamp getStartDate() {
+        System.out.println(this.startDate);
         return this.startDate;
     }
 

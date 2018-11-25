@@ -2,6 +2,8 @@
 TODO
 -----
 
+Handle time in wicOrder, voucher, delivery
+
 ------
 DEBUG:
 mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
@@ -10,36 +12,32 @@ mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp
 Learned
 ------
 
-Convertion to UTC in the code is dropped. Instead, added &useTimezone=true&serverTimezone=UTC in jdbc connection url.
-Timestamp startTs = wicTimeUtils.toUtcTime(voucher.getStartDate(), TimeZone.getDefault());
-Timestamp expireTs =  wicTimeUtils.toUtcTime(voucher.getExpirationDate(), TimeZone.getDefault());
+Use Timestamp if need to store in UTC but present in local Tz because
+Timestamp is just a second cound and has no concept of TImezone.
 
-detect current time zone, adjust with incoming UTC data, and then trim the dates. private void normalizeVoucherEffectiveDates(Voucher voucher) {
-Timestamp saving: Save into database in UTC; Convert to local timezone in front-end java script.
+TimeZone in MYSQL: Data Base time zone is set by jdbc connection URL or at startup.
 
-1. Voucher start/expiration time: save in UTC, front-end convert to local timezone.
-2. Delivery startTime, updateTime: saved in UTC by annotation. front-end convert to local timezone.
+SYSTEM TIME ZONE:
+set the system time zone for MySQL Server at startup with the --timezone=timezone_name option to mysqld_safe
+SELECT @@system_time_zone; showed 'Mountain Standard Time' by default.
+You can also set it by setting the TZ environment variable before you start mysqld.
 
-3. WicOrder startTime, completionTime: Done as annotation level becasue this is automatic save -- do not worry.
+GLOBAL TIME ZONE:
+The initial global server time zone value can be specified explicitly at startup with the --default-time-zone=timezone option on the command line
+or you can use the following line in an option file: default-time-zone='timezone'
+
+TIMEZONE per sessioj connection:
+SET time_zone = timezone;
+The current session time zone setting affects display and storage of time values that are zone-sensitive.
+This affects NOW(), CURTIME(), TIMESTAMP column.
+Values for TIMESTAMP columns are converted from the current time zone to UTC for storage,
+and from UTC to the current time zone for retrieval.
+SELECT @@GLOBAL.time_zone, @@SESSION.time_zone;
 
 I can delete head or tail in 1:m relationship, but when deleting at middle layer object like wicOrder in relationship,
    @PreRemove method seems needed to cut relationship with parent and grand-parent.
 
 When one-to-many, parents fetch lazy but child fetch eager.
-
-/**
- * For a certain restriction which I did not find out yet,
- * I cannot delete middle object loike wicOrder which it is a child of voucher and a parent of delivery.
- * WHY??
- *
- * I can delete customer->voucher->wicOrder->delivery.
- * I can delete voucher->wicOrder->delivery.
- * I can delete delivery.
- *
- */
- 
-Add last update date inn wic_order for current state
-
 
 Debug packaging and delivery further: Test customerOrder
 Ensure to generate serialver via serialver -classpath . bettercare.wic.model.OrderedProductsModel for instance.

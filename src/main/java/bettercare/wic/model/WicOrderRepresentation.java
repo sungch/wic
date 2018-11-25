@@ -16,8 +16,6 @@ public class WicOrderRepresentation implements Serializable {
      */
     private static final long serialVersionUID = -1437982395144640698L;
     private long orderId;
-    private boolean hasMissingProduct = false;
-
     private String status;
 
     @NotBlank
@@ -31,10 +29,9 @@ public class WicOrderRepresentation implements Serializable {
 
     public WicOrderRepresentation() {}
 
-    public WicOrderRepresentation(long orderId, boolean hasMissingProduct, String products, String status,
+    public WicOrderRepresentation(long orderId, String products, String status,
                                   CustomerModel customerModel, VoucherModel voucherModel) {
         this.orderId = orderId;
-        this.hasMissingProduct = hasMissingProduct;
         this.products = products;
         this.status = status;
         this.customerModel = customerModel;
@@ -81,16 +78,8 @@ public class WicOrderRepresentation implements Serializable {
         this.voucherModel = voucherModel;
     }
 
-    public boolean isHasMissingProduct() {
-        return hasMissingProduct;
-    }
-
-    public void setHasMissingProduct(boolean hasMissingProduct) {
-        this.hasMissingProduct = hasMissingProduct;
-    }
-
     @Override
     public String toString() {
-        return products + hasMissingProduct + status + customerModel.toString() + voucherModel.toString();
+        return products + status + customerModel.toString() + voucherModel.toString();
     }
 }

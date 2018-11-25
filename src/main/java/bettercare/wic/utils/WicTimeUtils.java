@@ -1,4 +1,4 @@
-package bettercare.wic.service;
+package bettercare.wic.utils;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -9,11 +9,11 @@ import java.util.*;
 public class WicTimeUtils {
 
   public Timestamp truncateHours(Timestamp localTs) {
-    return getAppliedTime(localTs.getTime(), " 00:00:00.0");
+    return getAppliedTime(localTs.getTime(), " 00:00:01");
   }
 
   public Timestamp addFullHours(Timestamp localTs) {
-    return getAppliedTime(localTs.getTime()," 23:59:59.999");
+    return getAppliedTime(localTs.getTime()," 23:59:59");
   }
 
   private Timestamp getAppliedTime(long milliseconds, String filler) {
