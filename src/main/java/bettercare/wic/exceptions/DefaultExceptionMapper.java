@@ -1,5 +1,6 @@
 package bettercare.wic.exceptions;
 
+import bettercare.wic.utils.WicLogger;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.sun.jersey.api.NotFoundException;
@@ -9,11 +10,13 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.validation.ValidationException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
 
 @ControllerAdvice
 @ResponseBody
@@ -21,6 +24,7 @@ public class DefaultExceptionMapper {
 
     private int statusCode;
     private String message;
+    @Resource WicLogger wicLogger;
 
     @ExceptionHandler({Exception.class})
     public Response toResponse(Exception ex) {
@@ -38,6 +42,8 @@ public class DefaultExceptionMapper {
                 .entity(this.message)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
                 .header(HttpHeaders.CONTENT_ENCODING, "identity");
+
+        wicLogger.error("Exception Response:" + builder.toString() ,ExceptionMapper.class);
 
         return builder.build();
     }

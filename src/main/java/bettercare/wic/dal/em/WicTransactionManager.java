@@ -1,6 +1,6 @@
 package bettercare.wic.dal.em;
 
-import bettercare.wic.dal.WicLogger;
+import bettercare.wic.utils.WicLogger;
 import bettercare.wic.dal.dao.*;
 import bettercare.wic.dal.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;

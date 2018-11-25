@@ -14,13 +14,13 @@ public class MissingProductSimulator extends InitSetup {
         long missingProductId = getMissingProductId();
         List<WicOrder> wicOrders = entityService.findAll(WicOrder.class);
         if(wicOrders.isEmpty()) {
-            wicLogger.log("No outstanding orders.");
+            wicLogger.warn("No outstanding orders.", MissingProduct.class);
         }
         else {
             for (WicOrder wicOrder : wicOrders) { // Add a missing product to each order
                 MissingProduct model = createMissingProductModel(wicOrder, missingProductId, 2);
                 MissingProduct missingProduct = entityService.saveOrUpdate(MissingProduct.class, model);
-                wicLogger.log(missingProduct.toString());
+                wicLogger.info("Missing products:" + missingProduct.toString(), MissingProduct.class);
             }
         }
     }

@@ -1,4 +1,4 @@
-package bettercare.wic.dal;
+package bettercare.wic.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,10 +9,6 @@ public class WicLogger {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(WicLogger.class);
 
-  // Test only
-  public void log(String mesg) {
-    System.out.print(mesg);
-  }
 
   public void info(String mesg, Class problemArea) {
     if(LOGGER.isInfoEnabled()) {

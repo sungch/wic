@@ -14,7 +14,7 @@ public class CategoryImageUpdater extends InitSetup {
             }
             category.setImageUrl(url);
             category = entityService.saveOrUpdate(Category.class, category);
-            wicLogger.log(String.format("Created a Category %s", category.toString()));
+            wicLogger.info(String.format("Created a Category %s", category.toString()), CategoryImageUpdater.class);
         }
     }
 }

@@ -1,6 +1,6 @@
 package bettercare.wic.service;
 
-import bettercare.wic.dal.WicLogger;
+import bettercare.wic.utils.WicLogger;
 import bettercare.wic.dal.entity.Customer;
 import bettercare.wic.dal.entity.Voucher;
 import bettercare.wic.dal.entity.WicOrder;

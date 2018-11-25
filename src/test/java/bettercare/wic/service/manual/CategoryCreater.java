@@ -13,10 +13,10 @@ public class CategoryCreater extends InitSetup {
       if (isCategoryEmpty(categoryName)) {
         Category category = prepareCategory(categoryName);
         Category persistedCategory = entityService.saveOrUpdate(Category.class, category);
-        wicLogger.log(String.format("Created a Category %s", persistedCategory.toString()));
+        wicLogger.info(String.format("Created a Category %s", persistedCategory.toString()), Category.class);
       }
       else {
-        wicLogger.log("The same Category name already found in the system. No transactions:" + categoryName);
+        wicLogger.warn("The same Category name already found in the system. No transactions" + categoryName, CategoryCreater.class);
       }
     }
   }

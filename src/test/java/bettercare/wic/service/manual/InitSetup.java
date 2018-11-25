@@ -3,7 +3,7 @@ package bettercare.wic.service.manual;
 import bettercare.wic.config.WicApplication;
 import bettercare.wic.dal.entity.Category;
 import bettercare.wic.service.SaveWicOrderService;
-import bettercare.wic.dal.WicLogger;
+import bettercare.wic.utils.WicLogger;
 import bettercare.wic.service.EntityService;
 import bettercare.wic.service.ProductsParser;
 

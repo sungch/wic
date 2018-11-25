@@ -19,7 +19,7 @@ public class ProductStocker extends InitSetup {
         addProducsOnEachCategoryIfNew(category, i, true);
       }
       List<Product> products = entityService.findProductsByCategoryId(category.getId());
-      wicLogger.log("Created products:" + products.size());
+      wicLogger.info("Created products:" + products.size(), ProductStocker.class);
       Assert.assertFalse(products.isEmpty());
     }
   }
@@ -32,10 +32,10 @@ public class ProductStocker extends InitSetup {
     if (isProductEmpty(category, productName, isHandling)) {
       Product product = prepareProduct(category, barcode, desc, productName, imageName, isHandling);
       Product newProduct = entityService.saveOrUpdate(Product.class, product);
-      wicLogger.log(String.format("Created product %s", newProduct.toString()));
+      wicLogger.info(String.format("Created product %s", newProduct.toString()), ProductStocker.class);
     }
     else {
-      wicLogger.log("Product is already in the system:" + productName);
+      wicLogger.warn("Product is already in the system:" + productName, ProductStocker.class);
     }
   }
 

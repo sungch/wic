@@ -6,7 +6,7 @@ import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.EntityService;
 import bettercare.wic.service.SaveWicOrderService;
 import bettercare.wic.utils.WicTimeUtils;
-import bettercare.wic.dal.WicLogger;
+import bettercare.wic.utils.WicLogger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
