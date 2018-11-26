@@ -59,15 +59,20 @@ public class OrderSimulator extends InitSetup {
         return "voucherNum_" + String.valueOf(new Random(System.currentTimeMillis()).nextInt());
     }
 
-    // Server JVM assume that input data is in UTC. COnvert time to UTC before sending to Server.
-    // When the server JVM communicate with JPA, it converts time to MYSQL Server time depends on
-    // Server System time, Server Global time, or JDBC Connection Timezone setting.
+    // In lcient, apply UTC conversion.
+    // In test, its timezone is same as server. Skip conversion.
     private Timestamp getStartTime() {
-        return wicTimeUtils.toUtcTime(new Timestamp(new Date().getTime()));
+        return new Timestamp((new Date().getTime()) - oneHour());
+//        return wicTimeUtils.toUtcTime();
+    }
+
+    private long oneHour() {
+        return 1000 * 60 * 60;
     }
 
     private Timestamp getExpirationTime() {
-        return wicTimeUtils.toUtcTime(new Timestamp(new Date().getTime()));
+        return new Timestamp((new Date().getTime()) + oneHour());
+//        return wicTimeUtils.toUtcTime(new Timestamp((new Date().getTime()) + oneHour()));
     }
 
     private String createSimulatedProductOrders() {
