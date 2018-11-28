@@ -35,6 +35,13 @@ public class WicController {
 
     // Customer Order
 
+    /**
+     * This is the only input data from Customer client.
+     * All the rest of end-points are for admin pupose.
+     * @param model input data
+     * @return order record
+     * @throws InvalidCustomerDataException invalid payload
+     */
     @PostMapping("/customerOrder")
     ResponseEntity<PackagingOrderedProductRepresentation> createCustomerOrder(@Valid @RequestBody WicOrderRepresentation model) throws InvalidCustomerDataException {
         WicOrder wicOrder = saveWicOrderService.saveWicOrder(model);

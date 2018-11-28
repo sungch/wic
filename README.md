@@ -12,10 +12,8 @@ mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp
 Learned
 ------
 
-Use Timestamp if need to store in UTC but present in local Tz because
-Timestamp is just a second cound and has no concept of TImezone.
-
-TimeZone in MYSQL: Data Base time zone is set by jdbc connection URL or at startup.
+Timezone setting at server level: JVM or SYSTEM of the JVM.
+Timezone setting at session level: JDBC connectionread by Hibernate settings.
 
 SYSTEM TIME ZONE:
 set the system time zone for MySQL Server at startup with the --timezone=timezone_name option to mysqld_safe
@@ -26,13 +24,25 @@ GLOBAL TIME ZONE:
 The initial global server time zone value can be specified explicitly at startup with the --default-time-zone=timezone option on the command line
 or you can use the following line in an option file: default-time-zone='timezone'
 
-TIMEZONE per sessioj connection:
 SET time_zone = timezone;
+
 The current session time zone setting affects display and storage of time values that are zone-sensitive.
 This affects NOW(), CURTIME(), TIMESTAMP column.
 Values for TIMESTAMP columns are converted from the current time zone to UTC for storage,
 and from UTC to the current time zone for retrieval.
 SELECT @@GLOBAL.time_zone, @@SESSION.time_zone;
+
+At JDBC session level by Java code
+String createdAtUtcStr = "2016-04-24 9:54:23";
+DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+format.setTimeZone(TimeZone.getTimeZone("UTC"));
+Date date = format.parse(createdAtUtcStr);
+User user = new User(1, name, date);
+session.save(user);
+
+Hibernate Level:
+db.url=jdbc:mysql://localhost:3306/wic?useUnicode=true&useLegacyDatetimeCode=false
+spring.jpa.properties.hibernate.jdbc.time_zone = UTC
 
 I can delete head or tail in 1:m relationship, but when deleting at middle layer object like wicOrder in relationship,
    @PreRemove method seems needed to cut relationship with parent and grand-parent.

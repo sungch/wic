@@ -1,60 +1,51 @@
 package bettercare.wic.config;
 
-import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-/**
- * /actuator/*
- * /actuator/health
- * /actuator/info
- * https://www.baeldung.com/spring-boot-actuators
- *
- * /auditevents – lists security audit-related events such as user login/logout. Also, we can filter by principal or type among others fields
- * /beans – returns all available beans in our BeanFactory. Unlike /auditevents, it doesn’t support filtering
- * /conditions – formerly known as /autoconfig, builds a report of conditions around auto-configuration
- * /configprops – allows us to fetch all @ConfigurationProperties beans
- * /env – returns the current environment properties. Additionally, we can retrieve single properties
- * /flyway – provides details about our Flyway database migrations
- * /health – summarises the health status of our application
- * /heapdump – builds and returns a heap dump from the JVM used by our application
- * /info – returns general information. It might be custom data, build information or details about the latest commit
- * /liquibase – behaves like /flyway but for Liquibase
- * /logfile – returns ordinary application logs
- * /loggers – enables us to query and modify the logging level of our application
- * /metrics – details metrics of our application. This might include generic metrics as well as custom ones
- * /prometheus – returns metrics like the previous one, but formatted to work with a Prometheus server
- * /scheduledtasks – provides details about every scheduled task within our application
- * /sessions – lists HTTP sessions given we are using Spring Session
- * /shutdown – performs a graceful shutdown of the application
- * /threaddump – dumps the thread information of the underlying JVM
- *
- *
- * @Component
- * public class DownstreamServiceHealthIndicator implements ReactiveHealthIndicator {
- *
- *     @Override
- *     public Mono<Health> health() {
- *         return checkDownstreamServiceHealth().onErrorResume(
- *           ex -> Mono.just(new Health.Builder().down(ex).build())
- *         );
- *     }
- *
- *     private Mono<Health> checkDownstreamServiceHealth() {
- *         // we could use WebClient to check health reactively
- *         return Mono.just(new Health.Builder().up().build());
- *     }
- * }
- */
-@Configuration
-public class SecurityConfiguration {
+@EnableWebSecurity
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-//  @Bean
-//  public SecurityWebFilterChain securityWebFilterChain(
-//          ServerHttpSecurity http) {
-//    return http.authorizeExchange()
-//            .pathMatchers("/actuator/**").permitAll()
-//            .anyExchange().authenticated()
-//            .and().build();
-//  }
+    /**
+     * Any resources that need avoid security
+     */
+    @Override
+    public void configure(WebSecurity ws) {
+        ws.ignoring().antMatchers("/", "/wic");
+    }
 
+    @Override
+    protected void configure(AuthenticationManagerBuilder builder) throws Exception {
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder(); // using BCrypt
+        builder.inMemoryAuthentication()
+                .withUser("admin").password(encoder.encode("admin")).roles("USER", "ADMIN")
+                .and()
+                .withUser("wic").password(encoder.encode("wic")).roles("USER");
+    }
 
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/customerOrder").permitAll()
+                .antMatchers("/vouchers", "/voucher").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/categories/**", "/category").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/products/**", "/product").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/missingProducts", "/missingProduct").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/deliveries", "/delivery").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/wicOrders/**", "/wicOrder").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/customers/**", "/customer").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/", "/wic").hasAnyRole("ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .formLogin().permitAll()
+                .and()
+                .logout().permitAll();
+
+        http.csrf().disable();
+    }
 }
