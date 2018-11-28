@@ -11,6 +11,7 @@ import com.sun.jersey.api.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ import java.util.List;
 // Client must send date value in UTC time. JVM assume that incoming date is in UTC format.
 
 @Validated
+@RequestMapping("/")
 @RestController
 public class WicController {
 
@@ -64,6 +66,7 @@ public class WicController {
 
     // WicOrder CRUD
 
+    // @PreAuthorize("hasAnyRole('ADMIN')") <- Allow anyone with ADMIN role to access this method
     @GetMapping("/wicOrders")
     ResponseEntity<List> readWicOrders() {
         return new ResponseEntity<>(entityService.findAll(WicOrder.class), HttpStatus.OK);
@@ -105,6 +108,7 @@ public class WicController {
         return getBadResponseEntity(wicOrder);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/wicOrders/{id}")
     void deleteWicOrder(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<WicOrder> responseEntity = readWicOrder(id);
@@ -149,6 +153,7 @@ public class WicController {
         return getBadResponseEntity(category);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/categories/{id}")
     void deleteCategory(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<Category> responseEntity = readCategory(id);
@@ -198,6 +203,7 @@ public class WicController {
         return getBadResponseEntity(product);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/products/{id}")
     void deleteProduct(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<Product> responseEntity = readProduct(id);
@@ -242,6 +248,7 @@ public class WicController {
         return getBadResponseEntity(customer);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/customers/{id}")
     void deleteCustomer(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<Customer> responseEntity = readCustomer(id);
@@ -286,6 +293,7 @@ public class WicController {
         return getBadResponseEntity(delivery);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/deliveries/{id}")
     void deleteDelivery(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<Delivery> responseEntity = readDelivery(id);
@@ -330,6 +338,7 @@ public class WicController {
         return getBadResponseEntity(missingProduct);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/missingProducts/{id}")
     void deleteMissingProduct(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<MissingProduct> responseEntity = readMissingProduct(id);
@@ -374,6 +383,7 @@ public class WicController {
         return getBadResponseEntity(voucher);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/vouchers/{id}")
     void deleteVoucher(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<Voucher> responseEntity = readVoucher(id);

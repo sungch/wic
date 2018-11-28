@@ -1,9 +1,12 @@
 ----
 TODO
 -----
+1. Use Database login: See https://www.youtube.com/watch?v=egXtoL5Kg08
 
-Handle time in wicOrder, voucher, delivery
-
+2. all custom methods in Dao return Optional. i.e. Optional<T> findByName(String username).
+optional = ...
+optinal.map(CustomeUserDetails::new).get()
+optinal.orElseThrow( () -> new UserNotFoundException() );
 ------
 DEBUG:
 mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
