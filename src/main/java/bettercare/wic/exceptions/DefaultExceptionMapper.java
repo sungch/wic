@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.sun.jersey.api.NotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -49,7 +50,9 @@ public class DefaultExceptionMapper {
     }
 
     private void setStatusCode(Exception ex) {
-        if(ex instanceof NotFoundException) {
+
+        if(ex instanceof NotFoundException
+                || ex instanceof UsernameNotFoundException) {
             this.statusCode = Response.Status.NOT_FOUND.getStatusCode();
         }
 

@@ -3,7 +3,7 @@ package bettercare.wic.service;
 import bettercare.wic.dal.em.WicEntityManager;
 import bettercare.wic.dal.em.WicTransactionManager;
 import bettercare.wic.dal.entity.*;
-import org.springframework.http.ResponseEntity;
+import bettercare.wic.dal.entity.user.User;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -90,4 +90,8 @@ public class EntityService {
   public Delivery findDeliveryByWicOrder(WicOrder wicOrder) {
     return wicTransactionManager.findDeliveryByWicOrder(wicOrder);
   }
+
+    public User findUserByName(String username) {
+      return wicTransactionManager.findUserByName(username);
+    }
 }

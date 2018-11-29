@@ -2,6 +2,7 @@ package bettercare.wic.endpoint;
 
 
 import bettercare.wic.dal.entity.*;
+import bettercare.wic.dal.entity.user.User;
 import bettercare.wic.exceptions.InvalidCustomerDataException;
 import bettercare.wic.exceptions.FailedToDeleteException;
 import bettercare.wic.model.PackagingOrderedProductRepresentation;
@@ -383,7 +384,7 @@ public class WicController {
         return getBadResponseEntity(voucher);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')") // ("hasAnyRole('ADMIN','USER')")
     @DeleteMapping("/vouchers/{id}")
     void deleteVoucher(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<Voucher> responseEntity = readVoucher(id);
@@ -392,6 +393,46 @@ public class WicController {
         }
         else {
             throw new FailedToDeleteException(composeDeleteFailureMessage(Voucher.class, id));
+        }
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/users/{id}")
+    ResponseEntity<User> readUser(@PathVariable long id) {
+        User user = entityService.findById(User.class, id);
+        if(user != null) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        throw new NotFoundException(URI.create("/user/" + id));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PostMapping("/user")
+    ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+        if (user.getId() == 0) {
+            return new ResponseEntity<>(entityService.saveOrUpdate(User.class, user), HttpStatus.CREATED);
+        }
+        return getBadResponseEntity(user);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping("/voucher")
+    ResponseEntity<User> updateUser(@Valid @RequestBody User user) {
+        if (entityService.isEntityExist(User.class, user.getId())) {
+            return new ResponseEntity<>(entityService.saveOrUpdate(User.class, user), HttpStatus.OK);
+        }
+        return getBadResponseEntity(user);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @DeleteMapping("/users/{id}")
+    void deleteUser(@PathVariable long id) throws FailedToDeleteException {
+        ResponseEntity<User> responseEntity = readUser(id);
+        if(isResponseEntityValid(responseEntity)) {
+            entityService.deleteById(User.class, id);
+        }
+        else {
+            throw new FailedToDeleteException(composeDeleteFailureMessage(User.class, id));
         }
     }
 

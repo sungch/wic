@@ -1,5 +1,6 @@
 package bettercare.wic.dal.em;
 
+import bettercare.wic.dal.entity.user.User;
 import bettercare.wic.utils.WicLogger;
 import bettercare.wic.dal.dao.*;
 import bettercare.wic.dal.entity.*;
@@ -29,6 +30,8 @@ public class WicTransactionManager {
   private MissingProductDao missingProductDao;
   @Resource
   private DeliveryDao deliveryDao;
+  @Resource
+  private UserDao userDao;
 
   public <T> List<T> findAll(Class<T> clz) {
     return getDao(clz).findAll();
@@ -127,6 +130,13 @@ public class WicTransactionManager {
     if (entityClaz.equals(WicOrder.class)) {
       return wicOrderDao;
     }
+    if(entityClaz.equals(User.class)) {
+      return userDao;
+    }
     return null;
+  }
+
+  public User findUserByName(String username) {
+    return userDao.findByUsername(username);
   }
 }

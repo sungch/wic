@@ -118,7 +118,7 @@ Use @GeneratedValue(strategy=GenerationType.IDENTITY.
     See https://docs.jboss.org/hibernate/orm/3.6/reference/en-US/html/mapping.html for all other details.
 
 # wic
-entity id must be decalred to long not Long to avoid NullPointException.
+entity userRoleId must be decalred to long not Long to avoid NullPointException.
 
 Durig testing, collection may show Error due to session being expired for LAZY fetch more.
 Fix is to use EAGER fetch mode but it i not desirable for production system.
