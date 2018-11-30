@@ -26,6 +26,10 @@ public class Role implements Serializable {
     @NaturalId
     private String name;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserRole> userRoles = new HashSet<>();
+
     public Role(String name) {
         this.name = name;
     }
@@ -47,6 +51,14 @@ public class Role implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<UserRole> userRoles) {
+        this.userRoles = userRoles;
     }
 
     @Override

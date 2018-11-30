@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.ws.rs.Consumes;
 import java.net.URI;
 import java.util.List;
 
@@ -64,6 +65,8 @@ public class WicController {
         }
         return getBadResponseEntity(new PackagingOrderedProductRepresentation());
     }
+
+
 
     // WicOrder CRUD
 
@@ -384,7 +387,7 @@ public class WicController {
         return getBadResponseEntity(voucher);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')") // ("hasAnyRole('ADMIN','USER')")
+//    @PreAuthorize("hasAnyRole('ADMIN')") // ("hasAnyRole('ADMIN','USER')")
     @DeleteMapping("/vouchers/{id}")
     void deleteVoucher(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<Voucher> responseEntity = readVoucher(id);
@@ -396,9 +399,15 @@ public class WicController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/users")
+    ResponseEntity<List> readUsers() {
+        return new ResponseEntity<>(entityService.findAll(User.class), HttpStatus.OK);
+    }
+
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/users/{id}")
-    ResponseEntity<User> readUser(@PathVariable long id) {
+    ResponseEntity<User> readUsers(@PathVariable long id) {
         User user = entityService.findById(User.class, id);
         if(user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);
@@ -406,8 +415,9 @@ public class WicController {
         throw new NotFoundException(URI.create("/user/" + id));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/user")
+    @Consumes({"application/json", "text/plain"})
     ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         if (user.getId() == 0) {
             return new ResponseEntity<>(entityService.saveOrUpdate(User.class, user), HttpStatus.CREATED);
@@ -415,8 +425,8 @@ public class WicController {
         return getBadResponseEntity(user);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @PutMapping("/voucher")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping("/user")
     ResponseEntity<User> updateUser(@Valid @RequestBody User user) {
         if (entityService.isEntityExist(User.class, user.getId())) {
             return new ResponseEntity<>(entityService.saveOrUpdate(User.class, user), HttpStatus.OK);
@@ -424,10 +434,10 @@ public class WicController {
         return getBadResponseEntity(user);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/users/{id}")
     void deleteUser(@PathVariable long id) throws FailedToDeleteException {
-        ResponseEntity<User> responseEntity = readUser(id);
+        ResponseEntity<User> responseEntity = readUsers(id);
         if(isResponseEntityValid(responseEntity)) {
             entityService.deleteById(User.class, id);
         }

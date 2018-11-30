@@ -1,5 +1,7 @@
 package bettercare.wic.dal.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -19,11 +21,13 @@ public class UserRole implements Serializable {
     @Embedded
     private UserRoleId userRoleId;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
     private User user;
 
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("roleId")
     private Role role;
 

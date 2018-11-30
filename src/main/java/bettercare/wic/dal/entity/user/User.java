@@ -29,7 +29,7 @@ public class User implements Serializable {
     private String password;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JsonManagedReference
+    @JsonManagedReference
 //    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     private List<UserRole> userRoles = new ArrayList<>();
 
@@ -81,7 +81,8 @@ public class User implements Serializable {
 
     public void addRole(Role role) {
         UserRole userRole = new UserRole(this, role);
-        userRoles.add(userRole);
+        this.userRoles.add(userRole);
+        role.getUserRoles().add(userRole);
     }
 
     public void removeRole(Role role) {
@@ -89,6 +90,7 @@ public class User implements Serializable {
             UserRole userRole = I.next();
             if(userRole.getUser().equals(this) && userRole.getRole().equals(role)) {
                 I.remove();
+                userRole.getRole().getUserRoles().remove(userRole);
                 userRole.setUser(null);
                 userRole.setRole(null);
             }

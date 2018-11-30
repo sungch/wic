@@ -16,8 +16,8 @@ public class WicUserDetails extends User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+        return getUserRoles().stream()
+                .map(userRole -> new SimpleGrantedAuthority("ROLE_" + userRole.getRole().getName()))
                 .collect(Collectors.toList());
     }
 

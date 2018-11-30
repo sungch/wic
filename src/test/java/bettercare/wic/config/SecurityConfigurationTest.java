@@ -24,15 +24,15 @@ public class SecurityConfigurationTest {
 
     @Before
     public void setup() throws MalformedURLException {
-        restTemplate = new TestRestTemplate("admin", "admin");
-        base = new URL("http://localhost:" + port);
+
+        base = new URL("http://localhost:" + port + "/users");
     }
 
     @Test
     public void whenLoggedUserRequestsHomePage_ThenSuccess() throws IllegalStateException {
+        restTemplate = new TestRestTemplate("admin", "admin");
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(base.toExternalForm(), String.class);
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         System.out.println(responseEntity.getBody());
     }
-
 }

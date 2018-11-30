@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 
 @EnableGlobalMethodSecurity(prePostEnabled = true) // -> This is for @PreAuthorize("hasAnyRole('ADMIN')")
@@ -14,12 +15,12 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private WicUserDetailsService wicUserDetailsService;
+    private UserDetailsService userDetailsService;
 
     // Dadtabase version
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {
-        builder.userDetailsService(wicUserDetailsService)
+        builder.userDetailsService(userDetailsService)
                 .passwordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder());
     }
 
@@ -38,9 +39,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("**/deliveries/**", "**/delivery/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("**/wicOrders/**", "**/wicOrder/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("**/customers/**", "**/customer/**").hasAnyRole("USER", "ADMIN")
-                .anyRequest().authenticated() // or permitAll ? allow any other requests
-                .and()
-                .formLogin().permitAll() // if /login has been created, then .formLogin().loginPage("/login").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .formLogin().permitAll()
                 .and()
                 .logout().permitAll();
 

@@ -7,6 +7,12 @@ import java.util.Objects;
 
 /**
  * The persistent class for the customer database table.
+ *
+ * @Embeddable type must be Serializable
+ *
+ * The @Embeddable type must override the default equals and hashCode methods
+ * based on the two Primary Key identifier values
+ *
  */
 @Embeddable
 public class UserRoleId implements Serializable {
@@ -23,7 +29,7 @@ public class UserRoleId implements Serializable {
         this.roleId = rid;
     }
 
-    public UserRoleId() {
+    private UserRoleId() {
     }
 
     public long getUserId() {
@@ -51,7 +57,7 @@ public class UserRoleId implements Serializable {
             return false;
         }
         UserRoleId that = (UserRoleId) o;
-        return Objects.equals(getUserId(), that.getUserId()) && Objects.equals(getRoleId(), that.getRoleId());
+        return Objects.equals(this.userId, that.userId) && Objects.equals(this.roleId, that.roleId);
     }
 
     @Override
