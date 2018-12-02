@@ -2,11 +2,10 @@ package bettercare.wic.endpoint;
 
 
 import bettercare.wic.dal.entity.*;
-import bettercare.wic.dal.entity.User;
+import bettercare.wic.dal.entity.user.User;
 import bettercare.wic.exceptions.InvalidCustomerDataException;
 import bettercare.wic.exceptions.FailedToDeleteException;
 import bettercare.wic.model.PackagingOrderedProductRepresentation;
-import bettercare.wic.model.RoleType;
 import bettercare.wic.model.WicOrderRepresentation;
 import bettercare.wic.service.*;
 import com.sun.jersey.api.NotFoundException;
@@ -18,9 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 
 // NOTE:
@@ -388,6 +385,7 @@ public class WicController {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
+    // TODO try to imple,ment adding roles here via raw sql query
     //    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/user")
     ResponseEntity<User> updateUser(@Valid @RequestBody User user) {

@@ -1,4 +1,4 @@
-package bettercare.wic.dal.entity;
+package bettercare.wic.dal.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -18,9 +18,6 @@ public class UserRole implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Embedded
-    private UserRoleId userRoleId;
-
     @JsonBackReference(value = "user_ref")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
@@ -34,7 +31,6 @@ public class UserRole implements Serializable {
     public UserRole(User user, Role role) {
         this.user = user;
         this.role = role;
-        this.userRoleId = new UserRoleId(user.getId(), role.getId());
     }
 
     public UserRole() {
@@ -46,14 +42,6 @@ public class UserRole implements Serializable {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public UserRoleId getUserRoleId() {
-        return userRoleId;
-    }
-
-    public void setUserRoleId(UserRoleId userRoleId) {
-        this.userRoleId = userRoleId;
     }
 
     public User getUser() {
@@ -81,11 +69,11 @@ public class UserRole implements Serializable {
             return false;
         }
         UserRole that = (UserRole) o;
-        return Objects.equals(getUserRoleId().toString(), that.getUserRoleId().toString());
+        return Objects.equals(this.toString(), that.toString());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUserRoleId());
+        return Objects.hash();
     }
 }

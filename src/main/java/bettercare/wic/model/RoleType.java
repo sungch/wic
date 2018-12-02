@@ -1,6 +1,6 @@
 package bettercare.wic.model;
 
-import bettercare.wic.dal.entity.Role;
+import bettercare.wic.dal.entity.user.Role;
 
 public enum RoleType {
 

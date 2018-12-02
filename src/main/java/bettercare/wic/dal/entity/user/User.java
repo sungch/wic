@@ -1,4 +1,4 @@
-package bettercare.wic.dal.entity;
+package bettercare.wic.dal.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.NaturalId;
@@ -6,14 +6,15 @@ import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-
+/**
+ * The persistent class for the customer database table.
+ */
 @Entity
-@Table(name = "role")
-@NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r")
-public class Role implements Serializable {
+@Table(name = "user")
+@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
+public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -22,12 +23,14 @@ public class Role implements Serializable {
 
     @NotBlank
     @NaturalId
-    private String name;
+    private String username;
 
-    @JsonManagedReference("role_ref")
-    @OneToMany(mappedBy = "role")
+    @NotBlank
+    private String password;
+
+    @JsonManagedReference("user_ref")
+    @OneToMany(mappedBy = "user")
     private List<UserRole> userRoles = new ArrayList<>();
-
 
     public long getId() {
         return this.id;
@@ -37,12 +40,20 @@ public class Role implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<UserRole> getUserRoles() {
@@ -55,7 +66,7 @@ public class Role implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("id:%s name:%s ", this.getId(), this.getName());
+        return String.format("id:%s roles:%s ", this.getId(), Arrays.deepToString(this.getUserRoles().toArray()));
     }
 
     /**
@@ -71,10 +82,10 @@ public class Role implements Serializable {
         if (thatObj == null) {
             return false;
         }
-        if (!(thatObj instanceof Role)) {
+        if (!(thatObj instanceof User)) {
             return false;
         }
-        Role that = (Role) thatObj;
+        User that = (User) thatObj;
         return isSame(that.toString(), this.toString());
     }
 
@@ -87,4 +98,5 @@ public class Role implements Serializable {
         }
         return that.equals(me);
     }
+
 }
