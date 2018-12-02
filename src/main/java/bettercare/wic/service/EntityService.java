@@ -3,7 +3,7 @@ package bettercare.wic.service;
 import bettercare.wic.dal.em.WicEntityManager;
 import bettercare.wic.dal.em.WicTransactionManager;
 import bettercare.wic.dal.entity.*;
-import bettercare.wic.dal.entity.user.User;
+import bettercare.wic.dal.entity.User;
 
 import javax.annotation.Resource;
 import java.util.List;

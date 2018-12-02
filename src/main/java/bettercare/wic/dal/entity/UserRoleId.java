@@ -1,4 +1,4 @@
-package bettercare.wic.dal.entity.user;
+package bettercare.wic.dal.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

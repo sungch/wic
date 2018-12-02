@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableGlobalMethodSecurity(prePostEnabled = true) // -> This is for @PreAuthorize("hasAnyRole('ADMIN')")
 @EnableWebSecurity
@@ -17,11 +18,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    private PasswordEncoder encoder = null;
+
+
+
     // Dadtabase version
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {
+        encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         builder.userDetailsService(userDetailsService)
-                .passwordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder());
+                .passwordEncoder(encoder);
     }
 
 

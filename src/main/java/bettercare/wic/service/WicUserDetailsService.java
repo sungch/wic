@@ -1,6 +1,6 @@
 package bettercare.wic.service;
 
-import bettercare.wic.dal.entity.user.User;
+import bettercare.wic.dal.entity.User;
 import bettercare.wic.model.WicUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;

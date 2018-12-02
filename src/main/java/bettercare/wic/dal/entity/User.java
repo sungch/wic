@@ -1,4 +1,4 @@
-package bettercare.wic.dal.entity.user;
+package bettercare.wic.dal.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.NaturalId;
@@ -28,24 +28,9 @@ public class User implements Serializable {
     @NotBlank
     private String password;
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-//    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @JsonManagedReference("user_ref")
+    @OneToMany(mappedBy = "user")
     private List<UserRole> userRoles = new ArrayList<>();
-
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public User() {
-    }
-
-    public User(User user) {
-        this.username = user.username;
-        this.password = user.password;
-    }
 
     public long getId() {
         return this.id;
@@ -72,29 +57,11 @@ public class User implements Serializable {
     }
 
     public List<UserRole> getUserRoles() {
-        return this.userRoles;
+        return userRoles;
     }
 
     public void setUserRoles(List<UserRole> userRoles) {
         this.userRoles = userRoles;
-    }
-
-    public void addRole(Role role) {
-        UserRole userRole = new UserRole(this, role);
-        this.userRoles.add(userRole);
-        role.getUserRoles().add(userRole);
-    }
-
-    public void removeRole(Role role) {
-        for(Iterator<UserRole> I = getUserRoles().iterator(); I.hasNext();) {
-            UserRole userRole = I.next();
-            if(userRole.getUser().equals(this) && userRole.getRole().equals(role)) {
-                I.remove();
-                userRole.getRole().getUserRoles().remove(userRole);
-                userRole.setUser(null);
-                userRole.setRole(null);
-            }
-        }
     }
 
     @Override
@@ -107,11 +74,7 @@ public class User implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Long.valueOf(this.getId()).hashCode() + Long.valueOf(getStringHash(Arrays.deepToString(this.getUserRoles().toArray()))).hashCode();
-    }
-
-    private int getStringHash(String val) {
-        return val == null ? 0 : val.hashCode();
+        return toString().hashCode();
     }
 
     @Override

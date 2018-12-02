@@ -1,6 +1,6 @@
 package bettercare.wic.model;
 
-import bettercare.wic.dal.entity.user.User;
+import bettercare.wic.dal.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +11,9 @@ import java.util.stream.Collectors;
 public class WicUserDetails extends User implements UserDetails {
 
     public WicUserDetails(final User user) {
-        super(user);
+        super.setId(user.getId());
+        super.setUsername(user.getUsername());
+        super.setPassword(user.getPassword());
     }
 
     @Override

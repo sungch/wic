@@ -1,12 +1,15 @@
 ----
 TODO
 -----
-1. Use Database login: See https://www.youtube.com/watch?v=egXtoL5Kg08
-
-2. all custom methods in Dao return Optional. i.e. Optional<T> findByName(String username).
+1. Move code from controler to service layer
+2. Figure out security configuration
+   Use Database login: See https://www.youtube.com/watch?v=egXtoL5Kg08
+3. all custom methods in Dao return Optional. i.e. Optional<T> findByName(String username).
 optional = ...
 optinal.map(CustomeUserDetails::new).get()
 optinal.orElseThrow( () -> new UserNotFoundException() );
+
+
 ------
 DEBUG:
 mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
@@ -14,6 +17,32 @@ mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp
 ------
 Learned
 ------
+
+Many-to-many relationship can be done in 2 steps via one-to-many and many-to-one via an intermediary table.
+But this method create a user but requires another step to add roles.
+
+1. Create a table as follows
+CREATE TABLE `user_role` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) DEFAULT NULL,
+  `role_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKa68196081fvovjhkek5m97n3y` (`role_id`),
+  KEY `FK859n2jvi8ivhui0rl0esws6o` (`user_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+2. Make sure to annotate the middle table's fiend as follow:
+@JoinColumn(name = "user_id", insertable = false, updatable = false)
+To add a user:
+{
+    "username": "user3",
+    "password": "user3"
+}
+
+3. To update the user with a role:
+INSERT INTO `user_role` VALUES (4,22,2);
+Because @JsonBackReference(value = "user_ref") does not (de)serealize, it is not passed across the network.
+So I need to do it manually.
 
 Timezone setting at server level: JVM or SYSTEM of the JVM.
 Timezone setting at session level: JDBC connectionread by Hibernate settings.

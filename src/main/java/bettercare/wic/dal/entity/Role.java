@@ -1,4 +1,4 @@
-package bettercare.wic.dal.entity.user;
+package bettercare.wic.dal.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.NaturalId;
@@ -6,12 +6,10 @@ import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * The persistent class for the customer database table.
- */
+
 @Entity
 @Table(name = "role")
 @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r")
@@ -26,16 +24,10 @@ public class Role implements Serializable {
     @NaturalId
     private String name;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<UserRole> userRoles = new HashSet<>();
+    @JsonManagedReference("role_ref")
+    @OneToMany(mappedBy = "role")
+    private List<UserRole> userRoles = new ArrayList<>();
 
-    public Role(String name) {
-        this.name = name;
-    }
-
-    public Role() {
-    }
 
     public long getId() {
         return this.id;
@@ -53,11 +45,11 @@ public class Role implements Serializable {
         this.name = name;
     }
 
-    public Set<UserRole> getUserRoles() {
+    public List<UserRole> getUserRoles() {
         return userRoles;
     }
 
-    public void setUserRoles(Set<UserRole> userRoles) {
+    public void setUserRoles(List<UserRole> userRoles) {
         this.userRoles = userRoles;
     }
 
@@ -71,7 +63,7 @@ public class Role implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Long.valueOf(this.getId()).hashCode() + Long.valueOf(this.getName()).hashCode();
+        return toString().hashCode();
     }
 
     @Override
@@ -95,5 +87,4 @@ public class Role implements Serializable {
         }
         return that.equals(me);
     }
-
 }

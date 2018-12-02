@@ -1,4 +1,4 @@
-package bettercare.wic.dal.entity.user;
+package bettercare.wic.dal.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -21,14 +21,14 @@ public class UserRole implements Serializable {
     @Embedded
     private UserRoleId userRoleId;
 
-    @JsonBackReference
+    @JsonBackReference(value = "user_ref")
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("userId")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
-    @JsonBackReference
+    @JsonBackReference(value = "role_ref")
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("roleId")
+    @JoinColumn(name = "role_id", insertable = false, updatable = false)
     private Role role;
 
     public UserRole(User user, Role role) {
