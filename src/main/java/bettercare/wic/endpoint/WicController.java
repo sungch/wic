@@ -186,7 +186,6 @@ public class WicController {
         }
     }
 
-
     // Customer CRUD
 
     @GetMapping("/customers")
@@ -318,7 +317,6 @@ public class WicController {
         }
     }
 
-
     // Voucher CRUD
 
     @GetMapping("/vouchers")
@@ -380,9 +378,11 @@ public class WicController {
 
     //    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping(value = "/user")
-    ResponseEntity<User> createUser(@Valid @RequestBody User model) throws FailedToDeleteException {
-        User user = entityService.saveOrUpdate(User.class, model);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+    ResponseEntity<User> createUser(@Valid @RequestBody User model){
+        if(model.getId() <= 0) {
+            new ResponseEntity<>(entityService.saveOrUpdate(User.class, model), HttpStatus.CREATED);
+        }
+        return responseService.getBadResponseEntity(model);
     }
 
     // TODO try to imple,ment adding roles here via raw sql query

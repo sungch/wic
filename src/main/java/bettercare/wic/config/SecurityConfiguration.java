@@ -46,8 +46,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("**/wicOrders/**", "**/wicOrder/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("**/customers/**", "**/customer/**").hasAnyRole("USER", "ADMIN")
 //                .anyRequest().authenticated()
-//                .and()
-//                .formLogin().permitAll()
+                .and()
+                .formLogin().permitAll()
                 .and()
                 .logout().permitAll();
 

@@ -1,13 +1,7 @@
 ----
 TODO
 -----
-1. Move code from controler to service layer
-2. Figure out security configuration
-   Use Database login: See https://www.youtube.com/watch?v=egXtoL5Kg08
-3. all custom methods in Dao return Optional. i.e. Optional<T> findByName(String username).
-optional = ...
-optinal.map(CustomeUserDetails::new).get()
-optinal.orElseThrow( () -> new UserNotFoundException() );
+
 
 
 ------
@@ -17,6 +11,9 @@ mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp
 ------
 Learned
 ------
+
+2. Figure out security configuration
+   Use Database login: See https://www.youtube.com/watch?v=egXtoL5Kg08
 
 Many-to-many relationship can be done in 2 steps via one-to-many and many-to-one via an intermediary table.
 But this method create a user but requires another step to add roles.
