@@ -42,26 +42,6 @@ public class ResponseService {
         return responseEntity != null && responseEntity.hasBody();
     }
 
-//    public ResponseEntity<User> createUser(@Valid @RequestBody User model) {
-//        User user = entityService.saveOrUpdate(User.class, model);
-//        if(user != null && user.getId() > 0) {
-//            if(model.getUserRoles().isEmpty()) {
-//                UserRole defaultUserRole = new UserRole(user, RoleType.USER.getRole());
-//                entityService.saveOrUpdate(UserRole.class, defaultUserRole);
-//            }
-//            else {
-//                for(UserRole modelUserRole : model.getUserRoles()) {
-//                    RoleType modelRoleType = RoleType.valueOf(modelUserRole.getRole().getName());
-//                    if(modelRoleType != null) {
-//                        entityService.saveOrUpdate(UserRole.class, modelUserRole);
-//                    }
-//                }
-//            }
-//            return new ResponseEntity<>(user, HttpStatus.CREATED);
-//        }
-//        return responseService.getBadResponseEntity(model);
-//    }
-
     public ResponseEntity<PackagingOrderedProductRepresentation> handleCustomerOrder(@Valid @RequestBody WicOrderRepresentation model) throws InvalidCustomerDataException {
         WicOrder wicOrder = saveWicOrderService.saveWicOrder(model);
         if (wicOrder != null) {

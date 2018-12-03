@@ -51,8 +51,7 @@ public class DefaultExceptionMapper {
 
     private void setStatusCode(Exception ex) {
 
-        if(ex instanceof NotFoundException
-                || ex instanceof UsernameNotFoundException) {
+        if(ex instanceof NotFoundException || ex instanceof UsernameNotFoundException) {
             this.statusCode = Response.Status.NOT_FOUND.getStatusCode();
         }
 
@@ -76,6 +75,10 @@ public class DefaultExceptionMapper {
 
         if(ex instanceof FailedToDeleteException) {
             this.statusCode = Response.Status.NOT_FOUND.getStatusCode();
+        }
+
+        if(ex instanceof org.springframework.security.access.AccessDeniedException) {
+            this.statusCode = Response.Status.UNAUTHORIZED.getStatusCode();
         }
     }
 }

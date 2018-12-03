@@ -1,7 +1,6 @@
 package bettercare.wic.config;
 
 import bettercare.wic.service.WicUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -19,17 +18,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new WicUserDetailsService();
     }
 
-    // Authentication
+    // Authentication by database username
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {
         builder.userDetailsService(wicUserDetailsService())
                 .passwordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder());
     }
 
-    // Authorization
+    // Authorization by resource path
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests() // <-- authorize all as follows
+                .antMatchers("**/login* ").permitAll()
                 .antMatchers("**/actuator/** ").permitAll()
                 .antMatchers("**/customerOrder/**").permitAll()
                 .antMatchers("**/vouchers/**", "**/voucher/**").hasAnyRole("USER", "ADMIN")
@@ -39,54 +39,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("**/deliveries/**", "**/delivery/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("**/wicOrders/**", "**/wicOrder/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("**/customers/**", "**/customer/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("**/admin/**").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
                 .and()
-                .logout().permitAll();
+                .logout().permitAll()
+                .and()
+                .httpBasic(); // this is to test wit Postman Basic authentication
 
         http.csrf().disable();
     }
 }
-
-/**
- * See https://www.youtube.com/watch?v=egXtoL5Kg08
- *
-
- //    @Override
- //    public void configure(WebSecurity ws) {
- //        ws.ignoring().antMatchers("/actuator/**");
- //    }
-
- // In memory version
- //    @Override
- //    protected void configure(AuthenticationManagerBuilder builder) throws Exception {
- //        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder(); // using BCrypt
- //        builder.inMemoryAuthentication()
- //                .withUser("admin").password(encoder.encode("admin")).roles("USER", "ADMIN")
- //                .and()
- //                .withUser("wic").password(encoder.encode("wic")).roles("USER");
- //    }
-
-
- Use userDetailService in place of inMemoryAuthentication to make service to call Database.
- @Autowired CustomUserDetailService u;
-@Override
- protected void configure(AuthenticationManagerBuilder builder) throws Exception {
-   builder.userDetailsService(u).passwordEncoder();
-}
-
- class MyService implements UserDetailsService {
-    @Override
-    public UserDetails loadUserByUsername(String username){
-        // load user from DB and instantiate CustomUserDetail.
-        return CustomerUserDetail;
-    }
-}
-
-class CustomerUserDetail extends MyUserEntity implements UserDetails {
-
-
- }
-
- */

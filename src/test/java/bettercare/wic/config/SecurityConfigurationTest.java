@@ -25,7 +25,7 @@ public class SecurityConfigurationTest {
     @Before
     public void setup() throws MalformedURLException {
 
-        base = new URL("http://localhost:" + port + "/users");
+        base = new URL("http://localhost:" + port + "/admin/users");
     }
 
     @Test
