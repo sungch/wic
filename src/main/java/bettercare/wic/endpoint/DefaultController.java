@@ -1,23 +1,32 @@
 package bettercare.wic.endpoint;
 
 
-import bettercare.wic.service.ResponseService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@Validated
+import javax.servlet.http.HttpServletRequest;
+
 @RequestMapping("/")
 @RestController
 public class DefaultController implements ErrorController {
 
-    @Autowired private ResponseService responseService;
-
     @Override
+    public String getErrorPath() {
+        return "/error";
+    }
+
     @RequestMapping("/error")
     @ResponseBody
-    public String getErrorPath() {
-        return "Requested resource is unsupported";
+    public String handleError(HttpServletRequest request) {
+        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+        Exception exception = (Exception) request.getAttribute("javax.servlet.error.exception");
+        return String.format("<html><body>" +
+                                     "<h2>Error Page</h2>" +
+                                     "<div>Status code: <b>%s</b></div>" +
+                                     "<div>Exception Message: <b>%s</b></div>" +
+                                     "<div>Unsupported resource request for current user</div>" +
+                                     "</body></html>", statusCode, exception==null? "N/A": exception.getMessage());
     }
+
+
 }
