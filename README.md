@@ -12,13 +12,35 @@ mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp
 Learned
 ------
 
-2. Figure out security configuration
-   Use Database login: See https://www.youtube.com/watch?v=egXtoL5Kg08
+@PreAuthorize("hasAnyRole('ADMIN')") is to provide a method level authorizaation
+<- access to this annotated method is possible only for those who have ADMIN role.
+
+Use Database login: See https://www.youtube.com/watch?v=egXtoL5Kg08
 
 Many-to-many relationship can be done in 2 steps via one-to-many and many-to-one via an intermediary table.
 But this method create a user but requires another step to add roles.
 
-1. Create a table as follows
+User:
+    @JsonManagedReference("user_ref")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<UserRole> userRoles = new HashSet<>();
+
+Role:
+    @JsonManagedReference("role_ref")
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+    private Set<UserRole> userRoles = new HashSet<>();
+
+UserRole:
+    @JsonBackReference(value = "user_ref")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private User user;
+
+    @JsonBackReference(value = "role_ref")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", insertable = false, updatable = false)
+    private Role role;
+
 CREATE TABLE `user_role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) DEFAULT NULL,
@@ -28,9 +50,7 @@ CREATE TABLE `user_role` (
   KEY `FK859n2jvi8ivhui0rl0esws6o` (`user_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
-2. Make sure to annotate the middle table's fiend as follow:
-@JoinColumn(name = "user_id", insertable = false, updatable = false)
-To add a user:
+Payload to add a user:
 {
     "username": "user3",
     "password": "user3"

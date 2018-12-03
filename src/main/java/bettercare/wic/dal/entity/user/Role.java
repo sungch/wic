@@ -6,8 +6,8 @@ import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -25,8 +25,8 @@ public class Role implements Serializable {
     private String name;
 
     @JsonManagedReference("role_ref")
-    @OneToMany(mappedBy = "role")
-    private List<UserRole> userRoles = new ArrayList<>();
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+    private Set<UserRole> userRoles = new HashSet<>();
 
 
     public long getId() {
@@ -45,11 +45,11 @@ public class Role implements Serializable {
         this.name = name;
     }
 
-    public List<UserRole> getUserRoles() {
+    public Set<UserRole> getUserRoles() {
         return userRoles;
     }
 
-    public void setUserRoles(List<UserRole> userRoles) {
+    public void setUsers(Set<UserRole> userRoles) {
         this.userRoles = userRoles;
     }
 

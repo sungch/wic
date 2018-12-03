@@ -8,12 +8,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class WicUserDetails extends User implements UserDetails {
+public class WicUserDetailsModel extends User implements UserDetails {
 
-    public WicUserDetails(final User user) {
+    public WicUserDetailsModel(final User user) {
         super.setId(user.getId());
         super.setUsername(user.getUsername());
         super.setPassword(user.getPassword());
+        super.setUserRoles(user.getUserRoles());
     }
 
     @Override

@@ -87,7 +87,7 @@ public class WicController {
         return responseService.updateWicOrder(wicOrder);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/wicOrders/{id}")
     void deleteWicOrder(@PathVariable long id) throws FailedToDeleteException {
         responseService.deleteWicOrder(id);
@@ -126,7 +126,7 @@ public class WicController {
         return responseService.getBadResponseEntity(category);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/categories/{id}")
     void deleteCategory(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<Category> responseEntity = readCategory(id);
@@ -175,7 +175,7 @@ public class WicController {
         return responseService.getBadResponseEntity(product);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/products/{id}")
     void deleteProduct(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<Product> responseEntity = readProduct(id);
@@ -218,7 +218,7 @@ public class WicController {
         return responseService.getBadResponseEntity(customer);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/customers/{id}")
     void deleteCustomer(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<Customer> responseEntity = readCustomer(id);
@@ -262,7 +262,7 @@ public class WicController {
         return responseService.getBadResponseEntity(delivery);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/deliveries/{id}")
     void deleteDelivery(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<Delivery> responseEntity = readDelivery(id);
@@ -306,7 +306,7 @@ public class WicController {
         return responseService.getBadResponseEntity(missingProduct);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/missingProducts/{id}")
     void deleteMissingProduct(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<MissingProduct> responseEntity = readMissingProduct(id);
@@ -376,7 +376,7 @@ public class WicController {
         throw new NotFoundException(URI.create("/user/" + id));
     }
 
-    //    @PreAuthorize("hasAnyRole('ADMIN')")
+    // @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping(value = "/user")
     ResponseEntity<User> createUser(@Valid @RequestBody User model){
         if(model.getId() <= 0) {
@@ -395,7 +395,7 @@ public class WicController {
         return responseService.getBadResponseEntity(user);
     }
 
-    //    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/users/{id}")
     void deleteUser(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<User> responseEntity = readUsers(id);

@@ -29,8 +29,8 @@ public class User implements Serializable {
     private String password;
 
     @JsonManagedReference("user_ref")
-    @OneToMany(mappedBy = "user")
-    private List<UserRole> userRoles = new ArrayList<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<UserRole> userRoles = new HashSet<>();
 
     public long getId() {
         return this.id;
@@ -38,6 +38,14 @@ public class User implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Set<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<UserRole> userRoles) {
+        this.userRoles = userRoles;
     }
 
     public String getUsername() {
@@ -54,14 +62,6 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<UserRole> getUserRoles() {
-        return userRoles;
-    }
-
-    public void setUserRoles(List<UserRole> userRoles) {
-        this.userRoles = userRoles;
     }
 
     @Override
