@@ -7,8 +7,10 @@ import bettercare.wic.service.EntityService;
 import bettercare.wic.service.ResponseService;
 import com.sun.jersey.api.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,10 +28,14 @@ public class ProductController {
     @Autowired
     private ResponseService responseService;
 
-    @CrossOrigin(origins = "http://localhost:4200")
+//    @CrossOrigin(origins = "http://localhost:4200/products")
     @GetMapping("/products")
     ResponseEntity<List> readProducts(@RequestParam(value = "isHandling", required = false, defaultValue = "true") String isHandling) {
-        return new ResponseEntity<>(entityService.findProductByIsHandling(Boolean.valueOf(isHandling)), HttpStatus.OK);
+        List product = entityService.findProductByIsHandling(Boolean.valueOf(isHandling));
+        MultiValueMap<String,String> headers = new HttpHeaders();
+        ((HttpHeaders) headers).setAccessControlAllowOrigin("*"); //("Access-Control-Allow-Origin");
+        return new ResponseEntity<>(product, headers, HttpStatus.OK);
+//        return new ResponseEntity<>(entityService.findProductByIsHandling(Boolean.valueOf(isHandling)), HttpStatus.OK);
     }
 
     @GetMapping("/products/{id}")
