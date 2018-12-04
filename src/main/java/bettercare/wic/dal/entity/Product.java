@@ -95,8 +95,8 @@ public class Product implements Serializable {
     return isHandling;
   }
 
-  public void setHandling(boolean handling) {
-    isHandling = handling;
+  public void setHandling(boolean isHandling) {
+    this.isHandling = isHandling;
   }
 
   @Override

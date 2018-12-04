@@ -26,7 +26,6 @@ public class ProductController {
     @Autowired
     private ResponseService responseService;
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/products")
     ResponseEntity<List> readProducts(@RequestParam(value = "isHandling", required = false, defaultValue = "true") String isHandling) {
         return new ResponseEntity<>(entityService.findProductByIsHandling(Boolean.valueOf(isHandling)), HttpStatus.OK);
