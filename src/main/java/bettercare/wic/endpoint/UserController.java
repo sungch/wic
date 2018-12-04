@@ -17,6 +17,7 @@ import java.net.URI;
 import java.util.List;
 
 @Validated
+@PreAuthorize("hasAnyRole('ADMIN')")
 @RequestMapping("/admin")
 @RestController
 public class UserController {
@@ -27,13 +28,11 @@ public class UserController {
     private ResponseService responseService;
 
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/users")
     ResponseEntity<List> readUsers() {
         return new ResponseEntity<>(entityService.findAll(User.class), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/users/{id}")
     ResponseEntity<User> readUsers(@PathVariable long id) {
         User user = entityService.findById(User.class, id);
@@ -43,7 +42,6 @@ public class UserController {
         throw new NotFoundException(URI.create("/user/" + id));
     }
 
-     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping(value = "/user")
     ResponseEntity<User> createUser(@Valid @RequestBody User model){
         if(model.getId() <= 0) {
@@ -52,7 +50,6 @@ public class UserController {
         return responseService.getBadResponseEntity(model);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/user")
     ResponseEntity<User> updateUser(@Valid @RequestBody User user) {
         if (entityService.isEntityExist(User.class, user.getId())) {
@@ -61,7 +58,6 @@ public class UserController {
         return responseService.getBadResponseEntity(user);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/users/{id}")
     void deleteUser(@PathVariable long id) throws FailedToDeleteException {
         ResponseEntity<User> responseEntity = readUsers(id);

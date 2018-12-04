@@ -18,36 +18,28 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new WicUserDetailsService();
     }
 
-    // Authentication by database username
+    // Authentication
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {
-        builder.userDetailsService(wicUserDetailsService())
-                .passwordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder());
+        builder.userDetailsService(wicUserDetailsService()).passwordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder());
     }
 
-    // Authorization by resource path
-    @Override
+    // Authorization
+     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests() // <-- authorize all as follows
-//                .antMatchers("**/login* ").permitAll()
-//                .antMatchers("**/actuator/** ").permitAll()
-//                .antMatchers("**/customerOrder/**").permitAll()
-//                .antMatchers("**/vouchers/**", "**/voucher/**").hasAnyRole("USER", "ADMIN")
-//                .antMatchers("**/categories/**", "**/category/**").hasAnyRole("USER", "ADMIN")
-//                .antMatchers("**/products/**", "**/product/**").hasAnyRole("USER", "ADMIN")
-//                .antMatchers("**/missingProducts/**", "**/missingProduct/**").hasAnyRole("USER", "ADMIN")
-//                .antMatchers("**/deliveries/**", "**/delivery/**").hasAnyRole("USER", "ADMIN")
-//                .antMatchers("**/wicOrders/**", "**/wicOrder/**").hasAnyRole("USER", "ADMIN")
-//                .antMatchers("**/customers/**", "**/customer/**").hasAnyRole("USER", "ADMIN")
-//                .antMatchers("**/admin/**").hasAnyRole("ADMIN")
-//                .anyRequest().authenticated()
+        http.authorizeRequests()
+                .antMatchers("**/login* ").permitAll()
+                .antMatchers("**/actuator/** ").permitAll()
+                .antMatchers("**/customerOrder/**").permitAll()
+                .antMatchers("**/products/**", "**/product/**").permitAll()
                 .and()
                 .formLogin().permitAll()
                 .and()
-                .logout().permitAll()
+                .httpBasic()
                 .and()
-                .httpBasic(); // this is to test wit Postman Basic authentication
+                .logout().permitAll();
 
         http.csrf().disable();
     }
+
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
@@ -30,32 +31,36 @@ public class DefaultExceptionMapper {
     @ExceptionHandler({Exception.class})
     public Response toResponse(Exception ex) {
 
-        this.statusCode = Response.Status.INTERNAL_SERVER_ERROR.getStatusCode();
-        this.message = ex.getMessage() == null ? "" : ex.getMessage();
-
-        if(ex.getCause() != null) {
-            this.message += ex.getCause().getMessage();
-        }
-
+        setExceptionContent(ex);
         setStatusCode(ex);
+        return buildResponse().build();
+    }
+
+    private Response.ResponseBuilder buildResponse() {
 
         Response.ResponseBuilder builder = Response.status(this.statusCode)
                 .entity(this.message)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
                 .header(HttpHeaders.CONTENT_ENCODING, "identity");
+        wicLogger.error("Exception Response:" + builder.toString(), ExceptionMapper.class);
+        return builder;
+    }
 
-        wicLogger.error("Exception Response:" + builder.toString() ,ExceptionMapper.class);
+    private void setExceptionContent(Exception ex) {
 
-        return builder.build();
+        this.message = ex.getMessage() == null ? "" : ex.getMessage();
+        if(ex.getCause() != null) {
+            this.message += ex.getCause().getMessage();
+        }
     }
 
     private void setStatusCode(Exception ex) {
 
-        if(ex instanceof NotFoundException || ex instanceof UsernameNotFoundException) {
+        if(ex instanceof NotFoundException || ex instanceof UsernameNotFoundException || ex instanceof EntityNotFoundException) {
             this.statusCode = Response.Status.NOT_FOUND.getStatusCode();
         }
 
-        if(ex instanceof ValidationException
+        else if(ex instanceof ValidationException
                 || ex instanceof MethodArgumentNotValidException
                 || ex instanceof DataIntegrityViolationException
                 || ex instanceof JsonParseException
@@ -63,22 +68,26 @@ public class DefaultExceptionMapper {
             this.statusCode = Response.Status.BAD_REQUEST.getStatusCode();
         }
 
-        if(ex instanceof WebApplicationException) {
+        else if(ex instanceof WebApplicationException) {
             WebApplicationException webappEx = (WebApplicationException) ex;
             this.statusCode = webappEx.getResponse().getStatus();
         }
 
-        if(ex instanceof InvalidVoucherException || ex instanceof InvalidCustomerDataException) {
+        else if(ex instanceof InvalidVoucherException || ex instanceof InvalidCustomerDataException) {
             this.statusCode = Response.Status.BAD_REQUEST.getStatusCode();
 
         }
 
-        if(ex instanceof FailedToDeleteException) {
+        else if(ex instanceof FailedToDeleteException) {
             this.statusCode = Response.Status.NOT_FOUND.getStatusCode();
         }
 
-        if(ex instanceof org.springframework.security.access.AccessDeniedException) {
+        else if(ex instanceof org.springframework.security.access.AccessDeniedException) {
             this.statusCode = Response.Status.UNAUTHORIZED.getStatusCode();
+        }
+
+        else {
+            this.statusCode = Response.Status.INTERNAL_SERVER_ERROR.getStatusCode();
         }
     }
 }

@@ -3,11 +3,13 @@ package bettercare.wic.endpoint;
 
 import bettercare.wic.dal.entity.*;
 import bettercare.wic.exceptions.FailedToDeleteException;
+import bettercare.wic.exceptions.InvalidCustomerDataException;
 import bettercare.wic.service.EntityService;
 import bettercare.wic.service.ResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,7 @@ import java.util.List;
 
 
 @Validated
+@PreAuthorize("hasAnyRole('USER')")
 @RequestMapping("/")
 @RestController
 public class WicOrderController {
@@ -26,13 +29,12 @@ public class WicOrderController {
     private ResponseService responseService;
 
 
-
-
     // WicOrder CRUD
 
     @GetMapping("/wicOrders")
-    ResponseEntity<List> readWicOrders() {
-        return new ResponseEntity<>(entityService.findAll(WicOrder.class), HttpStatus.OK);
+    ResponseEntity<List> readWicOrders() throws InvalidCustomerDataException {
+        List<WicOrder> orders = entityService.findAll(WicOrder.class);
+        return new ResponseEntity<>(responseService.marshallProducts(orders), HttpStatus.OK);
     }
 
     @GetMapping("/wicOrders/status")

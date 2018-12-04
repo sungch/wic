@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ResponseService {
@@ -50,12 +52,13 @@ public class ResponseService {
             PackagingOrderedProductRepresentation representation;
             try {
                 representation = productsParser.parseProducts(model.getProducts());
-            } catch (Exception ex) {
+                representation.setOrderId(wicOrder.getId());
+                return new ResponseEntity<>(representation, HttpStatus.CREATED);
+            }
+            catch (Exception ex) {
                 entityService.deleteById(WicOrder.class, wicOrder.getId());
                 throw new InvalidCustomerDataException("There is a problem with the customer data:" + model.toString());
             }
-            representation.setOrderId(wicOrder.getId());
-            return new ResponseEntity<>(representation, HttpStatus.CREATED);
         }
         return responseService.getBadResponseEntity(new PackagingOrderedProductRepresentation());
     }
@@ -91,5 +94,25 @@ public class ResponseService {
             throw new FailedToDeleteException(responseService.composeDeleteFailureMessage(WicOrder.class, id));
         }
 
+    }
+
+    public List<PackagingOrderedProductRepresentation> marshallProducts(List<WicOrder> wicOrders) throws InvalidCustomerDataException {
+        List<PackagingOrderedProductRepresentation> products = new ArrayList<>(wicOrders.size());
+        if(!wicOrders.isEmpty()) {
+            for(WicOrder wicOrder : wicOrders) {
+                if(wicOrder != null) {
+                    PackagingOrderedProductRepresentation representation;
+                    try {
+                        representation = productsParser.parseProducts(wicOrder.getProducts());
+                        representation.setOrderId(wicOrder.getId());
+                        products.add(representation);
+                    }
+                    catch(Exception ex) {
+                        throw new InvalidCustomerDataException("There is a problem with the customer data:" + wicOrder.toString());
+                    }
+                }
+            }
+        }
+        return products;
     }
 }
